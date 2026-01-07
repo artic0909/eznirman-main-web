@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">olkata
+<head>
+  <title>@yield('title', 'Admin Dashboard') - EZ NIRMAN</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="{{ asset('assets/images/logo.gif') }}" type="image/x-icon">
+  
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" id="main-font-link">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
+  
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
+  <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}">
+  <style>
+    #alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.alert {
+    min-width: 300px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    animation: slideIn .4s ease;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #28a745, #218838);
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #dc3545, #b02a37);
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+  </style>
+  @stack('styles')
+</head>
+
+<body data-pc-preset="preset-1" data-pc-direction="ltr" data-pc-theme="light">
+  <!-- Pre-loader -->
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  @include('admin.layouts.partials.sidebar')
+
+  <!-- Header -->
+  <header class="pc-header">
+    <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
+      <div class="me-auto pc-mob-drp">
+        <ul class="list-unstyled">
+          <!-- ======= Menu collapse Icon ===== -->
+          <li class="pc-h-item pc-sidebar-collapse">
+            <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+              <i class="ti ti-menu-2"></i>
+            </a>
+          </li>
+          <li class="pc-h-item pc-sidebar-popup">
+            <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+              <i class="ti ti-menu-2"></i>
+            </a>
+          </li>
+          <li class="dropdown pc-h-item d-inline-flex d-md-none">
+            <a class="pc-head-link dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown" href="#" role="button"
+              aria-haspopup="false" aria-expanded="false">
+              <i class="ti ti-search"></i>
+            </a>
+            <div class="dropdown-menu pc-h-dropdown drp-search">
+              <form class="px-3">
+                <div class="form-group mb-0 d-flex align-items-center">
+                  <i data-feather="search"></i>
+                  <input type="search" class="form-control border-0 shadow-none" placeholder="Search here. . .">
+                </div>
+              </form>
+            </div>
+          </li>
+          <li class="pc-h-item d-none d-md-inline-flex">
+            <form class="header-search">
+              <i data-feather="search" class="icon-search"></i>
+              <input type="search" class="form-control" placeholder="Search here. . .">
+            </form>
+          </li>
+        </ul>
+      </div>
+      <!-- [Mobile Media Block end] -->
+      <div class="ms-auto">
+        <ul class="list-unstyled">
+          <li class="dropdown pc-h-item header-user-profile">
+            <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button"
+              aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
+              <img src="../../assets/images/logo.gif" alt="user-image" class="user-avtar">
+              <span>Admin Panel</span>
+            </a>
+            <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+              <div class="dropdown-header">
+                <div class="d-flex mb-1">
+                  <div class="flex-shrink-0">
+                    <img src="../../assets/images/logo.gif" alt="user-image" class="user-avtar wid-35">
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1">Admin Panel</h6>
+                    <span>Administrator</span>
+                  </div>
+                  <a href="{{ route('admin.logout') }}" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
+                </div>
+              </div>
+              <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="drp-t1" data-bs-toggle="tab" data-bs-target="#drp-tab-1"
+                    type="button" role="tab" aria-controls="drp-tab-1" aria-selected="true"><i class="ti ti-user"></i>
+                    Profile</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="drp-t2" data-bs-toggle="tab" data-bs-target="#drp-tab-2" type="button"
+                    role="tab" aria-controls="drp-tab-2" aria-selected="false"><i class="ti ti-phone"></i>
+                    Help?</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="mysrpTabContent">
+                <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel" aria-labelledby="drp-t1"
+                  tabindex="0">
+                  <a href="#!" class="dropdown-item">
+                    <i class="ti ti-edit-circle"></i>
+                    <span>Edit Profile</span>
+                  </a>
+                  <a href="#!" class="dropdown-item">
+                    <i class="ti ti-user"></i>
+                    <span>View Profile</span>
+                  </a>
+                  <a href="#!" class="dropdown-item">
+                    <i class="ti ti-power"></i>
+                    <span>Logout</span>
+                  </a>
+                </div>
+                <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2" tabindex="0">
+                  <a href="tel:+916292237205" class="dropdown-item">
+                    <i class="ti ti-phone"></i>
+                    <span>Call Support</span>
+                  </a>
+                  <a href="https://wa.me/+916292237205" class="dropdown-item">
+                    <i class="ti ti-messages"></i>
+                    <span>Chat Support</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="pc-container">
+    <div class="pc-content">
+      @yield('content')
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="pc-footer">
+    <div class="footer-wrapper container-fluid">
+      <div class="row">
+        <div class="col-sm my-1">
+          <p class="m-0">{{ date('Y') }} &#9829; EZ Nirman.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+@if (session('success') || session('error') || $errors->any())
+<div id="alert-container">
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            <span>{{ session('success') }}</span>
+            <button class="alert-close">&times;</button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-error">
+            <span>{{ session('error') }}</span>
+            <button class="alert-close">&times;</button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-error">
+            <span>{{ $errors->first() }}</span>
+            <button class="alert-close">&times;</button>
+        </div>
+    @endif
+
+</div>
+@endif
+
+
+  <!-- Required JS -->
+  <script src="{{ asset('assets/js/plugins/popper.min.js') }}"></script>
+  <script src="{{ asset('assets/js/plugins/simplebar.min.js') }}"></script>
+  <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('assets/js/fonts/custom-font.js') }}"></script>
+  <script src="{{ asset('assets/js/pcoded.js') }}"></script>
+  <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
+
+  <script>
+    layout_change('light');
+    change_box_container('false');
+    layout_rtl_change('false');
+    preset_change("preset-1");
+    font_change("Public-Sans");
+  </script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(alert => {
+        // Auto hide after 4 seconds
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateX(30px)';
+            setTimeout(() => alert.remove(), 400);
+        }, 4000);
+
+        // Manual close
+        alert.querySelector('.alert-close').addEventListener('click', () => {
+            alert.remove();
+        });
+    });
+
+});
+
+</script>
+
+  @stack('scripts')
+</body>
+</html>
