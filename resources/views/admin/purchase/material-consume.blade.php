@@ -67,7 +67,7 @@
                         <select name="from_site_id_display" id="from_site" class="form-control select2" required>
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}">{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}">{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -77,7 +77,7 @@
                         <select name="to_site_id" class="form-control select2">
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}">{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}">{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -111,7 +111,7 @@
                         <select name="site_id" class="form-control select2" data-placeholder="Filter by Site">
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -129,10 +129,11 @@
                                 <th>Date</th>
                                 <th>Material</th>
                                 <th>Type</th>
-                                <th>Quantity</th>
+                                <th>Used Qty</th>
+                                <th>Avl Qty</th>
                                 <th>Location Flow</th>
                                 <th>Remarks</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -144,8 +145,10 @@
                                 <td>{{ $startSl + $index }}</td>
                                 <td>{{ \Carbon\Carbon::parse($consume->consume_date)->format('d M, Y') }}</td>
                                 <td>
-                                    <h6 class="mb-0">{{ $consume->purchase->materialCode->material_name }}</h6>
+                                    <h6 class="mb-0">Product: {{ $consume->purchase->product_name }}</h6>
                                     <small class="text-muted">Inv: {{ $consume->purchase->invoice_no }}</small>
+                                    <br><small class="text-muted">Code: {{ $consume->purchase->materialCode->material_name }}</small>
+                                    <br><small class="text-muted">Qty: {{ $consume->purchase->quantity }} {{ $consume->purchase->unit->name }}</small>
                                 </td>
                                 <td>
                                     @if($consume->use_now == 0)
@@ -159,22 +162,26 @@
                                     <small class="text-muted">{{ $consume->unit }}</small>
                                 </td>
                                 <td>
+                                    <span class="fw-bold">{{ $consume->available_quantity }}</span> 
+                                    <small class="text-muted">{{ $consume->unit }}</small>
+                                </td>
+                                <td>
                                     @if($consume->use_now == 0)
-                                    <span class="text-muted"><i class="ti ti-map-pin"></i> {{ $consume->fromSite->site_name ?? 'N/A' }}</span>
+                                    <span class="text-muted"><i class="ti ti-map-pin"></i> {{ $consume->fromSite->site_code }} - {{ $consume->fromSite->site_name ?? 'N/A' }}</span>
                                     @else
                                     <div class="d-flex align-items-center">
-                                        <small class="text-muted">{{ $consume->fromSite->site_name ?? 'N/A' }}</small>
+                                        <small class="text-muted">{{ $consume->fromSite->site_code }} - {{ $consume->fromSite->site_name ?? 'N/A' }}</small>
                                         <i class="ti ti-arrow-right mx-2 text-success"></i>
-                                        <span class="fw-bold">{{ $consume->toSite->site_name ?? 'N/A' }}</span>
+                                        <span class="fw-bold">{{ $consume->toSite->site_code }} - {{ $consume->toSite->site_name ?? 'N/A' }}</span>
                                     </div>
                                     @endif
                                 </td>
                                 <td><small>{{ $consume->note ?? 'N/A' }}</small></td>
-                                <td>
+                                <!-- <td>
                                     <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.purchase.material-consumes.destroy', $consume->id) }}">
                                         <i class="ti ti-trash"></i>
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                             @empty
                             <tr>
@@ -230,40 +237,57 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const purchaseRef = document.getElementById('purchase_ref');
-        const fromSite = document.getElementById('from_site');
-        const fromSiteHidden = document.getElementById('from_site_hidden');
-        const useType = document.getElementById('use_type');
+        const purchaseRef = $('#purchase_ref');
+        const fromSite = $('#from_site');
+        const fromSiteHidden = $('#from_site_hidden');
+        const useType = $('#use_type');
         const toSiteDiv = document.getElementById('to_site_div');
 
         const syncHiddenSite = () => {
-            fromSiteHidden.value = fromSite.value;
+            fromSiteHidden.val(fromSite.val());
         };
 
-        // Select2 Change Event for Purchase Ref
-        $('#purchase_ref').on('change', function() {
-            const selected = $(this).find(':selected');
-            const siteId = selected.data('site-id');
-            
-            if (siteId) {
-                $('#from_site').val(siteId).trigger('change');
-                syncHiddenSite();
-            }
+        purchaseRef.on('change', function() {
+            const purchaseId = $(this).val();
+            if (!purchaseId) return;
+
+            // Fetch sites that have stock for this purchase
+            $.ajax({
+                url: `/admin/purchase/material-consumes/get-stock-locations/${purchaseId}`,
+                type: 'GET',
+                success: function(locations) {
+                    fromSite.empty().append('<option value=""></option>');
+                    
+                    locations.forEach(loc => {
+                        fromSite.append(`<option value="${loc.id}" data-balance="${loc.balance}">
+                            ${loc.code} - ${loc.name} (Available: ${loc.balance})
+                        </option>`);
+                    });
+
+                    // If only one site has stock, auto-select it
+                    if (locations.length === 1) {
+                        fromSite.val(locations[0].id).trigger('change');
+                    } else if (locations.length > 1) {
+                        // If multiple sites, let user pick
+                        fromSite.prop('disabled', false).trigger('change');
+                    }
+                    syncHiddenSite();
+                }
+            });
         });
 
-        $('#from_site').on('change', syncHiddenSite);
+        fromSite.on('change', syncHiddenSite);
 
-        $('#use_type').on('change', function() {
+        useType.on('change', function() {
             const isTransfer = $(this).val() == '1';
             
             if (isTransfer) {
                 toSiteDiv.classList.remove('d-none');
                 toSiteDiv.querySelector('select').required = true;
-                $('#from_site').prop('disabled', false).trigger('change');
+                // For transfer, user might want to pick origin manually if multiple exist
             } else {
                 toSiteDiv.classList.add('d-none');
                 toSiteDiv.querySelector('select').required = false;
-                $('#from_site').prop('disabled', true).trigger('change');
             }
             syncHiddenSite();
         });

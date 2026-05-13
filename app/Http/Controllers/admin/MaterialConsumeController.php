@@ -32,35 +32,40 @@ class MaterialConsumeController extends Controller
         return view('admin.purchase.material-consume', compact('purchases', 'sites', 'consumes'));
     }
 
+    public function getStockLocations($purchase_id)
+    {
+        $locations = MaterialConsume::getStockLocations($purchase_id);
+        return response()->json($locations);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'material_purchase_id' => 'required|exists:material_purchases,id',
             'consume_date' => 'required|date',
-            'used_quantity' => 'required|numeric',
+            'used_quantity' => 'required|numeric|min:0.01',
             'use_now' => 'required|in:0,1',
-            'from_site_id' => 'nullable|exists:working_sites,id',
+            'from_site_id' => 'required|exists:working_sites,id',
             'to_site_id' => 'nullable|required_if:use_now,1|exists:working_sites,id',
         ]);
 
         $purchase = MaterialPurchase::findOrFail($request->material_purchase_id);
         
-        // Calculate available quantity
-        $totalConsumed = MaterialConsume::where('material_purchase_id', $purchase->id)->sum('used_quantity');
-        $availableBefore = $purchase->quantity - $totalConsumed;
+        // Calculate available quantity AT THE SPECIFIC SITE
+        $siteBalance = MaterialConsume::getSiteStock($purchase->id, $request->from_site_id);
 
-        if ($request->used_quantity > $availableBefore) {
-            return redirect()->back()->with('error', 'Insufficient quantity available. Current balance: ' . $availableBefore);
+        if ($request->used_quantity > $siteBalance) {
+            return redirect()->back()->with('error', 'Insufficient stock at selected site! Available: ' . $siteBalance . ' ' . $purchase->unit->name);
         }
 
         $data = $request->all();
-        $data['quantity_current'] = $availableBefore;
-        $data['available_quantity'] = $availableBefore - $request->used_quantity;
+        $data['quantity_current'] = $siteBalance;
+        $data['available_quantity'] = $siteBalance - $request->used_quantity;
         $data['unit'] = $purchase->unit->name;
 
         MaterialConsume::create($data);
 
-        return redirect()->back()->with('success', 'Material usage/transfer recorded successfully.');
+        return redirect()->back()->with('success', 'Material transaction recorded successfully.');
     }
 
     public function destroy($id)

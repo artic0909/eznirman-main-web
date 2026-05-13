@@ -52,5 +52,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::resource('material-codes', MaterialCodeController::class)->except(['create', 'show', 'edit']);
         Route::resource('material-purchases', MaterialPurchaseController::class)->except(['create', 'show', 'edit']);
         Route::resource('material-consumes', MaterialConsumeController::class)->only(['index', 'store', 'destroy']);
+        Route::get('material-consumes/get-stock-locations/{purchase_id}', [MaterialConsumeController::class, 'getStockLocations'])->name('material-consumes.locations');
     });
 });

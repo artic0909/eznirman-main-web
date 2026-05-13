@@ -85,7 +85,7 @@
                         <select name="machinery_id" class="form-control select2" data-placeholder="All Machines">
                             <option value=""></option>
                             @foreach($machineries as $machine)
-                            <option value="{{ $machine->id }}" {{ request('machinery_id') == $machine->id ? 'selected' : '' }}>{{ $machine->machine_code }}</option>
+                            <option value="{{ $machine->id }}" {{ request('machinery_id') == $machine->id ? 'selected' : '' }}>{{ $machine->machine_code }} - {{ $machine->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -93,7 +93,7 @@
                         <select name="site_id" class="form-control select2" data-placeholder="All Target Sites">
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>

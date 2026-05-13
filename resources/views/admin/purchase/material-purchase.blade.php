@@ -38,7 +38,7 @@
                         <select name="working_site_id" class="form-control select2" required>
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}">{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}">{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -129,7 +129,7 @@
                         <select name="site_id" class="form-control select2" data-placeholder="All Sites">
                             <option value=""></option>
                             @foreach($sites as $site)
-                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -169,7 +169,7 @@
                                     <h6 class="mb-0">{{ $purchase->product_name }}</h6>
                                     <small class="text-primary fw-bold">{{ $purchase->materialCode->code }}</small>
                                 </td>
-                                <td><span class="badge bg-light-info text-info">{{ $purchase->site->site_name }}</span></td>
+                                <td><span class="badge bg-light-info text-info">{{ $purchase->site->site_code }} - {{ $purchase->site->site_name }}</span></td>
                                 <td>
                                     <div class="fw-bold">{{ $purchase->party_name }}</div>
                                     <small class="text-muted">Inv: {{ $purchase->invoice_no }}</small>
@@ -212,7 +212,7 @@
                                                             <label class="form-label">Site</label>
                                                             <select name="working_site_id" class="form-control select2-modal" required>
                                                                 @foreach($sites as $site)
-                                                                <option value="{{ $site->id }}" {{ $purchase->working_site_id == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                                                                <option value="{{ $site->id }}" {{ $purchase->working_site_id == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
