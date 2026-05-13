@@ -18,7 +18,7 @@ class UnitController extends Controller
 
         $units = $query->latest()->paginate(10)->withQueryString();
         
-        return view('admin.units.index', compact('units'));
+        return view('admin.purchase.units.index', compact('units'));
     }
 
     public function store(Request $request)

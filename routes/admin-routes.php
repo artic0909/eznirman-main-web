@@ -4,6 +4,10 @@ use App\Http\Controllers\admin\Auth\AuthController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\MachineryController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\MaterialCodeController;
+use App\Http\Controllers\Admin\MaterialPurchaseController;
+use App\Http\Controllers\Admin\MaterialConsumeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('admin')->group(function () {
@@ -41,6 +45,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::delete('/working-sites/{id}', [MachineryController::class, 'workingSiteDelete'])->name('working-sites.delete');
     });
 
-    // Unit Management
-    Route::resource('units', UnitController::class)->except(['create', 'show', 'edit']);
+    // Purchase Register (Materials)
+    Route::prefix('purchase')->name('purchase.')->group(function () {
+        Route::resource('units', UnitController::class)->except(['create', 'show', 'edit']);
+        Route::resource('product-categories', ProductCategoryController::class)->except(['create', 'show', 'edit']);
+        Route::resource('material-codes', MaterialCodeController::class)->except(['create', 'show', 'edit']);
+        Route::resource('material-purchases', MaterialPurchaseController::class)->except(['create', 'show', 'edit']);
+        Route::resource('material-consumes', MaterialConsumeController::class)->only(['index', 'store', 'destroy']);
+    });
 });

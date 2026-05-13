@@ -62,21 +62,29 @@
             <label>Purchase Register</label>
             <i class="ti ti-brand-chrome"></i>
           </li>
-          <li class="pc-item {{ Route::is('admin.units.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.units.index') }}" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.purchase.units.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.purchase.units.index') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-layout"></i></span>
               <span class="pc-mtext">Units</span>
             </a>
           </li>
-          <li class="pc-item pc-hasmenu">
+          <li class="pc-item pc-hasmenu {{ Request::is('admin/purchase/product-categories*') || Request::is('admin/purchase/material-codes*') || Request::is('admin/purchase/material-purchases*') || Request::is('admin/purchase/material-consumes*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-stack"></i></span><span
                 class="pc-mtext">Material Management</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="#!">Material Category</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Material Code</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Material Purchase</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Material Consume</a></li>
+              <li class="pc-item {{ Route::is('admin.purchase.product-categories.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.product-categories.index') }}">Material Category</a>
+              </li>
+              <li class="pc-item {{ Route::is('admin.purchase.material-codes.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.material-codes.index') }}">Material Code</a>
+              </li>
+              <li class="pc-item {{ Route::is('admin.purchase.material-purchases.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.material-purchases.index') }}">Material Purchase</a>
+              </li>
+              <li class="pc-item {{ Route::is('admin.purchase.material-consumes.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.material-consumes.index') }}">Material Consume</a>
+              </li>
             </ul>
           </li>
 
