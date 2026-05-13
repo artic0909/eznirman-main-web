@@ -104,19 +104,38 @@
             <div class="card-body">
                 <!-- Search Filter -->
                 <form action="{{ route('admin.purchase.material-consumes.index') }}" method="GET" class="row mb-4">
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-4 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Material Name..." value="{{ request('search') }}">
                     </div>
-                    <div class="col-md-3 mb-2">
-                        <select name="site_id" class="form-control select2" data-placeholder="Filter by Site">
+                    <div class="col-md-4 mb-2">
+                        <select name="site_id" class="form-control select2" data-placeholder="All Sites">
                             <option value=""></option>
                             @foreach($sites as $site)
                             <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 mb-2 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                    <div class="col-md-4 mb-2">
+                        <select name="type" class="form-control select2" data-placeholder="All Types">
+                            <option value=""></option>
+                            <option value="0" {{ request('type') === '0' ? 'selected' : '' }}>Consumed</option>
+                            <option value="1" {{ request('type') === '1' ? 'selected' : '' }}>Transfer</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">From</span>
+                            <input type="date" name="from_date" class="form-control" value="{{ request('from_date') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">To</span>
+                            <input type="date" name="to_date" class="form-control" value="{{ request('to_date') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Apply Filters</button>
                         <a href="{{ route('admin.purchase.material-consumes.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                     </div>
                 </form>

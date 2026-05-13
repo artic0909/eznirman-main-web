@@ -24,7 +24,22 @@ class MaterialConsumeController extends Controller
         }
 
         if ($request->site_id) {
-            $query->where('from_site_id', $request->site_id);
+            $query->where(function($q) use ($request) {
+                $q->where('from_site_id', $request->site_id)
+                  ->orWhere('to_site_id', $request->site_id);
+            });
+        }
+
+        if ($request->has('type') && $request->type !== null) {
+            $query->where('use_now', $request->type);
+        }
+
+        if ($request->from_date) {
+            $query->whereDate('consume_date', '>=', $request->from_date);
+        }
+
+        if ($request->to_date) {
+            $query->whereDate('consume_date', '<=', $request->to_date);
         }
 
         $consumes = $query->latest()->paginate(10)->withQueryString();
