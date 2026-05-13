@@ -1,16 +1,16 @@
   <nav class="pc-sidebar">
     <div class="navbar-wrapper">
       <div class="m-header">
-        <a href="../../dashboard/index.html" class="b-brand text-primary">
+        <a href="{{ route('admin.dashboard') }}" class="b-brand text-primary">
           <!-- ========   Change your logo from here   ============ -->
-          <img src="../../assets/images/logo.gif" class="img-fluid" width="70" alt="logo">
+          <img src="{{ asset('assets/images/logo.gif') }}" class="img-fluid" width="70" alt="logo">
           <span class="b-title fw-bold text-decoration-none text-dark fs-4">EZ NIRMAN</span>
         </a>
       </div>
       <div class="navbar-content">
         <ul class="pc-navbar">
-          <li class="pc-item active">
-            <a href="../dashboard/index.html" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
               <span class="pc-mtext">Dashboard</span>
             </a>
@@ -22,20 +22,20 @@
             <label>Machinery & Tools</label>
             <i class="ti ti-dashboard"></i>
           </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.machinery.machine-category') ? 'active' : '' }}">
+            <a href="{{ route('admin.machinery.machine-category') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-list"></i></span>
               <span class="pc-mtext">Machine Category</span>
             </a>
           </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.machinery.add-machinery') ? 'active' : '' }}">
+            <a href="{{ route('admin.machinery.add-machinery') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-tools"></i></span>
               <span class="pc-mtext">Add Machinery</span>
             </a>
           </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.machinery.transfer-machinery') ? 'active' : '' }}">
+            <a href="{{ route('admin.machinery.transfer-machinery') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-share"></i></span>
               <span class="pc-mtext">Transferred Machinery</span>
             </a>
@@ -47,13 +47,12 @@
             <label>Site Management</label>
             <i class="ti ti-news"></i>
           </li>
-          <li class="pc-item pc-hasmenu">
+          <li class="pc-item pc-hasmenu {{ Route::is('admin.machinery.working-sites') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-building-skyscraper"></i></span><span
                 class="pc-mtext">Working Sites</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="#!">Add Site</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">View Sites</a></li>
+              <li class="pc-item"><a class="pc-link" href="{{ route('admin.machinery.working-sites') }}">Manage Sites</a></li>
             </ul>
           </li>
 
