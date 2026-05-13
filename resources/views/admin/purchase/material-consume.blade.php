@@ -105,7 +105,7 @@
                 <!-- Search Filter -->
                 <form action="{{ route('admin.purchase.material-consumes.index') }}" method="GET" class="row mb-4">
                     <div class="col-md-4 mb-2">
-                        <input type="text" name="search" class="form-control" placeholder="Search Material Name..." value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control" placeholder="Search Material ID or Material Name..." value="{{ request('search') }}">
                     </div>
                     <div class="col-md-4 mb-2">
                         <select name="site_id" class="form-control select2" data-placeholder="All Sites">

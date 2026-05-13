@@ -148,7 +148,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Date</th>
-                                <th>Product Details</th>
+                                <th>Material Details</th>
+                                <th>Material ID</th>
                                 <th>Site</th>
                                 <th>Vendor & Invoice</th>
                                 <th>Qty/Unit</th>
@@ -166,8 +167,15 @@
                                 <td>{{ $startSl + $index }}</td>
                                 <td>{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</td>
                                 <td>
-                                    <h6 class="mb-0">{{ $purchase->product_name }}</h6>
-                                    <small class="text-primary fw-bold">{{ $purchase->materialCode->code }}</small>
+                                    <h6 class="mb-0">Material: {{ $purchase->product_name }}</h6>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <small class="text-primary fw-bold">Material Code: {{ $purchase->materialCode->code }}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0">
+                                        <span class="badge bg-light-secondary text-muted" style="font-size: 0.7rem;">Material ID: {{ $purchase->material_unique_id }}</span>
+                                    </h6>
                                 </td>
                                 <td><span class="badge bg-light-info text-info">{{ $purchase->site->site_code }} - {{ $purchase->site->site_name }}</span></td>
                                 <td>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MaterialPurchase extends Model
 {
     protected $fillable = [
+        'material_unique_id',
         'working_site_id', 
         'purchase_date', 
         'material_code_id', 

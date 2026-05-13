@@ -20,6 +20,7 @@ class MaterialConsumeController extends Controller
         if ($request->search) {
             $query->whereHas('purchase.materialCode', function($q) use ($request) {
                 $q->where('material_name', 'like', '%' . $request->search . '%');
+                $q->orWhere('material_unique_id', 'like', '%' . $request->search . '%');
             });
         }
 
