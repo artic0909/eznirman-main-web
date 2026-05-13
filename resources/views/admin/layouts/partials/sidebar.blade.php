@@ -62,8 +62,8 @@
             <label>Purchase Register</label>
             <i class="ti ti-brand-chrome"></i>
           </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
+          <li class="pc-item {{ Route::is('admin.units.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.units.index') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-layout"></i></span>
               <span class="pc-mtext">Units</span>
             </a>

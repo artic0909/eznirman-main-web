@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\Auth\AuthController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\MachineryController;
+use App\Http\Controllers\Admin\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('admin')->group(function () {
@@ -39,4 +40,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::put('/working-sites/{id}', [MachineryController::class, 'workingSiteUpdate'])->name('working-sites.update');
         Route::delete('/working-sites/{id}', [MachineryController::class, 'workingSiteDelete'])->name('working-sites.delete');
     });
+
+    // Unit Management
+    Route::resource('units', UnitController::class)->except(['create', 'show', 'edit']);
 });
