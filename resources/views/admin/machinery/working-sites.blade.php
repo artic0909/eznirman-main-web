@@ -52,14 +52,29 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h5>Active Project Sites</h5>
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5>Project Sites Fleet</h5>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
+                <!-- Filters Section -->
+                <form action="{{ route('admin.machinery.working-sites') }}" method="GET" class="row mb-4">
+                    <div class="col-md-9 mb-2">
+                        <input type="text" name="search" class="form-control" placeholder="Search Site Name, Code or Location..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-3 mb-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a href="{{ route('admin.machinery.working-sites') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>SL.</th>
                                 <th>Code</th>
                                 <th>Site Name</th>
                                 <th>Location</th>
@@ -67,9 +82,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($sites as $site)
+                            @php 
+                                $startSl = ($sites->currentPage() - 1) * $sites->perPage() + 1;
+                            @endphp
+                            @forelse($sites as $index => $site)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $startSl + $index }}</td>
                                 <td><span class="badge bg-light-primary text-primary fw-bold">{{ $site->site_code }}</span></td>
                                 <td>{{ $site->site_name }}</td>
                                 <td><i class="ti ti-map-pin text-muted"></i> {{ $site->location }}</td>
@@ -120,12 +138,26 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted">No project sites registered.</td>
+                                <td colspan="5" class="text-center text-muted py-5">No project sites found.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Custom Pagination -->
+                @if($sites->hasPages())
+                <div class="custom-pagination">
+                    <a href="{{ $sites->previousPageUrl() }}" class="btn-nav {{ $sites->onFirstPage() ? 'disabled' : '' }}">Prev</a>
+                    
+                    <div class="page-input-group">
+                        <input type="number" value="{{ $sites->currentPage() }}" min="1" max="{{ $sites->lastPage() }}" id="goto-page">
+                        <span>/ {{ $sites->lastPage() }}</span>
+                    </div>
+
+                    <a href="{{ $sites->nextPageUrl() }}" class="btn-nav {{ $sites->hasMorePages() ? '' : 'disabled' }}">Next</a>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -170,6 +202,19 @@
                 deleteModal.show();
             });
         });
+
+        // Pagination Goto Logic
+        const gotoInput = document.getElementById('goto-page');
+        if (gotoInput) {
+            gotoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const page = gotoInput.value;
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('page', page);
+                    window.location.href = url.href;
+                }
+            });
+        }
     });
 </script>
 @endpush

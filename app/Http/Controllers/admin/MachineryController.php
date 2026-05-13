@@ -166,7 +166,7 @@ class MachineryController extends Controller
     public function transferMachineryView()
     {
         $machineries = Machinary::where('status', true)->get();
-        $sites = WorkingSite::where('status', true)->get();
+        $sites = WorkingSite::all();
         $transfers = Transfer::with(['machinery', 'fromSite', 'toSite'])->latest()->get();
         return view('admin.machinery.transfer-machinery', compact('machineries', 'sites', 'transfers'));
     }
@@ -207,9 +207,19 @@ class MachineryController extends Controller
     }
 
     // --- Working Sites ---
-    public function workingSitesView()
+    public function workingSitesView(Request $request)
     {
-        $sites = WorkingSite::latest()->get();
+        $query = WorkingSite::query();
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('site_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('site_code', 'like', '%' . $request->search . '%')
+                  ->orWhere('location', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $sites = $query->latest()->paginate(10)->withQueryString();
         return view('admin.machinery.working-sites', compact('sites'));
     }
 
