@@ -1,311 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - EZ NIRMAN</title>
-  <link rel="icon" href="{{ asset('assets/images/logo.gif') }}" type="image/x-icon">
-  <link rel="stylesheet" href="{{ asset('assets/frontend/login-style.css') }}">
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Command Login - EZ NIRMAN</title>
+    <link rel="icon" href="{{ asset('assets/images/logo.gif') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 4rem 3rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .login-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1.5rem 0 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255, 184, 0, 0.2);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1.4rem;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 30px var(--primary-glow);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--primary-glow);
+        }
         #alert-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.alert {
-    min-width: 300px;
-    padding: 14px 18px;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,.15);
-    animation: slideIn .4s ease;
-}
-
-.alert-success {
-    background: linear-gradient(135deg, #28a745, #218838);
-}
-
-.alert-error {
-    background: linear-gradient(135deg, #dc3545, #b02a37);
-}
-
-.alert-close {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-    line-height: 1;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-  </style>
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .alert {
+            padding: 1.2rem 2rem;
+            border-radius: 12px;
+            color: #fff;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .alert-error { background: rgba(255, 71, 87, 0.8); }
+        .alert-success { background: rgba(46, 213, 115, 0.8); }
+    </style>
 </head>
+<body class="login-page">
+    <div class="cinematic-bg"></div>
+    <div class="cinematic-overlay"></div>
 
-<body>
-  <div id="particles"></div>
-  <div class="gradient-bg"></div>
-  <div class="gradient-overlay"></div>
-  <div class="mesh-grid"></div>
-
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-
-  <div class="content">
-    <!-- Back to Home -->
-    <a href="index.html" class="back-link">
-      <span>←</span> Back to Home
-    </a>
-
-    <!-- Login Container -->
-    <div class="login-container">
-      <div class="login-card">
-        <!-- Logo Section -->
+    <div class="login-card glass-panel">
         <div class="login-header">
-          <div class="logo-wrapper">
-            <img src="{{ asset('assets/images/logo.gif') }}" width="80" alt="EZ NIRMAN Logo">
-          </div>
-          <h1 class="login-title">Admin Portal</h1>
-          <p class="login-subtitle">Access the EZ NIRMAN Administration Dashboard</p>
-          <div class="security-badge">
-            <span class="shield-icon">🛡️</span>
-            <span>Secure Access</span>
-          </div>
+            <img src="{{ asset('assets/images/logo.gif') }}" width="70" alt="EZ NIRMAN">
+            <h1 class="login-title">COMMAND LOGIN</h1>
+            <p style="color: var(--text-dim); font-weight: 600;">Secure Portal Authorization</p>
         </div>
 
-        <!-- Login Form -->
-        <form class="login-form" id="adminLoginForm" action="{{ route('admin.login.verify') }}" method="POST">
-          @csrf
-
-          <div class="form-group">
-            <label for="adminEmail" class="form-label">
-              <span class="label-icon">📧</span>
-              Admin Email
-            </label>
-            <input 
-              type="email" 
-              id="adminEmail" 
-              name="email" 
-              class="form-input" 
-              placeholder="Enter Email"
-              required
-              autocomplete="email"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="adminPassword" class="form-label">
-              <span class="label-icon">🔐</span>
-              Password
-            </label>
-            <div class="password-wrapper">
-              <input 
-                type="password" 
-                id="adminPassword" 
-                name="password" 
-                class="form-input" 
-                placeholder="Enter Password"
-                required
-                autocomplete="current-password"
-              >
-              <button type="button" class="toggle-password" onclick="togglePassword('adminPassword')">
-                👁️
-              </button>
+        <form action="{{ route('admin.login.verify') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label class="form-label">Architect/Admin ID</label>
+                <input type="email" name="email" class="form-input" placeholder="admin@eznirman.com" required>
             </div>
-          </div>
-
-          <div class="form-options">
-            <label class="remember-me">
-              <input type="checkbox" name="remember">
-              <span>Remember me</span>
-            </label>
-          </div>
-
-          <button type="submit" class="btn-login">
-            <span class="btn-text">Access Dashboard</span>
-            <span class="btn-icon">→</span>
-          </button>
-
-          <div class="login-footer">
-            <p class="switch-portal">
-              Not an admin? 
-              <a href="user-login.html" class="portal-link">User Portal →</a>
-            </p>
-          </div>
+            <div class="form-group">
+                <label class="form-label">Authorization Key</label>
+                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit">INITIALIZE ACCESS</button>
         </form>
 
-        <!-- Security Info -->
-        <div class="security-info">
-          <div class="info-item">
-            <span class="info-icon">🔒</span>
-            <span>256-bit Encryption</span>
-          </div>
-          <div class="info-item">
-            <span class="info-icon">⚡</span>
-            <span>2FA Protected</span>
-          </div>
-          <div class="info-item">
-            <span class="info-icon">📊</span>
-            <span>Activity Logged</span>
-          </div>
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="{{ route('home') }}" style="color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">← Secure Exit</a>
         </div>
-      </div>
-
-      <!-- Side Info Panel -->
-      <div class="info-panel">
-        <div class="panel-content">
-          <div class="panel-icon">🏗️</div>
-          <h2 class="panel-title">Admin Control Center</h2>
-          <p class="panel-description">
-            Full system access with real-time monitoring, user management, 
-            project oversight, and comprehensive analytics.
-          </p>
-          <div class="panel-features">
-            <div class="panel-feature">
-              <span class="feature-check">✓</span>
-              <span>Complete System Control</span>
-            </div>
-            <div class="panel-feature">
-              <span class="feature-check">✓</span>
-              <span>User & Role Management</span>
-            </div>
-            <div class="panel-feature">
-              <span class="feature-check">✓</span>
-              <span>Advanced Analytics</span>
-            </div>
-            <div class="panel-feature">
-              <span class="feature-check">✓</span>
-              <span>Security & Audit Logs</span>
-            </div>
-            <div class="panel-feature">
-              <span class="feature-check">✓</span>
-              <span>Cash Flow Management</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  @if (session('success') || session('error') || $errors->any())
-<div id="alert-container">
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            <span>{{ session('success') }}</span>
-            <button class="alert-close">&times;</button>
-        </div>
+    @if (session('success') || session('error') || $errors->any())
+    <div id="alert-container">
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error">{{ session('error') }}</div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-error">{{ $errors->first() }}</div>
+        @endif
+    </div>
     @endif
 
-    @if (session('error'))
-        <div class="alert alert-error">
-            <span>{{ session('error') }}</span>
-            <button class="alert-close">&times;</button>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-error">
-            <span>{{ $errors->first() }}</span>
-            <button class="alert-close">&times;</button>
-        </div>
-    @endif
-
-</div>
-@endif
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-
-    const alerts = document.querySelectorAll('.alert');
-
-    alerts.forEach(alert => {
-        // Auto hide after 4 seconds
-        setTimeout(() => {
-            alert.style.opacity = '0';
-            alert.style.transform = 'translateX(30px)';
-            setTimeout(() => alert.remove(), 400);
-        }, 4000);
-
-        // Manual close
-        alert.querySelector('.alert-close').addEventListener('click', () => {
-            alert.remove();
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 400);
+                }, 4000);
+            });
         });
-    });
-
-});
-
-</script>
-
-
-  <script>
-    // Particle System
-    const particlesContainer = document.getElementById('particles');
-    const particleCount = 40;
-
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      const size = Math.random() * 4 + 2;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.left = `${Math.random() * 100}%`;
-      particle.style.top = `${Math.random() * 100}%`;
-      particle.style.animationDuration = `${Math.random() * 5 + 10}s`;
-      particlesContainer.appendChild(particle);
-    }
-
-    // Toggle Password Visibility
-    function togglePassword(inputId) {
-      const input = document.getElementById(inputId);
-      const button = input.nextElementSibling;
-      
-      if (input.type === 'password') {
-        input.type = 'text';
-        button.textContent = '🙈';
-      } else {
-        input.type = 'password';
-        button.textContent = '👁️';
-      }
-    }
-
-
-    // Input Focus Effects
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        this.parentElement.classList.add('focused');
-      });
-      
-      input.addEventListener('blur', function() {
-        if (!this.value) {
-          this.parentElement.classList.remove('focused');
-        }
-      });
-    });
-  </script>
+    </script>
 </body>
-
 </html>
