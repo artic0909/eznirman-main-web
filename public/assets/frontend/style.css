@@ -7,10 +7,65 @@
 body {
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: #050505;
+  background: #020205;
   min-height: 100vh;
   overflow-x: hidden;
   color: #fff;
+  cursor: none; /* Custom technical cursor */
+}
+
+/* Custom Industrial Cursor */
+.custom-cursor {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 140, 0, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-cursor::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: #ff8c00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff8c00;
+}
+
+.custom-cursor-dot {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transition: transform 0.2s ease-out;
+}
+
+/* Technical Scanning Laser */
+.laser-scanner {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.05), transparent);
+  border-right: 2px solid rgba(0, 102, 255, 0.2);
+  z-index: 5;
+  pointer-events: none;
+  animation: laserScan 8s linear infinite;
+}
+
+@keyframes laserScan {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
 /* Blueprint Pattern Overlay */
@@ -189,6 +244,34 @@ body {
   top: 40%;
   right: 10%;
   animation-delay: 14s;
+}
+
+/* Floating Structural Elements */
+.structural-floating {
+  position: absolute;
+  font-size: 8rem;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+  font-family: serif;
+  color: #fff;
+  animation: floatStruct 15s ease-in-out infinite;
+}
+
+@keyframes floatStruct {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(30px, -30px) rotate(5deg); }
+}
+
+/* Technical Data Bits */
+.tech-data {
+  position: absolute;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 140, 0, 0.4);
+  pointer-events: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 @keyframes floatOrb {
@@ -676,10 +759,20 @@ body {
 }
 
 .feature-card:hover {
-  transform: translateY(-15px);
-  border-color: rgba(255, 140, 0, 0.6);
-  box-shadow: 0 30px 80px rgba(255, 140, 0, 0.3);
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
+  border-color: #0066ff;
+  box-shadow: 0 30px 80px rgba(0, 102, 255, 0.2), 0 0 20px rgba(0, 102, 255, 0.1);
+  background: rgba(0, 102, 255, 0.05);
+}
+
+.feature-card::before {
+  content: "REF: 8273-X";
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-family: monospace;
+  font-size: 0.6rem;
+  color: rgba(255, 140, 0, 0.3);
 }
 
 .feature-icon-wrapper {
