@@ -163,11 +163,42 @@ class MachineryController extends Controller
     }
 
     // --- Transfers ---
-    public function transferMachineryView()
+    public function transferMachineryView(Request $request)
     {
         $machineries = Machinary::where('status', true)->get();
         $sites = WorkingSite::all();
-        $transfers = Transfer::with(['machinery', 'fromSite', 'toSite'])->latest()->get();
+        
+        $query = Transfer::with(['machinery', 'fromSite', 'toSite']);
+
+        // Search Filter
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('machinery', function($mq) use ($request) {
+                    $mq->where('name', 'like', '%' . $request->search . '%')
+                       ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+                })->orWhereHas('toSite', function($sq) use ($request) {
+                    $sq->where('site_name', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+
+        // Machinery Filter
+        if ($request->machinery_id) {
+            $query->where('machinery_id', $request->machinery_id);
+        }
+
+        // Site Filter
+        if ($request->site_id) {
+            $query->where('to_site_id', $request->site_id);
+        }
+
+        // Date Filter
+        if ($request->date) {
+            $query->whereDate('transfer_date', $request->date);
+        }
+
+        $transfers = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.machinery.transfer-machinery', compact('machineries', 'sites', 'transfers'));
     }
 
