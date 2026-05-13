@@ -7,10 +7,39 @@
 body {
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: #000;
+  background: #050505;
   min-height: 100vh;
   overflow-x: hidden;
   color: #fff;
+}
+
+/* Blueprint Pattern Overlay */
+.blueprint-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 102, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 102, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.blueprint-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 102, 255, 0.03) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0, 102, 255, 0.03) 2px, transparent 2px);
+  background-size: 100px 100px;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Particles Background */
@@ -34,10 +63,24 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #000, #0a0e27, #1a1a2e, #16213e);
+  background: linear-gradient(45deg, #050505, #0a0e27, #1a1a2e, #050505);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
   z-index: 1;
+}
+
+/* Construction Hero Image Background */
+.hero-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../images/construction_hero.png') no-repeat center center;
+  background-size: cover;
+  opacity: 0.3;
+  z-index: 0;
+  filter: grayscale(20%) brightness(50%);
 }
 
 @keyframes gradientShift {
@@ -325,6 +368,29 @@ body {
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+/* Caution Stripes Animation */
+.caution-stripes {
+  width: 100%;
+  height: 8px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ff8c00,
+    #ff8c00 10px,
+    #000 10px,
+    #000 20px
+  );
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: stripesMove 20s linear infinite;
+}
+
+@keyframes stripesMove {
+  from { background-position: 0 0; }
+  to { background-position: 200% 0; }
 }
 
 /* Hero Section */

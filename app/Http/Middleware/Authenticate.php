@@ -44,11 +44,11 @@ class Authenticate
      */
     protected function redirectTo($request)
     {
-        if ($request->is('user/*')) {
-            return route('home');
+        if ($request->expectsJson()) {
+            return null;
         }
 
-        if ($request->is('admin/*')) {
+        if ($request->is('admin') || $request->is('admin/*')) {
             return route('admin.login');
         }
 

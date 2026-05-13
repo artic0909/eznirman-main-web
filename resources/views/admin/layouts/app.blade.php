@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">olkata
+<html lang="en">
 <head>
   <title>@yield('title', 'Admin Dashboard') - EZ NIRMAN</title>
   <meta charset="utf-8">
@@ -134,7 +134,7 @@
             <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button"
               aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
               <img src="../../assets/images/logo.gif" alt="user-image" class="user-avtar">
-              <span>Admin Panel</span>
+              <span>{{ Auth::guard('admin')->user()->name ?? 'Admin Panel' }}</span>
             </a>
             <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
               <div class="dropdown-header">
@@ -143,7 +143,7 @@
                     <img src="../../assets/images/logo.gif" alt="user-image" class="user-avtar wid-35">
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <h6 class="mb-1">Admin Panel</h6>
+                    <h6 class="mb-1">{{ Auth::guard('admin')->user()->name ?? 'Admin Panel' }}</h6>
                     <span>Administrator</span>
                   </div>
                   <a href="{{ route('admin.logout') }}" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
