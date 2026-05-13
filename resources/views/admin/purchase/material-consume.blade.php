@@ -35,8 +35,11 @@
                         <select name="material_purchase_id" id="purchase_ref" class="form-control select2" required>
                             <option value=""></option>
                             @foreach($purchases as $purchase)
-                            <option value="{{ $purchase->id }}" data-qty="{{ $purchase->quantity }}" data-unit="{{ $purchase->unit->name }}">
-                                {{ $purchase->invoice_no }} - {{ $purchase->materialCode->material_name }} (Total: {{ $purchase->quantity }} {{ $purchase->unit->name }})
+                            <option value="{{ $purchase->id }}" 
+                                    data-qty="{{ $purchase->quantity }}" 
+                                    data-unit="{{ $purchase->unit->name }}"
+                                    data-site-id="{{ $purchase->working_site_id }}">
+                                Inv: {{ $purchase->invoice_no }} | Material: {{ $purchase->materialCode->material_name }} | Product: {{ $purchase->product_name }}
                             </option>
                             @endforeach
                         </select>
@@ -60,7 +63,8 @@
                     
                     <div class="col-md-3 form-group mb-3" id="from_site_div">
                         <label class="form-label">Origin Site</label>
-                        <select name="from_site_id" class="form-control select2">
+                        <input type="hidden" name="from_site_id" id="from_site_hidden">
+                        <select name="from_site_id_display" id="from_site" class="form-control select2" required>
                             <option value=""></option>
                             @foreach($sites as $site)
                             <option value="{{ $site->id }}">{{ $site->site_name }}</option>
@@ -226,18 +230,48 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const purchaseRef = document.getElementById('purchase_ref');
+        const fromSite = document.getElementById('from_site');
+        const fromSiteHidden = document.getElementById('from_site_hidden');
         const useType = document.getElementById('use_type');
         const toSiteDiv = document.getElementById('to_site_div');
 
-        useType.addEventListener('change', function() {
-            if (this.value == '1') {
+        const syncHiddenSite = () => {
+            fromSiteHidden.value = fromSite.value;
+        };
+
+        // Select2 Change Event for Purchase Ref
+        $('#purchase_ref').on('change', function() {
+            const selected = $(this).find(':selected');
+            const siteId = selected.data('site-id');
+            
+            if (siteId) {
+                $('#from_site').val(siteId).trigger('change');
+                syncHiddenSite();
+            }
+        });
+
+        $('#from_site').on('change', syncHiddenSite);
+
+        $('#use_type').on('change', function() {
+            const isTransfer = $(this).val() == '1';
+            
+            if (isTransfer) {
                 toSiteDiv.classList.remove('d-none');
                 toSiteDiv.querySelector('select').required = true;
+                $('#from_site').prop('disabled', false).trigger('change');
             } else {
                 toSiteDiv.classList.add('d-none');
                 toSiteDiv.querySelector('select').required = false;
+                $('#from_site').prop('disabled', true).trigger('change');
             }
+            syncHiddenSite();
         });
+
+        // Initialize state
+        if ($('#use_type').val() == '0') {
+            $('#from_site').prop('disabled', true).trigger('change');
+        }
 
         // Global Delete
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));

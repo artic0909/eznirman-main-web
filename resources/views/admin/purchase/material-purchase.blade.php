@@ -87,12 +87,14 @@
                     </div>
 
                     <div class="col-md-3 form-group mb-3">
-                        <label class="form-label">GST Amount</label>
-                        <input type="number" step="0.01" name="gst_amount" id="p_gst" class="form-control calc-amount" value="0.00">
+                        <label class="form-label">GST (Flat Amount)</label>
+                        <input type="number" step="0.01" name="gst_amount" id="p_gst" class="form-control calc-amount" value="0.00" placeholder="0.00">
+                        <small class="text-muted">Example: 20 for ₹20 GST</small>
                     </div>
                     <div class="col-md-3 form-group mb-3">
                         <label class="form-label">Total Amount <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" name="amount" id="p_total" class="form-control" placeholder="0.00" readonly required>
+                        <input type="number" step="0.01" name="amount" id="p_total" class="form-control bg-light" placeholder="0.00" readonly required title="(Qty * Rate) + GST">
+                        <small class="text-primary fw-bold">Formula: (Qty × Rate) + GST</small>
                     </div>
                     <div class="col-md-3 form-group mb-3">
                         <label class="form-label">Invoice File (PDF/Image)</label>
@@ -255,12 +257,13 @@
                                                             <input type="number" step="0.01" name="rate" class="form-control edit-calc-rate" value="{{ $purchase->rate }}" required>
                                                         </div>
                                                         <div class="col-md-2 form-group mb-3">
-                                                            <label class="form-label">GST</label>
+                                                            <label class="form-label">GST (Flat)</label>
                                                             <input type="number" step="0.01" name="gst_amount" class="form-control edit-calc-gst" value="{{ $purchase->gst_amount }}">
                                                         </div>
                                                         <div class="col-md-4 form-group mb-3">
                                                             <label class="form-label">Total Amount</label>
-                                                            <input type="number" step="0.01" name="amount" class="form-control edit-calc-total" value="{{ $purchase->amount }}" readonly required>
+                                                            <input type="number" step="0.01" name="amount" class="form-control edit-calc-total bg-light" value="{{ $purchase->amount }}" readonly required title="(Qty * Rate) + GST">
+                                                            <small class="text-primary fw-bold">Formula: (Qty × Rate) + GST</small>
                                                         </div>
                                                         <div class="col-md-12 form-group mb-3">
                                                             <label class="form-label">Update Invoice File</label>
