@@ -141,7 +141,7 @@
                                     <span class="badge bg-light-info text-info">Initial Entry</span>
                                     @endif
                                 </td>
-                                <td><span class="fw-bold text-dark"><i class="ti ti-arrow-right text-success"></i> {{ $transfer->toSite->site_name }}</span></td>
+                                <td><span class="fw-bold text-dark"><i class="ti ti-arrow-right text-success"></i> {{ $transfer->toSite->site_code }} - {{ $transfer->toSite->site_name }}</span></td>
                                 <td>{{ \Carbon\Carbon::parse($transfer->transfer_date)->format('d M, Y') }}</td>
                                 <td>
                                     @if($transfer->status == 'completed')
