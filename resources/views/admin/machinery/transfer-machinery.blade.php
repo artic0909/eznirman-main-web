@@ -32,8 +32,8 @@
                     @csrf
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Select Machinery <span class="text-danger">*</span></label>
-                        <select name="machinery_id" class="form-control" required>
-                            <option value="">Choose Machine</option>
+                        <select name="machinery_id" class="form-control select2" data-placeholder="Choose Machine" required>
+                            <option value=""></option>
                             @foreach($machineries as $machine)
                             <option value="{{ $machine->id }}">{{ $machine->machine_code }} - {{ $machine->name }}</option>
                             @endforeach
@@ -41,8 +41,8 @@
                     </div>
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Destination Site <span class="text-danger">*</span></label>
-                        <select name="to_site_id" class="form-control" required>
-                            <option value="">Select Target Site</option>
+                        <select name="to_site_id" class="form-control select2" data-placeholder="Select Target Site" required>
+                            <option value=""></option>
                             @foreach($sites as $site)
                             <option value="{{ $site->id }}">{{ $site->name }}</option>
                             @endforeach
@@ -98,12 +98,12 @@
                                 </td>
                                 <td>
                                     @if($transfer->fromSite)
-                                    <span class="text-muted">{{ $transfer->fromSite->name }}</span>
+                                    <span class="text-muted">{{ $transfer->fromSite->site_name }}</span>
                                     @else
                                     <span class="badge bg-light-info text-info">Initial Entry</span>
                                     @endif
                                 </td>
-                                <td><span class="fw-bold text-dark">{{ $transfer->toSite->name }}</span></td>
+                                <td><span class="fw-bold text-dark">{{ $transfer->toSite->site_name }}</span></td>
                                 <td>{{ \Carbon\Carbon::parse($transfer->transfer_date)->format('d M, Y') }}</td>
                                 <td>
                                     @if($transfer->status == 'completed')

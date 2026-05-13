@@ -51,11 +51,56 @@ class MachineryController extends Controller
     }
 
     // --- Machineries ---
-    public function addMachineryView()
+    public function addMachineryView(Request $request)
     {
         $categories = MachineCategory::where('status', true)->get();
-        $machineries = Machinary::with('category')->latest()->get();
+        
+        $query = Machinary::with('category');
+
+        // Search Filter
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Category Filter
+        if ($request->category_id) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+
+        // Condition Filter
+        if ($request->condition) {
+            $query->where('condition', $request->condition);
+        }
+
+        // Date Filter
+        if ($request->date) {
+            $query->whereDate('entry_date', $request->date);
+        }
+
+        $machineries = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.machinery.add-machinery', compact('categories', 'machineries'));
+    }
+
+    public function machineryBulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        if (!$ids) {
+            return redirect()->back()->with('error', 'No assets selected for deletion.');
+        }
+
+        $machineries = Machinary::whereIn('id', $ids)->get();
+        foreach ($machineries as $machine) {
+            if ($machine->image) {
+                Storage::disk('public')->delete($machine->image);
+            }
+            $machine->delete();
+        }
+
+        return redirect()->back()->with('success', 'Selected assets deleted successfully.');
     }
 
     public function machineryStore(Request $request)

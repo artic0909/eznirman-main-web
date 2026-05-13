@@ -25,6 +25,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         // Add/Manage Machinery
         Route::get('/add-machinery', [MachineryController::class, 'addMachineryView'])->name('add-machinery');
         Route::post('/add-machinery', [MachineryController::class, 'machineryStore'])->name('machinery.store');
+        Route::post('/bulk-delete', [MachineryController::class, 'machineryBulkDelete'])->name('machinery.bulk-delete');
         Route::put('/add-machinery/{id}', [MachineryController::class, 'machineryUpdate'])->name('machinery.update');
         Route::delete('/add-machinery/{id}', [MachineryController::class, 'machineryDelete'])->name('machinery.delete');
 

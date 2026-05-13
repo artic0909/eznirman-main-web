@@ -35,8 +35,8 @@
                     @csrf
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Category <span class="text-danger">*</span></label>
-                        <select name="machine_category_id" class="form-control" required>
-                            <option value="">Select Category</option>
+                        <select name="machine_category_id" class="form-control select2" data-placeholder="Search Category" required>
+                            <option value=""></option>
                             @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
@@ -52,11 +52,12 @@
                     </div>
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Entry Date <span class="text-danger">*</span></label>
-                        <input type="date" name="entry_date" class="form-control" required>
+                        <input type="date" name="entry_date" class="form-control" value="{{ date('Y-m-d') }}" required>
                     </div>
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Initial Condition <span class="text-danger">*</span></label>
-                        <select name="condition" class="form-control" required>
+                        <select name="condition" class="form-control select2" data-placeholder="Select Condition" required>
+                            <option value=""></option>
                             <option value="running">Running</option>
                             <option value="repair">Under Repair</option>
                             <option value="damage">Damaged</option>
@@ -74,17 +75,62 @@
         </div>
     </div>
 
-    <!-- Machinery List -->
+    <!-- Machinery List with Filters -->
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5>Registered Machinery Fleet</h5>
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5>Registered Machinery Fleet</h5>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-danger btn-sm fw-bold d-none" id="btn-bulk-delete">
+                            <i class="ti ti-trash"></i> Bulk Delete (<span id="selected-count">0</span>)
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
+                <!-- Filters Section -->
+                <form action="{{ route('admin.machinery.add-machinery') }}" method="GET" class="row mb-4">
+                    <div class="col-md-3 mb-2">
+                        <input type="text" name="search" class="form-control" placeholder="Search Code or Name..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <select name="category_id" class="form-control select2" data-placeholder="All Categories">
+                            <option value=""></option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <select name="condition" class="form-control select2" data-placeholder="All Conditions">
+                            <option value=""></option>
+                            <option value="running" {{ request('condition') == 'running' ? 'selected' : '' }}>Running</option>
+                            <option value="repair" {{ request('condition') == 'repair' ? 'selected' : '' }}>Repairing</option>
+                            <option value="damage" {{ request('condition') == 'damage' ? 'selected' : '' }}>Damaged</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                    </div>
+                    <div class="col-md-3 mb-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a href="{{ route('admin.machinery.add-machinery') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
+                                <th style="width: 40px;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check-all">
+                                    </div>
+                                </th>
+                                <th>SL.</th>
                                 <th>Image</th>
                                 <th>Code</th>
                                 <th>Name</th>
@@ -95,8 +141,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($machineries as $machine)
+                            @php 
+                                $startSl = ($machineries->currentPage() - 1) * $machineries->perPage() + 1;
+                            @endphp
+                            @forelse($machineries as $index => $machine)
                             <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input check-item" type="checkbox" value="{{ $machine->id }}">
+                                    </div>
+                                </td>
+                                <td>{{ $startSl + $index }}</td>
                                 <td>
                                     @if($machine->image)
                                     <img src="{{ asset('storage/' . $machine->image) }}" alt="machine" class="rounded" width="50" height="50" style="object-fit: cover;">
@@ -143,7 +198,7 @@
                                                     <div class="modal-body row">
                                                         <div class="col-md-6 form-group mb-3">
                                                             <label class="form-label">Category</label>
-                                                            <select name="machine_category_id" class="form-control" required>
+                                                            <select name="machine_category_id" class="form-control select2-modal" data-placeholder="Search Category" required>
                                                                 @foreach($categories as $category)
                                                                 <option value="{{ $category->id }}" {{ $machine->machine_category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                                                 @endforeach
@@ -158,14 +213,18 @@
                                                             <input type="text" name="machine_code" class="form-control" value="{{ $machine->machine_code }}" required>
                                                         </div>
                                                         <div class="col-md-6 form-group mb-3">
+                                                            <label class="form-label">Entry Date <span class="text-danger">*</span></label>
+                                                            <input type="date" name="entry_date" class="form-control" value="{{ $machine->entry_date }}" required>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-3">
                                                             <label class="form-label">Condition</label>
-                                                            <select name="condition" class="form-control" required>
+                                                            <select name="condition" class="form-control select2-modal" data-placeholder="Select Condition" required>
                                                                 <option value="running" {{ $machine->condition == 'running' ? 'selected' : '' }}>Running</option>
                                                                 <option value="repair" {{ $machine->condition == 'repair' ? 'selected' : '' }}>Repairing</option>
                                                                 <option value="damage" {{ $machine->condition == 'damage' ? 'selected' : '' }}>Damaged</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-12 form-group mb-3">
+                                                        <div class="col-md-6 form-group mb-3">
                                                             <label class="form-label">Update Image</label>
                                                             <input type="file" name="image" class="form-control" accept="image/*">
                                                         </div>
@@ -182,12 +241,26 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted">No machinery assets registered.</td>
+                                <td colspan="9" class="text-center text-muted py-5">No machinery assets found.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Custom Pagination -->
+                @if($machineries->hasPages())
+                <div class="custom-pagination">
+                    <a href="{{ $machineries->previousPageUrl() }}" class="btn-nav {{ $machineries->onFirstPage() ? 'disabled' : '' }}">Prev</a>
+                    
+                    <div class="page-input-group">
+                        <input type="number" value="{{ $machineries->currentPage() }}" min="1" max="{{ $machineries->lastPage() }}" id="goto-page">
+                        <span>/ {{ $machineries->lastPage() }}</span>
+                    </div>
+
+                    <a href="{{ $machineries->nextPageUrl() }}" class="btn-nav {{ $machineries->hasMorePages() ? '' : 'disabled' }}">Next</a>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -205,14 +278,15 @@
                     <i class="ti ti-alert-triangle text-danger" style="font-size: 3.5rem;"></i>
                 </div>
                 <h4 class="mb-2">Are you sure?</h4>
-                <p class="text-muted">Deleting this asset will remove it from all site transfer histories!</p>
+                <p class="text-muted" id="delete-modal-msg">Deleting this asset will remove it permanently!</p>
             </div>
             <div class="modal-footer border-0 pt-0 justify-content-center">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                 <form id="deleteForm" method="POST">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger fw-bold">Delete Asset</button>
+                    <input type="hidden" name="ids[]" id="bulk-ids">
+                    <div id="method-container"></div>
+                    <button type="submit" class="btn btn-danger fw-bold" id="confirm-delete-btn">Delete</button>
                 </form>
             </div>
         </div>
@@ -224,12 +298,87 @@
     document.addEventListener('DOMContentLoaded', () => {
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
         const deleteForm = document.getElementById('deleteForm');
+        const methodContainer = document.getElementById('method-container');
+        const deleteMsg = document.getElementById('delete-modal-msg');
+        const bulkIdsInput = document.getElementById('bulk-ids');
 
+        // Single Delete
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
                 deleteForm.setAttribute('action', url);
+                methodContainer.innerHTML = '<input type="hidden" name="_method" value="DELETE">';
+                deleteMsg.innerText = "Deleting this asset will remove it permanently!";
+                bulkIdsInput.value = "";
                 deleteModal.show();
+            });
+        });
+
+        // Bulk Selection Logic
+        const checkAll = document.getElementById('check-all');
+        const checkItems = document.querySelectorAll('.check-item');
+        const bulkDeleteBtn = document.getElementById('btn-bulk-delete');
+        const selectedCount = document.getElementById('selected-count');
+
+        const updateBulkUI = () => {
+            const checkedCount = document.querySelectorAll('.check-item:checked').length;
+            selectedCount.innerText = checkedCount;
+            if (checkedCount > 0) {
+                bulkDeleteBtn.classList.remove('d-none');
+            } else {
+                bulkDeleteBtn.classList.add('d-none');
+            }
+        };
+
+        checkAll.addEventListener('change', function() {
+            checkItems.forEach(item => item.checked = this.checked);
+            updateBulkUI();
+        });
+
+        checkItems.forEach(item => {
+            item.addEventListener('change', updateBulkUI);
+        });
+
+        // Bulk Delete Action
+        bulkDeleteBtn.addEventListener('click', () => {
+            const selectedIds = Array.from(document.querySelectorAll('.check-item:checked')).map(cb => cb.value);
+            deleteForm.setAttribute('action', "{{ route('admin.machinery.machinery.bulk-delete') }}");
+            methodContainer.innerHTML = ""; // No method override needed for POST bulk-delete
+            deleteMsg.innerText = `Are you sure you want to delete ${selectedIds.length} selected assets?`;
+            
+            // Clear existing hidden inputs and add selected IDs
+            deleteForm.querySelectorAll('input[name="ids[]"]').forEach(el => el.remove());
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = id;
+                deleteForm.appendChild(input);
+            });
+
+            deleteModal.show();
+        });
+
+        // Pagination Goto Logic
+        const gotoInput = document.getElementById('goto-page');
+        if (gotoInput) {
+            gotoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const page = gotoInput.value;
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('page', page);
+                    window.location.href = url.href;
+                }
+            });
+        }
+
+        // Initialize Select2 for modals
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).find('.select2-modal').each(function() {
+                $(this).select2({
+                    dropdownParent: $(this).closest('.modal-content'),
+                    width: '100%'
+                });
             });
         });
     });

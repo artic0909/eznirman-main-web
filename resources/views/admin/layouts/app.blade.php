@@ -22,6 +22,10 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
   <link rel="stylesheet" href="{{ asset('assets/css/style-preset.css') }}">
+  
+  <!-- Select2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  
   <style>
     #alert-container {
     position: fixed;
@@ -74,6 +78,63 @@
     }
 }
 
+/* Select2 Custom Styling to match theme */
+.select2-container--default .select2-selection--single {
+    height: 40px !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 6px !important;
+    padding-top: 5px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #495057 !important;
+    line-height: 28px !important;
+}
+
+/* Custom Pagination Styling */
+.custom-pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.custom-pagination .page-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f8f9fa;
+    padding: 5px 15px;
+    border-radius: 30px;
+    border: 1px solid #dee2e6;
+}
+.custom-pagination input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+.custom-pagination .btn-nav {
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+.custom-pagination .btn-nav:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+.custom-pagination .btn-nav:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
   </style>
   @stack('styles')
 </head>
@@ -251,6 +312,22 @@
   <script src="{{ asset('assets/js/fonts/custom-font.js') }}"></script>
   <script src="{{ asset('assets/js/pcoded.js') }}"></script>
   <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
+
+  <!-- jQuery & Select2 JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('.select2').each(function() {
+            $(this).select2({
+                width: '100%',
+                placeholder: $(this).data('placeholder'),
+                allowClear: true
+            });
+        });
+    });
+  </script>
 
   <script>
     layout_change('light');
