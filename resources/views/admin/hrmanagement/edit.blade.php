@@ -33,6 +33,10 @@
                     <div class="row g-3">
                         <!-- Basic Info -->
                         <div class="col-md-4">
+                            <label class="form-label">Code <span class="text-danger">*</span></label>
+                            <input type="text" name="code" class="form-control" value="{{ old('code', $user->code) }}" required>
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
                         </div>
@@ -93,7 +97,7 @@
                             <select name="working_site_id" class="form-select select2">
                                 <option value="">Select Site</option>
                                 @foreach($sites as $site)
-                                <option value="{{ $site->id }}" {{ old('working_site_id', $user->working_site_id) == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                                <option value="{{ $site->id }}" {{ old('working_site_id', $user->working_site_id) == $site->id ? 'selected' : '' }}>{{ $site->site_code }}-{{ $site->site_name }}</option>
                                 @endforeach
                             </select>
                         </div>

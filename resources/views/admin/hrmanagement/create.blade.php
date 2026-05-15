@@ -33,6 +33,10 @@
                     <div class="row g-3">
                         <!-- Basic Info -->
                         <div class="col-md-4">
+                            <label class="form-label">Code <span class="text-danger">*</span></label>
+                            <input type="text" name="code" class="form-control" value="{{ old('code') }}" placeholder="e.g. WO0001" required>
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Full Name" required>
                         </div>

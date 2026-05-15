@@ -67,6 +67,7 @@ class HRManagementController extends Controller
         $role = $request->role;
         $rules = [
             'role' => 'required|in:worker,supervisor,staff,hr',
+            'code' => 'required|string|unique:users,code',
             'name' => 'required|string|max:255',
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',
@@ -101,11 +102,7 @@ class HRManagementController extends Controller
             }
         }
         
-        // Auto-generate code
-        $lastUser = User::where('role', $request->role)->latest('id')->first();
-        $nextId = $lastUser ? ((int)preg_replace('/[^0-9]/', '', $lastUser->code)) + 1 : 1;
-        $prefix = strtoupper(substr($request->role, 0, 2));
-        $data['code'] = $prefix . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
 
         if ($request->hasFile('pancard')) {
             $data['pancard'] = $request->file('pancard')->store('hrmanagement/pancards', 'public');
@@ -145,6 +142,7 @@ class HRManagementController extends Controller
         $role = $user->role;
 
         $rules = [
+            'code' => 'required|string|unique:users,code,' . $id,
             'name' => 'required|string|max:255',
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',

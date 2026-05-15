@@ -45,6 +45,14 @@
                     <table class="table table-borderless table-sm">
                         <tbody>
                             <tr>
+                                <th width="30%">Code:</th>
+                                <td>{{ $user->code }}</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Name:</th>
+                                <td>{{ $user->name }}</td>
+                            </tr>
+                            <tr>
                                 <th width="30%">Email:</th>
                                 <td>{{ $user->email ?? 'N/A' }}</td>
                             </tr>

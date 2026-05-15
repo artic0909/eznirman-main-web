@@ -106,9 +106,9 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Joining Date</th>
+                                <th>Code</th>
                                 <th>{{ ucfirst($role) }} Name</th>
                                 <th>Mobile</th>
-                                <th>Code</th>
                                 @if($role == 'worker')
                                 <th>Skill</th>
                                 @else
@@ -123,6 +123,7 @@
                             <tr>
                                 <td>{{ ($users->currentPage()-1) * $users->perPage() + $index + 1 }}</td>
                                 <td>{{ \Carbon\Carbon::parse($user->joining_date)->format('M d, Y') }}</td>
+                                <td><span class="fw-bold">{{ $user->code }}</span></td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img src="{{ $user->profile_image ? asset('storage/'.$user->profile_image) : asset('assets/images/logo.gif') }}" class="rounded-circle me-2" width="30" height="30">
@@ -130,7 +131,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $user->mobile }}</td>
-                                <td><span class="badge bg-light-primary text-primary">{{ $user->code }}</span></td>
+                                
                                 @if($role == 'worker')
                                 <td>{{ $user->skill->name ?? 'N/A' }}</td>
                                 @else
