@@ -195,7 +195,7 @@
             <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button"
               aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
               <img src="{{ asset('../../assets/images/logo.gif') }}" alt="user-image" class="user-avtar">
-              <span>{{ Auth::guard('account')->user()->name ?? 'Accountant Panel' }}</span>
+              <span>Accountant Panel</span>
             </a>
             <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
               <div class="dropdown-header">
@@ -204,8 +204,8 @@
                     <img src="{{ asset('../../assets/images/logo.gif') }}" alt="user-image" class="user-avtar wid-35">
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <h6 class="mb-1">{{ Auth::guard('account')->user()->name ?? 'Accountant Panel' }}</h6>
-                    <span>Accountant</span>
+                    <h6 class="mb-1">EZ Nirman</h6>
+                    <span>Finance & Accounts</span>
                   </div>
                   <a href="{{ route('account.logout') }}" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
                 </div>
