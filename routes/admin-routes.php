@@ -50,6 +50,14 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         // Damaged Machinery
         Route::get('/damaged', [MachineryController::class, 'damagedMachineryView'])->name('damaged');
         Route::get('/damaged/{id}', [MachineryController::class, 'damagedMachineryShow'])->name('damaged.show');
+
+        // Running Machinery
+        Route::get('/running', [MachineryController::class, 'runningMachineryView'])->name('running');
+        Route::get('/running/{id}', [MachineryController::class, 'runningMachineryShow'])->name('running.show');
+
+        // Repair Machinery
+        Route::get('/repair', [MachineryController::class, 'repairMachineryView'])->name('repair');
+        Route::get('/repair/{id}', [MachineryController::class, 'repairMachineryShow'])->name('repair.show');
     });
 
     // Purchase Register (Materials)

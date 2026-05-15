@@ -324,4 +324,62 @@ class MachineryController extends Controller
         $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
         return view('admin.machinery.damaged.show', compact('machinery'));
     }
+
+    // --- Running Machinery ---
+    public function runningMachineryView(Request $request)
+    {
+        $categories = MachineCategory::where('status', true)->get();
+        $query = Machinary::with('category')->where('condition', 'running');
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+            });
+        }
+        if ($request->category_id) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+        if ($request->date) {
+            $query->whereDate('entry_date', $request->date);
+        }
+
+        $machineries = $query->latest()->paginate(10)->withQueryString();
+        return view('admin.machinery.running.index', compact('categories', 'machineries'));
+    }
+
+    public function runningMachineryShow($id)
+    {
+        $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
+        return view('admin.machinery.running.show', compact('machinery'));
+    }
+
+    // --- Repair Machinery ---
+    public function repairMachineryView(Request $request)
+    {
+        $categories = MachineCategory::where('status', true)->get();
+        $query = Machinary::with('category')->where('condition', 'repair');
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+            });
+        }
+        if ($request->category_id) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+        if ($request->date) {
+            $query->whereDate('entry_date', $request->date);
+        }
+
+        $machineries = $query->latest()->paginate(10)->withQueryString();
+        return view('admin.machinery.repair.index', compact('categories', 'machineries'));
+    }
+
+    public function repairMachineryShow($id)
+    {
+        $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
+        return view('admin.machinery.repair.show', compact('machinery'));
+    }
 }
