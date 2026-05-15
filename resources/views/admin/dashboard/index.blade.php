@@ -16,8 +16,9 @@
                         <h5 class="m-b-10">Dashboard</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="../../dashboard/index.html">Dasboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Analytics</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item">Admin</li>
+                        <li class="breadcrumb-item" aria-current="page">Dashboard</li>
                     </ul>
                 </div>
             </div>
@@ -25,288 +26,317 @@
     </div>
     <!-- [ breadcrumb ] end -->
     <!-- [ Main Content ] start -->
-    <div class="row">
-        <!-- [ sample-page ] start -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">Total Page Views</h6>
-                    <h4 class="mb-3">4,42,236 <span class="badge bg-light-primary border border-primary"><i
-                                class="ti ti-trending-up"></i> 59.3%</span></h4>
-                    <p class="mb-0 text-muted text-sm">You made an extra <span class="text-primary">35,000</span> this year
-                    </p>
-                </div>
+    <div class="row g-4">
+        <!-- HR Summary -->
+        <div class="col-12 mt-4">
+            <div class="d-flex align-items-center mb-1">
+                <div class="bg-primary rounded-circle p-2 me-2" style="width: 10px; height: 10px;"></div>
+                <h5 class="mb-0 fw-bold text-dark">Human Resource Overview</h5>
             </div>
         </div>
+        
         <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">Total Users</h6>
-                    <h4 class="mb-3">78,250 <span class="badge bg-light-success border border-success"><i
-                                class="ti ti-trending-up"></i> 70.5%</span></h4>
-                    <p class="mb-0 text-muted text-sm">You made an extra <span class="text-success">8,900</span> this year
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">Total Order</h6>
-                    <h4 class="mb-3">18,800 <span class="badge bg-light-warning border border-warning"><i
-                                class="ti ti-trending-down"></i> 27.4%</span></h4>
-                    <p class="mb-0 text-muted text-sm">You made an extra <span class="text-warning">1,943</span> this year
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">Total Sales</h6>
-                    <h4 class="mb-3">$35,078 <span class="badge bg-light-danger border border-danger"><i
-                                class="ti ti-trending-down"></i> 27.4%</span></h4>
-                    <p class="mb-0 text-muted text-sm">You made an extra <span class="text-danger">$20,395</span> this year
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 col-xl-8">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <h5 class="mb-0">Unique Visitor</h5>
-                <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="chart-tab-home-tab" data-bs-toggle="pill"
-                            data-bs-target="#chart-tab-home" type="button" role="tab" aria-controls="chart-tab-home"
-                            aria-selected="true">Month</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="chart-tab-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#chart-tab-profile" type="button" role="tab" aria-controls="chart-tab-profile"
-                            aria-selected="false">Week</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="tab-content" id="chart-tab-tabContent">
-                        <div class="tab-pane" id="chart-tab-home" role="tabpanel" aria-labelledby="chart-tab-home-tab"
-                            tabindex="0">
-                            <div id="visitor-chart-1"></div>
+            <div class="card bg-primary shadow-sm border-0 h-100" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-white opacity-75 mb-1 fw-medium">Total Personnel</p>
+                            <h2 class="text-white mb-0 fw-bold">{{ $hrCounts['total'] }}</h2>
                         </div>
-                        <div class="tab-pane show active" id="chart-tab-profile" role="tabpanel"
-                            aria-labelledby="chart-tab-profile-tab" tabindex="0">
-                            <div id="visitor-chart"></div>
+                        <div class="avtar avtar-l bg-white rounded-3 shadow-sm">
+                            <i class="ti ti-users text-primary f-24"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-xl-4">
-            <h5 class="mb-3">Income Overview</h5>
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">This Week Statistics</h6>
-                    <h3 class="mb-3">$7,650</h3>
-                    <div id="income-overview-chart"></div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-m bg-primary text-white rounded-3 flex-shrink-0">
+                            <i class="ti ti-user f-20"></i>
+                        </div>
+                        <div class="ms-3">
+                            <p class="text-muted mb-0 small text-uppercase fw-bold ls-1">Workers</p>
+                            <h4 class="mb-0 fw-bold">{{ $hrCounts['worker'] }}</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-12 col-xl-8">
-            <h5 class="mb-3">Recent Orders</h5>
-            <div class="card tbl-card">
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-m bg-info text-white rounded-3 flex-shrink-0">
+                            <i class="ti ti-user f-20"></i>
+                        </div>
+                        <div class="ms-3">
+                            <p class="text-muted mb-0 small text-uppercase fw-bold ls-1">Supervisors</p>
+                            <h4 class="mb-0 fw-bold">{{ $hrCounts['supervisor'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-m bg-success text-white rounded-3 flex-shrink-0">
+                            <i class="ti ti-briefcase f-20"></i>
+                        </div>
+                        <div class="ms-3">
+                            <p class="text-muted mb-0 small text-uppercase fw-bold ls-1">Staff / HR</p>
+                            <h4 class="mb-0 fw-bold">{{ $hrCounts['staff'] + $hrCounts['hr'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Machinery Summary -->
+        <div class="col-12 mt-5">
+            <div class="d-flex align-items-center mb-1">
+                <div class="bg-warning rounded-circle p-2 me-2" style="width: 10px; height: 10px;"></div>
+                <h5 class="mb-0 fw-bold text-dark">Machinery & Fleet Status</h5>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100 bg-light-primary bg-opacity-10 border-start border-4 border-primary">
+                        <div class="card-body py-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Total Fleet</h6>
+                                <h2 class="fw-bold mb-0 text-primary">{{ $machineryCounts['total'] }}</h2>
+                                <div class="mt-1 small text-muted">Registered Assets</div>
+                            </div>
+                            <div class="avtar avtar-l bg-primary text-white rounded-circle">
+                                <i class="ti ti-tools f-24"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100 border-start border-4 border-success">
+                        <div class="card-body py-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Running</h6>
+                                <h2 class="fw-bold mb-0 text-success">{{ $machineryCounts['running'] }}</h2>
+                                <div class="mt-1 small text-muted">Operational on sites</div>
+                            </div>
+                            <div class="avtar avtar-l bg-light-success text-success rounded-circle">
+                                <i class="ti ti-circle-check f-24"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100 border-start border-4 border-warning">
+                        <div class="card-body py-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Under Repair</h6>
+                                <h2 class="fw-bold mb-0 text-warning">{{ $machineryCounts['repair'] }}</h2>
+                                <div class="mt-1 small text-muted">Maintenance active</div>
+                            </div>
+                            <div class="avtar avtar-l bg-light-warning text-warning rounded-circle">
+                                <i class="ti ti-settings-automation f-24"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100 border-start border-4 border-danger">
+                        <div class="card-body py-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Damaged</h6>
+                                <h2 class="fw-bold mb-0 text-danger">{{ $machineryCounts['damage'] }}</h2>
+                                <div class="mt-1 small text-muted">Needs Attention</div>
+                            </div>
+                            <div class="avtar avtar-l bg-light-danger text-danger rounded-circle">
+                                <i class="ti ti-alert-triangle f-24"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-transparent border-0 pb-0">
+                    <h6 class="mb-0 fw-bold">Condition Distribution</h6>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div id="machinery-pie-chart" style="min-height: 250px; width: 100%;"></div>
+                    <div class="row g-2 w-100 mt-3 text-center">
+                        <div class="col-4">
+                            <h6 class="mb-0 fw-bold text-success">{{ round(($machineryCounts['running'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
+                            <small class="text-muted">Running</small>
+                        </div>
+                        <div class="col-4 border-start border-end">
+                            <h6 class="mb-0 fw-bold text-warning">{{ round(($machineryCounts['repair'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
+                            <small class="text-muted">Repair</small>
+                        </div>
+                        <div class="col-4">
+                            <h6 class="mb-0 fw-bold text-danger">{{ round(($machineryCounts['damage'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
+                            <small class="text-muted">Damage</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operations Summary -->
+        <div class="col-12 mt-5">
+            <div class="d-flex align-items-center mb-1">
+                <div class="bg-info rounded-circle p-2 me-2" style="width: 10px; height: 10px;"></div>
+                <h5 class="mb-0 fw-bold text-dark">Operational Overview</h5>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-xl bg-light-primary text-primary rounded-circle">
+                            <i class="ti ti-building-skyscraper f-30"></i>
+                        </div>
+                        <div class="ms-4">
+                            <h3 class="mb-0 fw-bold">{{ $siteCount }}</h3>
+                            <p class="text-muted mb-0">Active Working Sites</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-xl bg-light-success text-success rounded-circle">
+                            <i class="ti ti-shopping-cart f-30"></i>
+                        </div>
+                        <div class="ms-4">
+                            <h3 class="mb-0 fw-bold">{{ $materialCounts['purchases'] }}</h3>
+                            <p class="text-muted mb-0">Material Purchases</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-xl-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-xl bg-light-warning text-warning rounded-circle">
+                            <i class="ti ti-package f-30"></i>
+                        </div>
+                        <div class="ms-4">
+                            <h3 class="mb-0 fw-bold">{{ $materialCounts['consumes'] }}</h3>
+                            <p class="text-muted mb-0">Stock Consumptions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities Sections -->
+        <div class="col-lg-7 mt-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="mb-0 fw-bold text-dark"><i class="ti ti-replace me-2"></i>Recent Machinery Transfers</h5>
+                <a href="{{ route('admin.machinery.transfer-machinery') }}" class="btn btn-sm btn-light-primary">View All</a>
+            </div>
+            <div class="card shadow-sm border-0 tbl-card">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover table-borderless mb-0">
-                            <thead>
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
                                 <tr>
-                                    <th>TRACKING NO.</th>
-                                    <th>PRODUCT NAME</th>
-                                    <th>TOTAL ORDER</th>
-                                    <th>STATUS</th>
-                                    <th class="text-end">TOTAL AMOUNT</th>
+                                    <th class="ps-4">Asset Info</th>
+                                    <th>To Site</th>
+                                    <th>Date</th>
+                                    <th class="pe-4 text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse($recentTransfers as $transfer)
                                 <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Camera Lens</td>
-                                    <td>40</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avtar avtar-s bg-light-primary text-primary me-2">
+                                                <i class="ti ti-tools"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">{{ $transfer->machinery->name }}</h6>
+                                                <small class="text-muted">{{ $transfer->machinery->machine_code }}</small>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="text-end">$40,570</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Laptop</td>
-                                    <td>300</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
+                                    <td>
+                                        <span class="fw-bold text-dark">{{ $transfer->toSite->site_name }}</span>
+                                        <br><small class="text-muted">{{ $transfer->toSite->site_code }}</small>
                                     </td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Mobile</td>
-                                    <td>355</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span></td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Camera Lens</td>
-                                    <td>40</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
+                                    <td>{{ \Carbon\Carbon::parse($transfer->transfer_date)->format('d M, Y') }}</td>
+                                    <td class="pe-4 text-center">
+                                        <span class="badge bg-light-success text-success px-3">Completed</span>
                                     </td>
-                                    <td class="text-end">$40,570</td>
                                 </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Laptop</td>
-                                    <td>300</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
-                                    </td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Mobile</td>
-                                    <td>355</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span></td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Camera Lens</td>
-                                    <td>40</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
-                                    </td>
-                                    <td class="text-end">$40,570</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Laptop</td>
-                                    <td>300</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
-                                    </td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Mobile</td>
-                                    <td>355</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span></td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" class="text-muted">84564564</a></td>
-                                    <td>Mobile</td>
-                                    <td>355</td>
-                                    <td><span class="d-flex align-items-center gap-2"><i
-                                                class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span></td>
-                                    <td class="text-end">$180,139</td>
-                                </tr>
+                                @empty
+                                <tr><td colspan="4" class="text-center py-5 text-muted">No recent transfers recorded.</td></tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-xl-4">
-            <h5 class="mb-3">Analytics Report</h5>
-            <div class="card">
-                <div class="list-group list-group-flush">
-                    <a href="#"
-                        class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Company
-                        Finance Growth<span class="h5 mb-0">+45.14%</span></a>
-                    <a href="#"
-                        class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Company
-                        Expenses Ratio<span class="h5 mb-0">0.58%</span></a>
-                    <a href="#"
-                        class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Business
-                        Risk Cases<span class="h5 mb-0">Low</span></a>
-                </div>
-                <div class="card-body px-2">
-                    <div id="analytics-report-chart"></div>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-12 col-xl-8">
-            <h5 class="mb-3">Sales Report</h5>
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="mb-2 f-w-400 text-muted">This Week Statistics</h6>
-                    <h3 class="mb-0">$7,650</h3>
-                    <div id="sales-report-chart"></div>
-                </div>
+        <div class="col-lg-5 mt-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="mb-0 fw-bold text-dark"><i class="ti ti-users me-2"></i>New Personnel</h5>
+                <a href="{{ route('admin.hrmanagement.index') }}" class="btn btn-sm btn-light-primary">Manage</a>
             </div>
-        </div>
-        <div class="col-md-12 col-xl-4">
-            <h5 class="mb-3">Transaction History</h5>
-            <div class="card">
-                <div class="list-group list-group-flush">
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <div class="avtar avtar-s rounded-circle text-success bg-light-success">
-                                    <i class="ti ti-gift f-18"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">Order #002434</h6>
-                                <p class="mb-0 text-muted">Today, 2:00 AM</P>
-                            </div>
-                            <div class="flex-shrink-0 text-end">
-                                <h6 class="mb-1">+ $1,430</h6>
-                                <p class="mb-0 text-muted">78%</P>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <div class="avtar avtar-s rounded-circle text-primary bg-light-primary">
-                                    <i class="ti ti-message-circle f-18"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">Order #984947</h6>
-                                <p class="mb-0 text-muted">5 August, 1:45 PM</P>
-                            </div>
-                            <div class="flex-shrink-0 text-end">
-                                <h6 class="mb-1">- $302</h6>
-                                <p class="mb-0 text-muted">8%</P>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <div class="avtar avtar-s rounded-circle text-danger bg-light-danger">
-                                    <i class="ti ti-settings f-18"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">Order #988784</h6>
-                                <p class="mb-0 text-muted">7 hours ago</P>
-                            </div>
-                            <div class="flex-shrink-0 text-end">
-                                <h6 class="mb-1">- $682</h6>
-                                <p class="mb-0 text-muted">16%</P>
-                            </div>
-                        </div>
-                    </a>
+            <div class="card shadow-sm border-0 tbl-card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Name</th>
+                                    <th>Role</th>
+                                    <th class="pe-4">Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentUsers as $user)
+                                <tr>
+                                    <td class="ps-4">
+                                        <h6 class="mb-0 fw-bold">{{ $user->name }}</h6>
+                                        <small class="text-muted">{{ $user->code }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light-secondary text-dark text-uppercase small">{{ $user->role }}</span>
+                                    </td>
+                                    <td class="pe-4">{{ $user->created_at->format('d M, Y') }}</td>
+                                </tr>
+                                @empty
+                                <tr><td colspan="3" class="text-center py-5 text-muted">No recent personnel.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -315,5 +345,47 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Machinery Pie Chart
+            var options = {
+                chart: {
+                    height: 280,
+                    type: 'donut',
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [
+                    {{ $machineryCounts['running'] }}, 
+                    {{ $machineryCounts['repair'] }}, 
+                    {{ $machineryCounts['damage'] }}
+                ],
+                labels: ['Running', 'Repairing', 'Damaged'],
+                colors: ['#2ca87f', '#e58a00', '#dc2626'],
+                legend: {
+                    show: false,
+                    position: 'bottom'
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true
+                                },
+                                value: {
+                                    show: true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var chart = new ApexCharts(document.querySelector("#machinery-pie-chart"), options);
+            chart.render();
+        });
+    </script>
 @endpush
