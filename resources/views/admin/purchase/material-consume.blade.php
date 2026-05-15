@@ -38,8 +38,7 @@
                             <option value="{{ $purchase->id }}" 
                                     data-qty="{{ $purchase->quantity }}" 
                                     data-unit="{{ $purchase->unit->name }}"
-                                    data-site-id="{{ $purchase->working_site_id }}">
-                                Inv: {{ $purchase->invoice_no }} | Material: {{ $purchase->materialCode->material_name }} | Product: {{ $purchase->product_name }}
+                                    data-site-id="{{ $purchase->working_site_id }}">Code: {{ $purchase->materialCode->code }} | Product: {{ $purchase->product_name }}
                             </option>
                             @endforeach
                         </select>

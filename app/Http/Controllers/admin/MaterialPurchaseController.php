@@ -60,11 +60,6 @@ class MaterialPurchaseController extends Controller
 
         $data = $request->all();
 
-        // Generate Unique Material ID (MTRC-0001 format)
-        $lastPurchase = MaterialPurchase::orderBy('id', 'desc')->first();
-        $nextId = $lastPurchase ? $lastPurchase->id + 1 : 1;
-        $data['material_unique_id'] = 'MTRC-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
-
         if ($request->hasFile('invoice_file')) {
             $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
         }

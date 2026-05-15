@@ -23,6 +23,15 @@ class MaterialPurchase extends Model
         'note'
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($purchase) {
+            $lastPurchase = MaterialPurchase::latest('id')->first();
+            $nextId = $lastPurchase ? $lastPurchase->id + 1 : 1;
+            $purchase->material_unique_id = 'PRCH-' . str_pad($nextId, 2, '0', STR_PAD_LEFT);
+        });
+    }
+
     public function site()
     {
         return $this->belongsTo(WorkingSite::class, 'working_site_id');
