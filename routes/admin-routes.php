@@ -46,6 +46,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('/working-sites', [MachineryController::class, 'workingSiteStore'])->name('working-sites.store');
         Route::put('/working-sites/{id}', [MachineryController::class, 'workingSiteUpdate'])->name('working-sites.update');
         Route::delete('/working-sites/{id}', [MachineryController::class, 'workingSiteDelete'])->name('working-sites.delete');
+
+        // Damaged Machinery
+        Route::get('/damaged', [MachineryController::class, 'damagedMachineryView'])->name('damaged');
+        Route::get('/damaged/{id}', [MachineryController::class, 'damagedMachineryShow'])->name('damaged.show');
     });
 
     // Purchase Register (Materials)

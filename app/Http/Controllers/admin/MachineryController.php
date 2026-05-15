@@ -288,4 +288,40 @@ class MachineryController extends Controller
 
         return redirect()->back()->with('success', 'Working Site deleted successfully.');
     }
+
+    // --- Damaged Machinery ---
+    public function damagedMachineryView(Request $request)
+    {
+        $categories = MachineCategory::where('status', true)->get();
+        
+        $query = Machinary::with('category')->where('condition', 'damage');
+
+        // Search Filter
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Category Filter
+        if ($request->category_id) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+
+        // Date Filter
+        if ($request->date) {
+            $query->whereDate('entry_date', $request->date);
+        }
+
+        $machineries = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.machinery.damaged.index', compact('categories', 'machineries'));
+    }
+
+    public function damagedMachineryShow($id)
+    {
+        $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
+        return view('admin.machinery.damaged.show', compact('machinery'));
+    }
 }

@@ -40,6 +40,12 @@
               <span class="pc-mtext">Transferred Machinery</span>
             </a>
           </li>
+          <li class="pc-item {{ Route::is('admin.machinery.damaged*') ? 'active' : '' }}">
+            <a href="{{ route('admin.machinery.damaged') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-alert-circle"></i></span>
+              <span class="pc-mtext">Damaged Machinery</span>
+            </a>
+          </li>
 
 
           <!-- Working Sites -->
