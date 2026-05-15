@@ -108,7 +108,9 @@
                     <i class="fab fa-google-play" style="margin-right: 10px;"></i> GET APP
                 </a>
                 <a href="{{ route('admin.login') }}" class="btn-secondary">ADMIN COMMAND</a>
-                <a href="#contact-section" class="btn-secondary" style="scroll-behavior: smooth;">CONTACT US</a>
+                <a href="{{ route('account.login') }}" class="btn-secondary">ACCOUNTS COMMAND</a>
+                <a href="{{ route('login') }}" class="btn-secondary">USER LOGIN</a>
+                <!-- <a href="#contact-section" class="btn-secondary" style="scroll-behavior: smooth;">CONTACT US</a> -->
             </div>
         </section>
 
