@@ -32,8 +32,10 @@ class MaterialCodeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|string|max:255|unique:material_codes,code',
             'product_category_id' => 'required|exists:product_categories,id',
+            'sub_category' => 'required|string|max:255',
+            'sub_category_two' => 'nullable|string|max:255',
+            'brand' => 'required|string|max:255',
             'material_name' => 'required|string|max:255',
         ]);
 
@@ -45,9 +47,12 @@ class MaterialCodeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'code' => 'required|string|max:255|unique:material_codes,code,' . $id,
             'product_category_id' => 'required|exists:product_categories,id',
+            'sub_category' => 'required|string|max:255',
+            'sub_category_two' => 'nullable|string|max:255',
+            'brand' => 'required|string|max:255',
             'material_name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:material_codes,code,' . $id,
         ]);
 
         $materialCode = MaterialCode::findOrFail($id);

@@ -6,7 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class MaterialCode extends Model
 {
-    protected $fillable = ['code', 'product_category_id', 'material_name'];
+    protected $fillable = [
+        'code',
+        'product_category_id',
+        'sub_category',
+        'sub_category_two',
+        'brand',
+        'material_name'
+    ];
+
+    protected static function booted()
+    {
+        static::creating(function ($materialCode) {
+            $category = ProductCategory::find($materialCode->product_category_id);
+            if ($category) {
+                $categoryName = \Illuminate\Support\Str::upper(\Illuminate\Support\Str::slug($category->name));
+                $count = MaterialCode::where('product_category_id', $materialCode->product_category_id)->count() + 1;
+                $materialCode->code = $categoryName . '-' . str_pad($count, 2, '0', STR_PAD_LEFT);
+            }
+        });
+    }
 
     public function category()
     {

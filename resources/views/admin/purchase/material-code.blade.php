@@ -40,12 +40,21 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="form-label">Material Name <span class="text-danger">*</span></label>
-                        <input type="text" name="material_name" class="form-control" placeholder="e.g. Copper Wire, PVC Pipe" required>
+                        <label class="form-label">Sub Category <span class="text-danger">*</span></label>
+                        <input type="text" name="sub_category" class="form-control" placeholder="e.g. Electrical, Plumbing" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="form-label">Item Code <span class="text-danger">*</span></label>
-                        <input type="text" name="code" class="form-control" placeholder="e.g. MAT-001" required>
+                        <label class="form-label">Sub Category Two <small>(Optional)</small></label>
+                        <input type="text" name="sub_category_two" class="form-control" placeholder="e.g. Residential, Industrial">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Brand <span class="text-danger">*</span></label>
+                        <input type="text" name="brand" class="form-control" placeholder="e.g. Samsung, RFL" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Material Name (Item) <span class="text-danger">*</span></label>
+                        <input type="text" name="material_name" class="form-control" placeholder="e.g. Copper Wire, PVC Pipe" required>
+                        <small class="text-muted"><i class="ti ti-info-circle me-1"></i> Item Code will be generated automatically.</small>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold">Save Material Code</button>
                 </form>
@@ -85,8 +94,10 @@
                             <tr>
                                 <th>SL.</th>
                                 <th>Code</th>
-                                <th>Material Name</th>
                                 <th>Category</th>
+                                <th>Sub Category</th>
+                                <th>Brand</th>
+                                <th>Material Name</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -97,9 +108,18 @@
                             @forelse($materialCodes as $index => $mCode)
                             <tr>
                                 <td>{{ $startSl + $index }}</td>
-                                <td><span class="badge bg-light-primary text-primary fw-bold">{{ $mCode->code }}</span></td>
+                                <td><span class="badge bg-light-primary text-primary fw-bold text-uppercase">{{ $mCode->code }}</span></td>
+                                <td><span class="text-dark fw-500">{{ $mCode->category->name }}</span></td>
+                                <td>
+                                    <div class="lh-1">
+                                        <div class="fw-bold text-dark small">{{ $mCode->sub_category }}</div>
+                                        @if($mCode->sub_category_two)
+                                        <div class="text-muted" style="font-size: 0.75rem;">{{ $mCode->sub_category_two }}</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>{{ $mCode->brand }}</td>
                                 <td>{{ $mCode->material_name }}</td>
-                                <td><span class="text-muted">{{ $mCode->category->name }}</span></td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $mCode->id }}">
@@ -130,13 +150,32 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Sub Category</label>
+                                                                    <input type="text" name="sub_category" class="form-control" value="{{ $mCode->sub_category }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label class="form-label">Sub Category Two</label>
+                                                                    <input type="text" name="sub_category_two" class="form-control" value="{{ $mCode->sub_category_two }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-3">
+                                                            <label class="form-label">Brand</label>
+                                                            <input type="text" name="brand" class="form-control" value="{{ $mCode->brand }}" required>
+                                                        </div>
                                                         <div class="form-group mb-3">
                                                             <label class="form-label">Material Name</label>
                                                             <input type="text" name="material_name" class="form-control" value="{{ $mCode->material_name }}" required>
                                                         </div>
                                                         <div class="form-group mb-3">
                                                             <label class="form-label">Item Code</label>
-                                                            <input type="text" name="code" class="form-control" value="{{ $mCode->code }}" required>
+                                                            <input type="text" name="code" class="form-control bg-light text-uppercase" value="{{ $mCode->code }}" required>
+                                                            <small class="text-muted">Avoid changing the code unless absolutely necessary.</small>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
