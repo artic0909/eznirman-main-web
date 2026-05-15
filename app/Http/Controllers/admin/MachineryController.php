@@ -165,7 +165,7 @@ class MachineryController extends Controller
     // --- Transfers ---
     public function transferMachineryView(Request $request)
     {
-        $machineries = Machinary::where('status', true)->get();
+        $machineries = Machinary::where('status', true)->where('condition', 'running')->get();
         $sites = WorkingSite::all();
         
         $query = Transfer::with(['machinery', 'fromSite', 'toSite']);
