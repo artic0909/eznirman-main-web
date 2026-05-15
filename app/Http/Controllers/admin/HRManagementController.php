@@ -50,6 +50,22 @@ class HRManagementController extends Controller
             });
         }
 
+        if ($request->work_skill_id) {
+            $query->where('work_skill_id', $request->work_skill_id);
+        }
+
+        if ($request->designation_id) {
+            $query->where('designation_id', $request->designation_id);
+        }
+
+        if ($request->working_site_id) {
+            $query->where('working_site_id', $request->working_site_id);
+        }
+
+        if ($request->joining_date) {
+            $query->whereDate('joining_date', $request->joining_date);
+        }
+
         $users = $query->latest()->paginate(10)->withQueryString();
         
         $viewName = 'admin.hrmanagement.' . Str::plural($role);

@@ -31,15 +31,48 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">All Workers</h5>
-                <form action="{{ route('admin.hrmanagement.workers') }}" method="GET" class="d-flex gap-2">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Search..." value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-                    <a href="{{ route('admin.hrmanagement.workers') }}" class="btn btn-secondary btn-sm">Reset</a>
-                </form>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5>All Workers</h5>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
+                <!-- Filters Section -->
+                <form action="{{ route('admin.hrmanagement.workers') }}" method="GET" class="row mb-4">
+                    <div class="col-md-3 mb-2">
+                        <input type="text" name="search" class="form-control" placeholder="Search Code, Name, Mobile..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <select name="work_skill_id" class="form-control select2" data-placeholder="All Skills">
+                            <option value=""></option>
+                            @foreach($skills as $skill)
+                            <option value="{{ $skill->id }}" {{ request('work_skill_id') == $skill->id ? 'selected' : '' }}>{{ $skill->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <select name="designation_id" class="form-control select2" data-placeholder="All Designations">
+                            <option value=""></option>
+                            @foreach($designations as $desig)
+                            <option value="{{ $desig->id }}" {{ request('designation_id') == $desig->id ? 'selected' : '' }}>{{ $desig->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <select name="working_site_id" class="form-control select2" data-placeholder="All Sites">
+                            <option value=""></option>
+                            @foreach($sites as $site)
+                            <option value="{{ $site->id }}" {{ request('working_site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a href="{{ route('admin.hrmanagement.workers') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                    </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table table-hover table-striped align-middle">
                         <thead class="table-light">
@@ -75,26 +108,25 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-sm btn-light-info border" title="View" data-bs-toggle="modal" data-bs-target="#viewUserModal{{ $user->id }}">
+                                        <button class="btn btn-sm btn-icon btn-light-info" title="View" data-bs-toggle="modal" data-bs-target="#viewUserModal{{ $user->id }}">
                                             <i class="ti ti-eye"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-light-warning border" title="Edit" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
-                                            <i class="ti ti-pencil"></i>
+                                        <button class="btn btn-sm btn-icon btn-light-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                                            <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-light-danger border" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $user->id }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" title="Delete" data-url="{{ route('admin.hrmanagement.users.destroy', $user->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- View Modal -->
                             <div class="modal fade" id="viewUserModal{{ $user->id }}" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Worker Details - {{ $user->code }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        <div class="modal-header bg-info">
+                                            <h5 class="modal-title text-white">Worker Details - {{ $user->code }}</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row g-3">
@@ -139,17 +171,17 @@
                                 </div>
                             </div>
 
-                            <!-- Edit Modal -->
                             <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1">
-                                <div class="modal-dialog modal-xl">
-                                    <form action="{{ route('admin.hrmanagement.users.update', $user->id) }}" method="POST" enctype="multipart/form-data" class="modal-content">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Edit Worker</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <div class="modal-dialog modal-xl modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning">
+                                            <h5 class="modal-title text-white">Edit Worker</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <div class="modal-body row g-3">
+                                        <form action="{{ route('admin.hrmanagement.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body row g-3">
                                             <div class="col-md-4">
                                                 <label class="form-label">Name <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
@@ -241,26 +273,7 @@
                                 </div>
                             </div>
 
-                            <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteUserModal{{ $user->id }}" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <form action="{{ route('admin.hrmanagement.users.destroy', $user->id) }}" method="POST" class="modal-content">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Delete Worker</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Are you sure you want to delete worker <b>{{ $user->name }}</b>?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                             @endforeach
                         </tbody>
                     </table>
@@ -283,9 +296,51 @@
     </div>
 </div>
 
+<!-- Global Delete Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pt-0">
+                <div class="mb-3">
+                    <i class="ti ti-alert-triangle text-danger" style="font-size: 3.5rem;"></i>
+                </div>
+                <h4 class="mb-2">Are you sure?</h4>
+                <p class="text-muted" id="delete-modal-msg">Deleting this worker will remove them permanently!</p>
+            </div>
+            <div class="modal-footer border-0 pt-0 justify-content-center">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    <div id="method-container"></div>
+                    <button type="submit" class="btn btn-danger fw-bold" id="confirm-delete-btn">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        const deleteForm = document.getElementById('deleteForm');
+        const methodContainer = document.getElementById('method-container');
+        const deleteMsg = document.getElementById('delete-modal-msg');
+
+        // Single Delete
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                deleteForm.setAttribute('action', url);
+                methodContainer.innerHTML = '<input type="hidden" name="_method" value="DELETE">';
+                deleteMsg.innerText = "Deleting this worker will remove them permanently!";
+                deleteModal.show();
+            });
+        });
+
         // Pagination Goto Logic
         const gotoInput = document.getElementById('goto-page');
         if (gotoInput) {
@@ -302,17 +357,17 @@
 </script>
 @endpush
 
-<!-- Add Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <form action="{{ route('admin.hrmanagement.users.store') }}" method="POST" enctype="multipart/form-data" class="modal-content">
-            @csrf
-            <input type="hidden" name="role" value="worker">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Worker</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title text-white">Add New Worker</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body row g-3">
+            <form action="{{ route('admin.hrmanagement.users.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="role" value="worker">
+                <div class="modal-body row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Name <span class="text-danger">*</span></label>
                     <input type="text" name="name" class="form-control" placeholder="Full Name" required>

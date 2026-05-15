@@ -31,41 +31,29 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">All Skills</h5>
-                <div class="d-flex gap-3">
-                    <form action="{{ route('admin.hrmanagement.skills.bulk-action') }}" method="POST" id="bulkActionForm">
-                        @csrf
-                        <input type="hidden" name="action" id="bulkActionValue">
-                        <div class="dropdown">
-                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                id="bulkActionDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-                                disabled>
-                                <i class="ti ti-settings me-1"></i>
-                                Bulk Actions
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="bulkActionDropdown">
-                                <li>
-                                    <a class="dropdown-item text-danger" href="#" onclick="performBulkAction('delete')">
-                                        <i class="ti ti-trash me-2"></i>Delete Selected
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-success" href="#" onclick="performBulkAction('active')">
-                                        <i class="ti ti-check me-2"></i>Active Selected
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-warning" href="#" onclick="performBulkAction('inactive')">
-                                        <i class="ti ti-x me-2"></i>Inactive Selected
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </form>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5>All Skills</h5>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-danger btn-sm fw-bold d-none" id="btn-bulk-delete">
+                            <i class="ti ti-trash"></i> Bulk Delete (<span id="selected-count">0</span>)
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
+                <!-- Filters Section -->
+                <form action="{{ route('admin.hrmanagement.skills.index') }}" method="GET" class="row mb-4">
+                    <div class="col-md-9 mb-2">
+                        <input type="text" name="search" class="form-control" placeholder="Search skill name..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-3 mb-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a href="{{ route('admin.hrmanagement.skills.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                    </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table table-hover table-striped align-middle">
                         <thead class="table-light">
@@ -100,13 +88,13 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-sm btn-light-warning border" title="Edit"
+                                        <button class="btn btn-sm btn-icon btn-light-primary" title="Edit"
                                             data-bs-toggle="modal" data-bs-target="#editSkillModal{{ $skill->id }}">
-                                            <i class="ti ti-pencil"></i>
+                                            <i class="ti ti-edit"></i>
                                         </button>
 
-                                        <button class="btn btn-sm btn-light-danger border" title="Delete"
-                                            data-bs-toggle="modal" data-bs-target="#deleteSkillModal{{ $skill->id }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" title="Delete"
+                                            data-url="{{ route('admin.hrmanagement.skills.destroy', $skill->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -115,15 +103,16 @@
 
                             <!-- Edit Modal -->
                             <div class="modal fade" id="editSkillModal{{ $skill->id }}" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
-                                    <form action="{{ route('admin.hrmanagement.skills.update', $skill->id) }}" method="POST" class="modal-content">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Edit Skill</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning">
+                                            <h5 class="modal-title text-white">Edit Skill</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <div class="modal-body row">
+                                        <form action="{{ route('admin.hrmanagement.skills.update', $skill->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Skill<span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control" value="{{ $skill->name }}" required>
@@ -144,26 +133,7 @@
                                 </div>
                             </div>
 
-                            <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteSkillModal{{ $skill->id }}" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <form action="{{ route('admin.hrmanagement.skills.destroy', $skill->id) }}" method="POST" class="modal-content">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Delete Skill</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Are you sure you want to delete this skill?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                             @endforeach
                         </tbody>
                     </table>
@@ -188,14 +158,15 @@
 
 <!-- Add Modal -->
 <div class="modal fade" id="addSkillModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <form action="{{ route('admin.hrmanagement.skills.store') }}" method="POST" class="modal-content">
-            @csrf
-            <div class="modal-header">
-                <h5 class="modal-title">Add Skill</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title text-white">Add Skill</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body row">
+            <form action="{{ route('admin.hrmanagement.skills.store') }}" method="POST">
+                @csrf
+                <div class="modal-body row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Skill<span class="text-danger">*</span></label>
                     <input type="text" name="name" class="form-control" placeholder="Enter skill name" required>
@@ -217,40 +188,102 @@
 </div>
 @endsection
 
+<!-- Global Delete Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pt-0">
+                <div class="mb-3">
+                    <i class="ti ti-alert-triangle text-danger" style="font-size: 3.5rem;"></i>
+                </div>
+                <h4 class="mb-2">Are you sure?</h4>
+                <p class="text-muted" id="delete-modal-msg">Deleting this item will remove it permanently!</p>
+            </div>
+            <div class="modal-footer border-0 pt-0 justify-content-center">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    <input type="hidden" name="ids[]" id="bulk-ids">
+                    <div id="method-container"></div>
+                    <button type="submit" class="btn btn-danger fw-bold" id="confirm-delete-btn">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
-    document.getElementById('selectAll').addEventListener('change', function () {
-        const checkboxes = document.querySelectorAll('.row-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
-        });
-        toggleBulkActionButton();
-    });
-
-    document.querySelectorAll('.row-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const allCheckboxes = document.querySelectorAll('.row-checkbox');
-            const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
-            document.getElementById('selectAll').checked = allCheckboxes.length === checkedCheckboxes.length;
-            toggleBulkActionButton();
-        });
-    });
-
-    function toggleBulkActionButton() {
-        const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
-        const bulkActionBtn = document.getElementById('bulkActionDropdown');
-        bulkActionBtn.disabled = checkedCheckboxes.length === 0;
-    }
-
-    function performBulkAction(action) {
-        if (action === 'delete') {
-            if (!confirm('Are you sure you want to delete selected items?')) return;
-        }
-        document.getElementById('bulkActionValue').value = action;
-        document.getElementById('bulkActionForm').submit();
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        const deleteForm = document.getElementById('deleteForm');
+        const methodContainer = document.getElementById('method-container');
+        const deleteMsg = document.getElementById('delete-modal-msg');
+        const bulkIdsInput = document.getElementById('bulk-ids');
+
+        // Single Delete
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                deleteForm.setAttribute('action', url);
+                methodContainer.innerHTML = '<input type="hidden" name="_method" value="DELETE">';
+                deleteMsg.innerText = "Deleting this skill will remove it permanently!";
+                bulkIdsInput.value = "";
+                deleteModal.show();
+            });
+        });
+
+        // Bulk Selection Logic
+        const checkAll = document.getElementById('selectAll');
+        const checkItems = document.querySelectorAll('.row-checkbox');
+        const bulkDeleteBtn = document.getElementById('btn-bulk-delete');
+        const selectedCount = document.getElementById('selected-count');
+
+        const updateBulkUI = () => {
+            const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+            selectedCount.innerText = checkedCount;
+            if (checkedCount > 0) {
+                bulkDeleteBtn.classList.remove('d-none');
+            } else {
+                bulkDeleteBtn.classList.add('d-none');
+            }
+        };
+
+        checkAll.addEventListener('change', function() {
+            checkItems.forEach(item => item.checked = this.checked);
+            updateBulkUI();
+        });
+
+        checkItems.forEach(item => {
+            item.addEventListener('change', updateBulkUI);
+        });
+
+        // Bulk Delete Action
+        bulkDeleteBtn.addEventListener('click', () => {
+            const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+            deleteForm.setAttribute('action', "{{ route('admin.hrmanagement.skills.bulk-action') }}");
+            methodContainer.innerHTML = '<input type="hidden" name="action" value="delete">'; 
+            deleteMsg.innerText = `Are you sure you want to delete ${selectedIds.length} selected skills?`;
+            
+            // Clear existing hidden inputs for ids and add selected IDs
+            deleteForm.querySelectorAll('input[name="ids[]"]').forEach(el => {
+                if(el.id !== 'bulk-ids') el.remove();
+            });
+            
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = id;
+                deleteForm.appendChild(input);
+            });
+
+            deleteModal.show();
+        });
+
         // Pagination Goto Logic
         const gotoInput = document.getElementById('goto-page');
         if (gotoInput) {
