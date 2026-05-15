@@ -158,6 +158,18 @@
             </ul>
           </li>
 
+          <!-- Settings -->
+          <li class="pc-item pc-caption">
+            <label>System Settings</label>
+            <i class="ti ti-settings"></i>
+          </li>
+          <li class="pc-item {{ Route::is('admin.profile.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.profile.index') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-settings"></i></span>
+              <span class="pc-mtext">Account Settings</span>
+            </a>
+          </li>
+
         </ul>
       </div>
     </div>

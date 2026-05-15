@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\Auth\AuthController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\admin\MachineryController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\ProductCategoryController;
@@ -21,6 +22,10 @@ Route::middleware(['guest:admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Profile Settings
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Machinery Management
     Route::prefix('machinery')->name('machinery.')->group(function () {
