@@ -11,7 +11,7 @@ class AccountAuthController extends Controller
 {
     public function loginView()
     {
-        return view('accounts.auth.login');
+        return view('account.auth.login');
     }
 
     public function login(Request $request)
