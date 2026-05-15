@@ -7,6 +7,8 @@
     <link rel="icon" href="{{ asset('assets/images/logo.gif') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/frontend/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for eye icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .login-page {
             min-height: 100vh;
@@ -41,6 +43,7 @@
         }
         .form-group {
             margin-bottom: 2rem;
+            position: relative;
         }
         .form-label {
             display: block;
@@ -66,6 +69,17 @@
             background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
             box-shadow: 0 0 20px rgba(255, 184, 0, 0.2);
+        }
+        .password-toggle {
+            position: absolute;
+            right: 1.2rem;
+            bottom: 1.1rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .password-toggle:hover {
+            color: var(--primary);
         }
         .btn-submit {
             width: 100%;
@@ -124,7 +138,10 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Authorization Key</label>
-                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                <input type="password" name="password" id="password" class="form-input" placeholder="••••••••" required>
+                <span class="password-toggle" onclick="togglePassword()">
+                    <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                </span>
             </div>
             <button type="submit" class="btn-submit">INITIALIZE ACCESS</button>
         </form>
@@ -149,6 +166,21 @@
     @endif
 
     <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
