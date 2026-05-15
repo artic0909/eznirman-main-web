@@ -14,28 +14,9 @@ use Illuminate\Support\Str;
 
 class HRManagementController extends Controller
 {
-    public function workers(Request $request)
+    public function index(Request $request)
     {
-        return $this->index($request, 'worker');
-    }
-
-    public function supervisors(Request $request)
-    {
-        return $this->index($request, 'supervisor');
-    }
-
-    public function staffs(Request $request)
-    {
-        return $this->index($request, 'staff');
-    }
-
-    public function hrs(Request $request)
-    {
-        return $this->index($request, 'hr');
-    }
-
-    private function index(Request $request, $role)
-    {
+        $role = $request->get('role', 'worker');
         $skills = Skill::where('status', 'active')->get();
         $designations = Designation::where('status', 'active')->get();
         $sites = WorkingSite::all();
@@ -67,36 +48,58 @@ class HRManagementController extends Controller
         }
 
         $users = $query->latest()->paginate(10)->withQueryString();
-        
-        $viewName = 'admin.hrmanagement.' . Str::plural($role);
-        // Map 'hr' to 'hrs' if needed, or check file names
-        if ($role == 'hr') $viewName = 'admin.hrmanagement.hr';
-        if ($role == 'staff') $viewName = 'admin.hrmanagement.staffs';
-        if ($role == 'worker') $viewName = 'admin.hrmanagement.workers';
-        if ($role == 'supervisor') $viewName = 'admin.hrmanagement.supervisors';
 
-        return view($viewName, compact('users', 'skills', 'designations', 'sites'));
+        return view('admin.hrmanagement.index', compact('users', 'skills', 'designations', 'sites', 'role'));
+    }
+
+    public function create(Request $request)
+    {
+        $role = $request->get('role', 'worker');
+        $skills = Skill::where('status', 'active')->get();
+        $designations = Designation::where('status', 'active')->get();
+        $sites = WorkingSite::all();
+        
+        return view('admin.hrmanagement.create', compact('role', 'skills', 'designations', 'sites'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $role = $request->role;
+        $rules = [
             'role' => 'required|in:worker,supervisor,staff,hr',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',
-            'work_skill_id' => 'nullable|exists:skills,id',
-            'designation_id' => 'nullable|exists:designations,id',
             'working_site_id' => 'nullable|exists:working_sites,id',
             'pancard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'adhaarcard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_image' => 'nullable|image|max:2048',
-        ]);
+        ];
+
+        if ($role != 'worker') {
+            $rules['email'] = 'required|email|unique:users,email';
+            $rules['password'] = 'required|min:6';
+        }
+
+        if ($role == 'worker') {
+            $rules['work_skill_id'] = 'nullable|exists:skills,id';
+        } else {
+            $rules['designation_id'] = 'nullable|exists:designations,id';
+        }
+
+        $request->validate($rules);
 
         $data = $request->all();
-        $data['password'] = Hash::make($request->password);
+        if ($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($role == 'hr') {
+            $hrDesig = Designation::where('name', 'LIKE', '%HR%')->first();
+            if ($hrDesig) {
+                $data['designation_id'] = $hrDesig->id;
+            }
+        }
         
         // Auto-generate code
         $lastUser = User::where('role', $request->role)->latest('id')->first();
@@ -116,25 +119,52 @@ class HRManagementController extends Controller
 
         User::create($data);
 
-        return redirect()->back()->with('success', ucfirst($request->role) . ' added successfully.');
+        return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' added successfully.');
+    }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.hrmanagement.show', compact('user'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        $role = $user->role;
+        $skills = Skill::where('status', 'active')->get();
+        $designations = Designation::where('status', 'active')->get();
+        $sites = WorkingSite::all();
+
+        return view('admin.hrmanagement.edit', compact('user', 'role', 'skills', 'designations', 'sites'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
-        $request->validate([
+        $role = $user->role;
+
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',
-            'work_skill_id' => 'nullable|exists:skills,id',
-            'designation_id' => 'nullable|exists:designations,id',
             'working_site_id' => 'nullable|exists:working_sites,id',
             'pancard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'adhaarcard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_image' => 'nullable|image|max:2048',
-        ]);
+        ];
+
+        if ($role != 'worker') {
+            $rules['email'] = 'required|email|unique:users,email,' . $id;
+        }
+
+        if ($role == 'worker') {
+            $rules['work_skill_id'] = 'nullable|exists:skills,id';
+        } else {
+            $rules['designation_id'] = 'nullable|exists:designations,id';
+        }
+
+        $request->validate($rules);
 
         $data = $request->all();
         if ($request->password) {
@@ -158,18 +188,18 @@ class HRManagementController extends Controller
 
         $user->update($data);
 
-        return redirect()->back()->with('success', ucfirst($user->role) . ' updated successfully.');
+        return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' updated successfully.');
     }
 
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        // Delete files
+        $role = $user->role;
+
         if ($user->pancard) Storage::disk('public')->delete($user->pancard);
         if ($user->adhaarcard) Storage::disk('public')->delete($user->adhaarcard);
         if ($user->profile_image) Storage::disk('public')->delete($user->profile_image);
         
-        $role = $user->role;
         $user->delete();
 
         return redirect()->back()->with('success', ucfirst($role) . ' deleted successfully.');

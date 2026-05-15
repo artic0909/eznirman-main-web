@@ -106,15 +106,15 @@
               <span class="pc-mtext">Skills</span>
             </a>
           </li>
-          <li class="pc-item pc-hasmenu {{ Request::is('admin/hrmanagement/workers*') || Request::is('admin/hrmanagement/supervisors*') || Request::is('admin/hrmanagement/staffs*') || Request::is('admin/hrmanagement/hrs*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu {{ Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="fas fa-users"></i></span><span
                 class="pc-mtext">Human Resource</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item {{ Route::is('admin.hrmanagement.workers') ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.workers') }}">Add Workers</a></li>
-              <li class="pc-item {{ Route::is('admin.hrmanagement.supervisors') ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.supervisors') }}">Add Supervisors</a></li>
-              <li class="pc-item {{ Route::is('admin.hrmanagement.staffs') ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.staffs') }}">Add Staffs</a></li>
-              <li class="pc-item {{ Route::is('admin.hrmanagement.hrs') ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.hrs') }}">Add HRs</a></li>
+              <li class="pc-item {{ request('role') == 'worker' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'worker']) }}">Add Workers</a></li>
+              <li class="pc-item {{ request('role') == 'supervisor' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'supervisor']) }}">Add Supervisors</a></li>
+              <li class="pc-item {{ request('role') == 'staff' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'staff']) }}">Add Staffs</a></li>
+              <li class="pc-item {{ request('role') == 'hr' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'hr']) }}">Add HRs</a></li>
             </ul>
           </li>
 

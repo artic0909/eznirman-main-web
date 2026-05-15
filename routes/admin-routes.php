@@ -67,13 +67,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('designations/bulk-action', [DesignationController::class, 'bulkAction'])->name('designations.bulk-action');
 
         // Human Resource (Users)
-        Route::get('/workers', [HRManagementController::class, 'workers'])->name('workers');
-        Route::get('/supervisors', [HRManagementController::class, 'supervisors'])->name('supervisors');
-        Route::get('/staffs', [HRManagementController::class, 'staffs'])->name('staffs');
-        Route::get('/hrs', [HRManagementController::class, 'hrs'])->name('hrs');
-
-        Route::post('/users', [HRManagementController::class, 'store'])->name('users.store');
-        Route::put('/users/{id}', [HRManagementController::class, 'update'])->name('users.update');
-        Route::delete('/users/{id}', [HRManagementController::class, 'destroy'])->name('users.destroy');
+        Route::get('/', [HRManagementController::class, 'index'])->name('index');
+        Route::get('/create', [HRManagementController::class, 'create'])->name('create');
+        Route::post('/store', [HRManagementController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [HRManagementController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [HRManagementController::class, 'update'])->name('update');
+        Route::get('/{id}/show', [HRManagementController::class, 'show'])->name('show');
+        Route::delete('/{id}/destroy', [HRManagementController::class, 'destroy'])->name('destroy');
     });
 });
