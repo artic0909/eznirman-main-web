@@ -48,16 +48,16 @@
                     </div>
                     <div class="col-md-3 form-group mb-3">
                         <label class="form-label">Material Code <span class="text-danger">*</span></label>
-                        <select name="material_code_id" class="form-control select2" data-placeholder="Select Code" required>
+                        <select name="material_code_id" id="material_code_select" class="form-control select2" data-placeholder="Select Code" required>
                             <option value=""></option>
                             @foreach($materialCodes as $mCode)
-                            <option value="{{ $mCode->id }}">{{ $mCode->code }} - {{ $mCode->material_name }}</option>
+                            <option value="{{ $mCode->id }}" data-material-name="{{ $mCode->material_name }}">{{ $mCode->code }} - {{ $mCode->material_name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-3 form-group mb-3">
                         <label class="form-label">Product Name <span class="text-danger">*</span></label>
-                        <input type="text" name="product_name" class="form-control" placeholder="Specific product name" required>
+                        <input type="text" name="product_name" id="product_name_input" class="form-control bg-light" placeholder="Specific product name" readonly required>
                     </div>
 
                     <div class="col-md-3 form-group mb-3">
@@ -230,15 +230,15 @@
                                                         </div>
                                                         <div class="col-md-4 form-group mb-3">
                                                             <label class="form-label">Material Code</label>
-                                                            <select name="material_code_id" class="form-control select2-modal" required>
+                                                            <select name="material_code_id" class="form-control select2-modal material-code-edit-select" required>
                                                                 @foreach($materialCodes as $mCode)
-                                                                <option value="{{ $mCode->id }}" {{ $purchase->material_code_id == $mCode->id ? 'selected' : '' }}>{{ $mCode->code }} - {{ $mCode->material_name }}</option>
+                                                                <option value="{{ $mCode->id }}" data-material-name="{{ $mCode->material_name }}" {{ $purchase->material_code_id == $mCode->id ? 'selected' : '' }}>{{ $mCode->code }}  {{ $mCode->material_name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-md-4 form-group mb-3">
                                                             <label class="form-label">Product Name</label>
-                                                            <input type="text" name="product_name" class="form-control" value="{{ $purchase->product_name }}" required>
+                                                            <input type="text" name="product_name" class="form-control product-name-edit-input bg-light" value="{{ $purchase->product_name }}" readonly required>
                                                         </div>
                                                         <div class="col-md-4 form-group mb-3">
                                                             <label class="form-label">Vendor Name</label>
@@ -357,13 +357,30 @@
         };
 
         calcInputs.forEach(input => input.addEventListener('input', calculateTotal));
+        
+        // Autofill Logic for Add Form
+        $('#material_code_select').on('change', function() {
+            const selectedOption = $(this).find(':selected');
+            const materialName = selectedOption.data('material-name');
+            document.getElementById('product_name_input').value = materialName || '';
+        });
 
-        // Calculation Logic for Edit Modals (Individual logic per modal)
+        // Calculation & Autofill Logic for Edit Modals (Individual logic per modal)
         document.querySelectorAll('.modal').forEach(modal => {
             const eqty = modal.querySelector('.edit-calc-qty');
             const erate = modal.querySelector('.edit-calc-rate');
             const egst = modal.querySelector('.edit-calc-gst');
             const etotal = modal.querySelector('.edit-calc-total');
+            const eMaterialSelect = modal.querySelector('.material-code-edit-select');
+            const eProductNameInput = modal.querySelector('.product-name-edit-input');
+
+            // Autofill for Edit Modal
+            if(eMaterialSelect && eProductNameInput) {
+                $(eMaterialSelect).on('change', function() {
+                    const materialName = $(this).find(':selected').data('material-name');
+                    eProductNameInput.value = materialName || '';
+                });
+            }
 
             if(eqty && erate && etotal) {
                 [eqty, erate, egst].forEach(inp => {
