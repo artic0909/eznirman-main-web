@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- [Head] start -->
+
+<head>
+    <title>All Workers</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description"
+        content="Mantis is made using Bootstrap 5 design framework. Download the free admin template & use it for your project.">
+    <meta name="keywords"
+        content="Mantis, Dashboard UI Kit, Bootstrap 5, Admin Template, Admin Dashboard, CRM, CMS, Bootstrap Admin Template">
+    <meta name="author" content="CodedThemes">
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="../../assets/images/logo.gif" type="image/x-icon"> <!-- [Google Font] Family -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+        id="main-font-link">
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="../../assets/fonts/tabler-icons.min.css">
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="../../assets/fonts/feather.css">
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="../../assets/fonts/fontawesome.css">
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="../../assets/fonts/material.css">
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="../../assets/css/style.css" id="main-style-link">
+    <link rel="stylesheet" href="../../assets/css/style-preset.css">
+
+</head>
+
+<body data-pc-preset="preset-1" data-pc-direction="ltr" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+    <!-- [ Sidebar Menu ] start -->
+    <nav class="pc-sidebar">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="../../dashboard/index.html" class="b-brand text-primary">
+                    <!-- ========   Change your logo from here   ============ -->
+                    <img src="../../assets/images/logo.gif" class="img-fluid" width="70" alt="logo">
+                    <span class="b-title fw-bold text-decoration-none text-dark fs-4">EZ NIRMAN</span>
+                </a>
+            </div>
+            <div class="navbar-content">
+                <ul class="pc-navbar">
+                    <li class="pc-item">
+                        <a href="../../dashboard/index.html" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
+                            <span class="pc-mtext">Dashboard</span>
+                        </a>
+                    </li>
+
+
+                    <!-- Machinery & Tools -->
+                    <li class="pc-item pc-caption">
+                        <label>Machinery & Tools</label>
+                        <i class="ti ti-dashboard"></i>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-list"></i></span>
+                            <span class="pc-mtext">Machine Category</span>
+                        </a>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-tools"></i></span>
+                            <span class="pc-mtext">Add Machinery</span>
+                        </a>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-share"></i></span>
+                            <span class="pc-mtext">Transferred Machinery</span>
+                        </a>
+                    </li>
+
+
+                    <!-- Working Sites -->
+                    <li class="pc-item pc-caption">
+                        <label>Site Management</label>
+                        <i class="ti ti-news"></i>
+                    </li>
+                    <li class="pc-item pc-hasmenu">
+                        <a href="#!" class="pc-link"><span class="pc-micon"><i
+                                    class="ti ti-building-skyscraper"></i></span><span class="pc-mtext">Working
+                                Sites</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item"><a class="pc-link" href="#!">Add Site</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">View Sites</a></li>
+                        </ul>
+                    </li>
+
+
+
+                    <!-- Purchase Register -->
+                    <li class="pc-item pc-caption">
+                        <label>Purchase Register</label>
+                        <i class="ti ti-brand-chrome"></i>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-layout"></i></span>
+                            <span class="pc-mtext">Units</span>
+                        </a>
+                    </li>
+                    <li class="pc-item pc-hasmenu">
+                        <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-stack"></i></span><span
+                                class="pc-mtext">Material Management</span><span class="pc-arrow"><i
+                                    data-feather="chevron-right"></i></span></a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item"><a class="pc-link" href="#!">Material Category</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Material Code</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Material Purchase</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Material Consume</a></li>
+                        </ul>
+                    </li>
+
+
+                    <!-- Human Resources -->
+                    <li class="pc-item pc-caption">
+                        <label>HR Management</label>
+                        <i class="ti ti-brand-chrome"></i>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="fas fa-graduation-cap"></i></span>
+                            <span class="pc-mtext">Designations</span>
+                        </a>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="fas fa-chart-line"></i></span>
+                            <span class="pc-mtext">Skills</span>
+                        </a>
+                    </li>
+                    <li class="pc-item pc-hasmenu pc-trigger">
+                        <a href="#!" class="pc-link"><span class="pc-micon"><i class="fas fa-users"></i></span><span
+                                class="pc-mtext">Human Resource</span><span class="pc-arrow"><i
+                                    data-feather="chevron-right"></i></span></a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item active"><a class="pc-link" href="#!">Add Workers</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Add Supervisors</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Add Staffs</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Add HRs</a></li>
+                        </ul>
+                    </li>
+
+
+                    <!-- Petty Cash Management -->
+                    <li class="pc-item pc-caption">
+                        <label>Petty Cash Management</label>
+                        <i class="ti ti-brand-chrome"></i>
+                    </li>
+                    <li class="pc-item">
+                        <a href="" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-barcode"></i></span>
+                            <span class="pc-mtext">A/C Code</span>
+                        </a>
+                    </li>
+                    <li class="pc-item pc-hasmenu">
+                        <a href="#!" class="pc-link"><span class="pc-micon"><i
+                                    class="ti ti-currency-rupee"></i></span><span class="pc-mtext">Petty
+                                Cash</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item"><a class="pc-link" href="#!">Cash Management</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Make Payments</a></li>
+                            <li class="pc-item"><a class="pc-link" href="#!">Recieve Payments</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- [ Sidebar Menu ] end --> <!-- [ Header Topbar ] start -->
+    <header class="pc-header">
+        <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
+            <div class="me-auto pc-mob-drp">
+                <ul class="list-unstyled">
+                    <!-- ======= Menu collapse Icon ===== -->
+                    <li class="pc-h-item pc-sidebar-collapse">
+                        <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+                            <i class="ti ti-menu-2"></i>
+                        </a>
+                    </li>
+                    <li class="pc-h-item pc-sidebar-popup">
+                        <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+                            <i class="ti ti-menu-2"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown pc-h-item d-inline-flex d-md-none">
+                        <a class="pc-head-link dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
+                            <i class="ti ti-search"></i>
+                        </a>
+                        <div class="dropdown-menu pc-h-dropdown drp-search">
+                            <form class="px-3">
+                                <div class="form-group mb-0 d-flex align-items-center">
+                                    <i data-feather="search"></i>
+                                    <input type="search" class="form-control border-0 shadow-none"
+                                        placeholder="Search here. . .">
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <li class="pc-h-item d-none d-md-inline-flex">
+                        <form class="header-search">
+                            <i data-feather="search" class="icon-search"></i>
+                            <input type="search" class="form-control" placeholder="Search here. . .">
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <!-- [Mobile Media Block end] -->
+            <div class="ms-auto">
+                <ul class="list-unstyled">
+                    <li class="dropdown pc-h-item header-user-profile">
+                        <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
+                            <img src="../../assets/images/logo.gif" alt="user-image" class="user-avtar">
+                            <span>Admin Panel</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+                            <div class="dropdown-header">
+                                <div class="d-flex mb-1">
+                                    <div class="flex-shrink-0">
+                                        <img src="../../assets/images/logo.gif" alt="user-image"
+                                            class="user-avtar wid-35">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1">Admin Panel</h6>
+                                        <span>Administrator</span>
+                                    </div>
+                                    <a href="#!" class="pc-head-link bg-transparent"><i
+                                            class="ti ti-power text-danger"></i></a>
+                                </div>
+                            </div>
+                            <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="drp-t1" data-bs-toggle="tab"
+                                        data-bs-target="#drp-tab-1" type="button" role="tab" aria-controls="drp-tab-1"
+                                        aria-selected="true"><i class="ti ti-user"></i>
+                                        Profile</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="drp-t2" data-bs-toggle="tab"
+                                        data-bs-target="#drp-tab-2" type="button" role="tab" aria-controls="drp-tab-2"
+                                        aria-selected="false"><i class="ti ti-phone"></i>
+                                        Help?</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="mysrpTabContent">
+                                <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel"
+                                    aria-labelledby="drp-t1" tabindex="0">
+                                    <a href="#!" class="dropdown-item">
+                                        <i class="ti ti-edit-circle"></i>
+                                        <span>Edit Profile</span>
+                                    </a>
+                                    <a href="#!" class="dropdown-item">
+                                        <i class="ti ti-user"></i>
+                                        <span>View Profile</span>
+                                    </a>
+                                    <a href="#!" class="dropdown-item">
+                                        <i class="ti ti-power"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                                <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2"
+                                    tabindex="0">
+                                    <a href="tel:+916292237205" class="dropdown-item">
+                                        <i class="ti ti-phone"></i>
+                                        <span>Call Support</span>
+                                    </a>
+                                    <a href="https://wa.me/+916292237205" class="dropdown-item">
+                                        <i class="ti ti-messages"></i>
+                                        <span>Chat Support</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!-- [ Header ] end -->
+
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+        <div class="pc-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-10">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">All Workers</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript: void(0)">HR Management</a></li>
+                                <li class="breadcrumb-item" aria-current="page">View Workers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-header-actions col-md-2 text-end">
+                    <button class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal"
+                        data-bs-target="#addWorkerModal">
+                        <i class="ti ti-plus me-2"></i><span>Add Data</span>
+                    </button>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+
+
+
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">All Workers</h5>
+                            <div class="d-flex gap-3">
+
+                                <!-- Filter -->
+                                <input type="date" class="form-control form-control-sm">
+                                <input type="text" class="form-control form-control-sm" placeholder="Worker Code">
+                                <input type="text" class="form-control form-control-sm" placeholder="Worker Name">
+
+                                <button class="btn btn-primary btn-sm" id="">Filter</button>
+                                <button class="btn btn-secondary btn-sm" id="">Reset</button>
+
+
+                                <button class="btn btn-outline-warning text-primary btn-sm" id="exportData">Export</button>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                        id="bulkActionDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                                        disabled>
+                                        <i class="ti ti-settings me-1"></i>
+                                        Bulk Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="bulkActionDropdown">
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#" id="bulkDelete">
+                                                <i class="ti ti-trash me-2"></i>Delete Selected
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-success" href="#" id="bulkActivate">
+                                                <i class="ti ti-check me-2"></i>Activate Selected
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-warning" href="#" id="bulkDeactivate">
+                                                <i class="ti ti-x me-2"></i>Deactivate Selected
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                                    <label class="form-check-label" for="selectAll"></label>
+                                                </div>
+                                            </th>
+                                            <th>SL</th>
+                                            <th>Joining Date</th>
+                                            <th>Worker Name</th>
+                                            <th>Mobile</th>
+                                            <th>Code</th>
+                                            <th>Skill</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input row-checkbox" type="checkbox"
+                                                        value="1" id="check1">
+                                                    <label class="form-check-label" for="check1"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">1</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-muted">Dec 15, 2024</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-muted">defrere</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-muted">9876543210</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-muted">12345</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-muted">defrere</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-success">Running</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2">
+                                                    <button class="btn btn-sm btn-light-info border" title="Edit"
+                                                        data-bs-toggle="modal" data-bs-target="#viewWorkerModal">
+                                                        <i class="ti ti-eye"></i>
+                                                    </button>
+
+                                                    <button class="btn btn-sm btn-light-warning border" title="Edit"
+                                                        data-bs-toggle="modal" data-bs-target="#editWorkerModal">
+                                                        <i class="ti ti-pencil"></i>
+                                                    </button>
+
+                                                    <button class="btn btn-sm btn-light-danger border" title="Delete"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteWorkerModal">
+                                                        <i class="ti ti-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <!-- pagination -->
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="text-muted">Showing 1 to 10 of 50 entries</div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                            disabled>Prev</button>
+                                                        <input type="number"
+                                                            class="form-control form-control-sm text-center"
+                                                            style="width: 60px;" value="1" min="1" max="5">
+                                                        <span class="text-muted">/</span>
+                                                        <input type="number"
+                                                            class="form-control form-control-sm text-center"
+                                                            style="width: 60px;" value="5" readonly>
+                                                        <button class="btn btn-sm btn-outline-primary">Next</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ Main Content ] end -->
+
+
+            <!-- Add Worker Modal -->
+            <div class="modal fade" id="addWorkerModal" tabindex="-1" aria-labelledby="addWorkerModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addWorkerModalLabel">
+                                <i class="ti ti-user-plus"></i> Add Worker
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addWorkerForm">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter code" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Joining Date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Current Address <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter current address"
+                                            required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Work Skill <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Please select a skill</option>
+                                            <option value="carpenter">Carpenter</option>
+                                            <option value="electrician">Electrician</option>
+                                            <option value="plumber">Plumber</option>
+                                            <option value="mason">Mason</option>
+                                            <option value="painter">Painter</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Code <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Select Code</option>
+                                            <option value="site1">SITE-001</option>
+                                            <option value="site2">SITE-002</option>
+                                            <option value="site3">SITE-003</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="By default"
+                                            value="By default" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Mobile No. <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" placeholder="Enter mobile number"
+                                            required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">ESI No.</label>
+                                        <input type="text" class="form-control" placeholder="Enter ESI number">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">PF no.</label>
+                                        <input type="text" class="form-control" placeholder="Enter PF number">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Bank A/C Details</label>
+                                        <input type="text" class="form-control" placeholder="Enter details">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Pan Card</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('addPanCard').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="addPanCardName"
+                                                placeholder="No file selected" readonly>
+                                            <input type="file" id="addPanCard" accept=".pdf,.jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('addPanCard', 'addPanCardName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Aadhar Card</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('addAadharCard').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="addAadharCardName"
+                                                placeholder="No file selected" readonly>
+                                            <input type="file" id="addAadharCard" accept=".pdf,.jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('addAadharCard', 'addAadharCardName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Worker Picture</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('addWorkerPic').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="addWorkerPicName"
+                                                placeholder="No file selected" readonly>
+                                            <input type="file" id="addWorkerPic" accept=".jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('addWorkerPic', 'addWorkerPicName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Please select your status</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="ti ti-x"></i> Back
+                            </button>
+                            <button type="button" class="btn btn-success">
+                                <i class="ti ti-check"></i> Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Worker Modal -->
+            <div class="modal fade" id="editWorkerModal" tabindex="-1" aria-labelledby="editWorkerModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editWorkerModalLabel">
+                                <i class="ti ti-edit"></i> Edit Worker
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editWorkerForm">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" value="WRK-001" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" value="Rajesh Kumar" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Joining Date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" value="2024-01-15" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Current Address <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" value="123 Main Street, Kolkata"
+                                            required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Work Skill <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Please select a skill</option>
+                                            <option value="carpenter">Carpenter</option>
+                                            <option value="electrician" selected>Electrician</option>
+                                            <option value="plumber">Plumber</option>
+                                            <option value="mason">Mason</option>
+                                            <option value="painter">Painter</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Code <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Select Code</option>
+                                            <option value="site1" selected>SITE-001</option>
+                                            <option value="site2">SITE-002</option>
+                                            <option value="site3">SITE-003</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Site Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" value="Construction Site A" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Mobile No. <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" value="9876543210" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">ESI No.</label>
+                                        <input type="text" class="form-control" value="ESI123456">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">PF no.</label>
+                                        <input type="text" class="form-control" value="PF987654">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Bank A/C Details</label>
+                                        <input type="text" class="form-control" value="SBI A/C: 1234567890">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Pan Card</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('editPanCard').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="editPanCardName"
+                                                value="pan_rajesh.pdf" readonly>
+                                            <input type="file" id="editPanCard" accept=".pdf,.jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('editPanCard', 'editPanCardName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Aadhar Card</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('editAadharCard').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="editAadharCardName"
+                                                value="aadhar_rajesh.pdf" readonly>
+                                            <input type="file" id="editAadharCard" accept=".pdf,.jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('editAadharCard', 'editAadharCardName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Worker Picture</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-warning text-white" type="button"
+                                                onclick="document.getElementById('editWorkerPic').click()">
+                                                <i class="ti ti-upload"></i> Browse
+                                            </button>
+                                            <input type="text" class="form-control" id="editWorkerPicName"
+                                                value="rajesh_photo.jpg" readonly>
+                                            <input type="file" id="editWorkerPic" accept=".jpg,.jpeg,.png"
+                                                style="display: none;"
+                                                onchange="updateFileName('editWorkerPic', 'editWorkerPicName')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                                        <select class="form-select" required>
+                                            <option value="">Please select your status</option>
+                                            <option value="active" selected>Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="ti ti-x"></i> Back
+                            </button>
+                            <button type="button" class="btn btn-success">
+                                <i class="ti ti-check"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Worker Details Modal -->
+            <div class="modal fade" id="viewWorkerModal" tabindex="-1" aria-labelledby="viewWorkerModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewWorkerModalLabel">
+                                <i class="ti ti-user"></i> Worker Details
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Worker Photo -->
+                                <div class="col-md-12 mb-4 text-center">
+                                    <img src="../../assets/images/no-img.jpg"
+                                        alt="Worker Photo" class="rounded-circle border border-3 border-primary shadow"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
+                                    <h4 class="mt-3 mb-1">Rajesh Kumar</h4>
+                                    <span class="badge bg-success fs-6">Active</span>
+                                </div>
+
+                                <!-- Personal Information -->
+                                <div class="col-12 mb-3">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3">
+                                        <i class="ti ti-info-circle"></i> Personal Information
+                                    </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Worker Code</label>
+                                        <p class="mb-0 fs-6">WRK-001</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Full Name</label>
+                                        <p class="mb-0 fs-6">Rajesh Kumar</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Joining Date</label>
+                                        <p class="mb-0 fs-6">15-Jan-2024</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Mobile Number</label>
+                                        <p class="mb-0 fs-6">+91 9876543210</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Current Address</label>
+                                        <p class="mb-0 fs-6">123 Main Street, Kolkata, West Bengal - 700001</p>
+                                    </div>
+                                </div>
+
+                                <!-- Work Information -->
+                                <div class="col-12 mb-3 mt-3">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3">
+                                        <i class="ti ti-briefcase"></i> Work Information
+                                    </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Work Skill</label>
+                                        <p class="mb-0 fs-6">
+                                            <span class="badge bg-primary">Electrician</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Site Code</label>
+                                        <p class="mb-0 fs-6">SITE-001</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Site Name</label>
+                                        <p class="mb-0 fs-6">Construction Site A</p>
+                                    </div>
+                                </div>
+
+                                <!-- Financial Information -->
+                                <div class="col-12 mb-3 mt-3">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3">
+                                        <i class="ti ti-credit-card"></i> Financial & Documents
+                                    </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">ESI Number</label>
+                                        <p class="mb-0 fs-6">ESI123456</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">PF Number</label>
+                                        <p class="mb-0 fs-6">PF987654</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <label class="form-label fw-semibold text-muted mb-1">Bank A/C Details</label>
+                                        <p class="mb-0 fs-6">State Bank of India, A/C: 1234567890, IFSC: SBIN0001234</p>
+                                    </div>
+                                </div>
+
+                                <!-- Documents -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold text-muted mb-2">Pan Card</label>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="ti ti-eye"></i> View Document
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold text-muted mb-2">Aadhar Card</label>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="ti ti-eye"></i> View Document
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold text-muted mb-2">Worker Picture</label>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="ti ti-eye"></i> View Photo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="ti ti-x"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Worker Modal -->
+            <div class="modal fade" id="deleteWorkerModal" tabindex="-1" aria-labelledby="deleteWorkerModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header text-white">
+                            <h5 class="modal-title" id="deleteWorkerModalLabel">
+                                <i class="ti ti-alert-triangle"></i> Confirm Deletion
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center py-4">
+                            <i class="ti ti-trash text-danger" style="font-size: 4rem;"></i>
+                            <h5 class="mt-3 mb-2">Are you sure you want to delete this worker?</h5>
+                            <p class="text-muted mb-3">This action cannot be undone.</p>
+                            <div class="alert alert-warning text-start">
+                                <strong class="d-block mb-2">Worker Details:</strong>
+                                <div class="mb-1"><strong>Code:</strong> WRK-001</div>
+                                <div class="mb-1"><strong>Name:</strong> Rajesh Kumar</div>
+                                <div class="mb-1"><strong>Skill:</strong> Electrician</div>
+                                <div><strong>Site:</strong> Construction Site A</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="ti ti-x"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-danger">
+                                <i class="ti ti-trash"></i> Yes, Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer">
+        <div class="footer-wrapper container-fluid">
+            <div class="row">
+                <div class="col-sm my-1">
+                    <p class="m-0">2026 &#9829; EZ Nirman.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/plugins/popper.min.js"></script>
+    <script src="../../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../../assets/js/plugins/bootstrap.min.js"></script>
+    <script src="../../assets/js/fonts/custom-font.js"></script>
+    <script src="../../assets/js/pcoded.js"></script>
+    <script src="../../assets/js/plugins/feather.min.js"></script>
+
+
+
+
+
+    <script>layout_change('light');</script>
+
+
+
+
+    <script>change_box_container('false');</script>
+
+
+
+    <script>layout_rtl_change('false');</script>
+
+
+    <script>preset_change("preset-1");</script>
+
+
+    <script>font_change("Public-Sans");</script>
+
+
+    <script>
+        // Select All functionality
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            toggleBulkActionButton();
+        });
+
+        // Individual checkbox change
+        document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const allCheckboxes = document.querySelectorAll('.row-checkbox');
+                const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+
+                // Update "Select All" checkbox state
+                document.getElementById('selectAll').checked = allCheckboxes.length === checkedCheckboxes.length;
+
+                toggleBulkActionButton();
+            });
+        });
+
+        // Enable/Disable Bulk Action button based on selection
+        function toggleBulkActionButton() {
+            const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+            const bulkActionBtn = document.getElementById('bulkActionDropdown');
+
+            if (checkedCheckboxes.length > 0) {
+                bulkActionBtn.disabled = false;
+            } else {
+                bulkActionBtn.disabled = true;
+            }
+        }
+
+        // Bulk Delete Action
+        document.getElementById('bulkDelete').addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (selectedIds.length > 0) {
+                if (confirm(`Are you sure you want to delete ${selectedIds.length} selected item(s)?`)) {
+                    console.log('Deleting IDs:', selectedIds);
+                    // Add your delete logic here
+                    alert('Delete functionality will be implemented here');
+                }
+            }
+        });
+
+        // Bulk Activate Action
+        document.getElementById('bulkActivate').addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (selectedIds.length > 0) {
+                console.log('Activating IDs:', selectedIds);
+                alert(`Activating ${selectedIds.length} selected item(s)`);
+                // Add your activate logic here
+            }
+        });
+
+        // Bulk Deactivate Action
+        document.getElementById('bulkDeactivate').addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (selectedIds.length > 0) {
+                console.log('Deactivating IDs:', selectedIds);
+                alert(`Deactivating ${selectedIds.length} selected item(s)`);
+                // Add your deactivate logic here
+            }
+        });
+    </script>
+
+
+
+    <script>
+        function updateFileName(fileInputId, textInputId) {
+            const fileInput = document.getElementById(fileInputId);
+            const textInput = document.getElementById(textInputId);
+            if (fileInput.files.length > 0) {
+                textInput.value = fileInput.files[0].name;
+            } else {
+                textInput.value = 'No file selected';
+            }
+        }
+    </script>
+
+
+</body>
+<!-- [Body] end -->
+
+</html>

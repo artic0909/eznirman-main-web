@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\MaterialCodeController;
 use App\Http\Controllers\Admin\MaterialPurchaseController;
 use App\Http\Controllers\Admin\MaterialConsumeController;
+use App\Http\Controllers\Admin\SkillController;
+use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Admin\HRManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('admin')->group(function () {
@@ -53,5 +56,24 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::resource('material-purchases', MaterialPurchaseController::class)->except(['create', 'show', 'edit']);
         Route::resource('material-consumes', MaterialConsumeController::class)->only(['index', 'store', 'destroy']);
         Route::get('material-consumes/get-stock-locations/{purchase_id}', [MaterialConsumeController::class, 'getStockLocations'])->name('material-consumes.locations');
+    });
+
+    // HR Management
+    Route::prefix('hrmanagement')->name('hrmanagement.')->group(function () {
+        Route::resource('skills', SkillController::class)->except(['create', 'show', 'edit']);
+        Route::post('skills/bulk-action', [SkillController::class, 'bulkAction'])->name('skills.bulk-action');
+        
+        Route::resource('designations', DesignationController::class)->except(['create', 'show', 'edit']);
+        Route::post('designations/bulk-action', [DesignationController::class, 'bulkAction'])->name('designations.bulk-action');
+
+        // Human Resource (Users)
+        Route::get('/workers', [HRManagementController::class, 'workers'])->name('workers');
+        Route::get('/supervisors', [HRManagementController::class, 'supervisors'])->name('supervisors');
+        Route::get('/staffs', [HRManagementController::class, 'staffs'])->name('staffs');
+        Route::get('/hrs', [HRManagementController::class, 'hrs'])->name('hrs');
+
+        Route::post('/users', [HRManagementController::class, 'store'])->name('users.store');
+        Route::put('/users/{id}', [HRManagementController::class, 'update'])->name('users.update');
+        Route::delete('/users/{id}', [HRManagementController::class, 'destroy'])->name('users.destroy');
     });
 });

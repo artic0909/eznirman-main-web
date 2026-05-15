@@ -16,8 +16,23 @@ class MaterialConsume extends Model
         'use_now', 
         'from_site_id', 
         'to_site_id', 
-        'note'
+        'note',
+        'created_by',
+        'type'
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($consume) {
+            if (auth()->guard('admin')->check()) {
+                $consume->created_by = auth()->guard('admin')->id();
+                $consume->type = 'admin';
+            } elseif (auth()->check()) {
+                $consume->created_by = auth()->id();
+                $consume->type = 'user';
+            }
+        });
+    }
 
     public function purchase()
     {

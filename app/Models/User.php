@@ -20,9 +20,24 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'code',
+        'role',
         'name',
         'email',
         'password',
+        'joining_date',
+        'current_address',
+        'work_skill_id',
+        'designation_id',
+        'working_site_id',
+        'mobile',
+        'esi_no',
+        'pf_no',
+        'bank_account_no',
+        'pancard',
+        'adhaarcard',
+        'profile_image',
+        'status',
     ];
 
     /**
@@ -60,5 +75,19 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+    public function skill()
+    {
+        return $this->belongsTo(Skill::class, 'work_skill_id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class, 'designation_id');
+    }
+
+    public function site()
+    {
+        return $this->belongsTo(WorkingSite::class, 'working_site_id');
     }
 }
