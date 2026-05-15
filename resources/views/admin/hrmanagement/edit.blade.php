@@ -48,7 +48,12 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Password <small>(Leave blank to keep current)</small></label>
-                            <input type="password" name="password" class="form-control">
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" id="password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
+                                    <i class="ti ti-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         @endif
 
@@ -168,4 +173,25 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('ti-eye', 'ti-eye-off');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('ti-eye-off', 'ti-eye');
+                }
+            });
+        });
+    });
+</script>
+@endpush
 @endsection
