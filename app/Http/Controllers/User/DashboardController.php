@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\Accountcode;
@@ -117,5 +119,103 @@ class DashboardController extends Controller
             'balance' => number_format($wallet->current_balance, 2),
             'transaction' => $transaction
         ]);
+    }
+
+    /**
+     * Show Credits page
+     */
+    public function credits()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet()->firstOrCreate([]);
+        
+        $credits = $wallet->transactions()
+            ->with('accountcode')
+            ->where('type', 'credit')
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('user.dashbaord.credits', compact('wallet', 'credits'));
+    }
+
+    /**
+     * Show Debits page
+     */
+    public function debits()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet()->firstOrCreate([]);
+        
+        $debits = $wallet->transactions()
+            ->with('accountcode')
+            ->where('type', 'debit')
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('user.dashbaord.debits', compact('wallet', 'debits'));
+    }
+
+    /**
+     * Show All Transactions page
+     */
+    public function transactions()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet()->firstOrCreate([]);
+        
+        $transactions = $wallet->transactions()
+            ->with('accountcode')
+            ->orderBy('date', 'desc')
+            ->paginate(15);
+
+        return view('user.dashbaord.transactions', compact('wallet', 'transactions'));
+    }
+
+    /**
+     * Show Profile Settings page
+     */
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('user.dashbaord.profile', compact('user'));
+    }
+
+    /**
+     * Update Profile Settings
+     */
+    public function profileUpdate(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'mobile' => 'nullable|string|max:20',
+            'current_address' => 'nullable|string|max:500',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->current_address = $request->current_address;
+
+        if ($request->hasFile('profile_image')) {
+            // Delete old profile image if exists
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            $path = $request->file('profile_image')->store('profiles', 'public');
+            $user->profile_image = $path;
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 }
