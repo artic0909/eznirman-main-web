@@ -21,8 +21,8 @@
             <label>Petty Cash Management</label>
             <i class="ti ti-brand-chrome"></i>
           </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
+          <li class="pc-item {{ Route::is('account.accountcode.*') ? 'active' : '' }}">
+            <a href="{{ route('account.accountcode.index') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-barcode"></i></span>
               <span class="pc-mtext">A/C Code</span>
             </a>
