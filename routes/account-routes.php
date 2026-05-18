@@ -3,6 +3,7 @@
  use App\Http\Controllers\accounts\Auth\AccountAuthController;
  use App\Http\Controllers\Accounts\DashboardController;
  use Illuminate\Support\Facades\Route;
+ use App\Http\Controllers\Accounts\ProfileController;
  
  Route::middleware(['guest:account'])->prefix('account')->group(function () {
      Route::get('/login', [AccountAuthController::class, 'loginView'])->name('account.login');
@@ -13,9 +14,8 @@
      Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
  
      // Profile Settings
-     Route::get('/profile', function() {
-         return view('accounts.dashboard.index'); // Placeholder
-     })->name('profile.index');
+     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
      
      Route::get('/logout', [AccountAuthController::class, 'logout'])->name('logout');
  });
