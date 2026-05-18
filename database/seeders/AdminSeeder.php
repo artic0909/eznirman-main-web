@@ -11,6 +11,10 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+        if (DB::table('admins')->where('email', 'admin.ez@nirman.com')->exists()) {
+            return;
+        }
+
         DB::table('admins')->insert([
             'name'              => 'Admin',
             'email'             => 'admin.ez@nirman.com',

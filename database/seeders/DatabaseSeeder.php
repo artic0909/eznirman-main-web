@@ -14,5 +14,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(AdminSeeder::class);
+        $this->call(AccountSeeder::class);
+
+        // Seed a supervisor user for testing
+        \App\Models\User::updateOrCreate(
+            ['email' => 'user@eznirman.com'],
+            [
+                'name' => 'Supervisor John',
+                'password' => \Illuminate\Support\Facades\Hash::make('user123'),
+                'role' => 'supervisor',
+                'code' => '11074',
+                'status' => 'active',
+                'mobile' => '9876543210',
+                'joining_date' => now(),
+            ]
+        );
     }
 }

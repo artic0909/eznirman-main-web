@@ -29,6 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        $this->configureAuthentication();
     }
 
     /**
@@ -45,13 +46,44 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn () => view('livewire.auth.login'));
+        Fortify::loginView(fn () => view('user.auth.login'));
         Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
         Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
         Fortify::registerView(fn () => view('livewire.auth.register'));
         Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
+    }
+
+    /**
+     * Configure custom authentication logic.
+     */
+    private function configureAuthentication(): void
+    {
+        Fortify::authenticateUsing(function (\Illuminate\Http\Request $request) {
+            $login = $request->input('email');
+            $password = $request->input('password');
+
+            if (!$login || !$password) {
+                return null;
+            }
+
+            if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+                $user = \App\Models\User::where('email', $login)->first();
+            } else {
+                $user = \App\Models\User::where('code', $login)->first();
+            }
+
+            if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+                if (in_array($user->role, ['supervisor', 'staff', 'hr'])) {
+                    if ($user->status === 'active') {
+                        return $user;
+                    }
+                }
+            }
+
+            return null;
+        });
     }
 
     /**
