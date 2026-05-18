@@ -848,7 +848,7 @@
   </div>
   <ul class="nav-links">
     <li><a href="{{route('admin.login')}}">Admin Access</a></li>
-    <li><a href="#">Accounts</a></li>
+    <li><a href="{{route('account.login')}}">Accounts</a></li>
     <li><a href="#">Staff</a></li>
   </ul>
   <div class="nav-cta">

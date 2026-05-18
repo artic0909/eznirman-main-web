@@ -530,7 +530,7 @@
       </form>
 
       <div class="login-footer">
-        Not an admin? <a href="{{ route('home') }}">Back to homepage</a>
+        Not an admin? <a href="{{ route('home') }}">Back to home</a>
       </div>
     </div>
 
