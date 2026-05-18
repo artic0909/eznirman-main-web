@@ -849,10 +849,10 @@
   <ul class="nav-links">
     <li><a href="{{route('admin.login')}}">Admin Access</a></li>
     <li><a href="{{route('account.login')}}">Accounts</a></li>
-    <li><a href="#">Staff</a></li>
+    <li><a href="/login">Staff</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="#" class="btn-ghost">Supervisor</a>
+    <a href="/login" class="btn-ghost">Supervisor</a>
     <a href="#" class="btn-primary">Get App</a>
   </div>
   <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">

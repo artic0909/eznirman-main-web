@@ -90,4 +90,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(WorkingSite::class, 'working_site_id');
     }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
 }

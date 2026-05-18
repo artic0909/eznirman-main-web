@@ -11,9 +11,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('dashboard', function () {
-    return view('user.dashbaord.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('dashboard', [App\Http\Controllers\User\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
