@@ -8,7 +8,7 @@
         <div class="row align-items-center">
             <div class="col-md-12">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Make Payment to Supervisor</h5>
+                    <h5 class="m-b-10">Make Payment to User</h5>
                 </div>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('account.dashboard') }}">Home</a></li>
@@ -47,17 +47,21 @@
                     @csrf
                     
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Select Supervisor <span class="text-danger">*</span></label>
-                        <select name="supervisor_id" id="supervisorSelect" class="form-select select2" required>
-                            <option value="">-- Choose Supervisor --</option>
-                            @foreach($supervisors as $supervisor)
-                                <option value="{{ $supervisor->id }}" 
-                                        data-balance="{{ $supervisor->wallet ? $supervisor->wallet->current_balance : 0 }}">
-                                    {{ $supervisor->name }} ({{ $supervisor->code }})
-                                </option>
+                        <label class="form-label fw-bold">Select Role <span class="text-danger">*</span></label>
+                        <select id="roleSelect" class="form-select select2" required>
+                            <option value="">-- Choose Role --</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role }}">{{ ucfirst($role) }}</option>
                             @endforeach
                         </select>
-                        @error('supervisor_id')
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Select User <span class="text-danger">*</span></label>
+                        <select name="user_id" id="userSelect" class="form-select select2" required disabled>
+                            <option value="">-- Choose User --</option>
+                        </select>
+                        @error('user_id')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
@@ -85,8 +89,9 @@
 </div>
 
 @push('scripts')
-<!-- Include Select2 CSS & JS if not already in app.blade.php -->
+<!-- Include Select2 CSS & JS and Bootstrap 5 Theme -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
@@ -94,12 +99,39 @@
         // Initialize Select2
         $('.select2').select2({
             theme: 'bootstrap-5',
-            placeholder: "-- Choose Supervisor --",
-            allowClear: true
+            width: '100%'
         });
 
-        // Listen for change
-        $('#supervisorSelect').on('change', function() {
+        const roleSelect = $('#roleSelect');
+        const userSelect = $('#userSelect');
+
+        // Fetch users based on role
+        roleSelect.on('change', function() {
+            var role = $(this).val();
+            userSelect.empty().append('<option value="">-- Choose User --</option>');
+            $('#balanceContainer').addClass('d-none');
+            
+            if (role) {
+                userSelect.prop('disabled', false);
+                $.ajax({
+                    url: '{{ route('account.cashmanagement.users_by_role') }}',
+                    type: 'GET',
+                    data: { role: role },
+                    success: function(users) {
+                        users.forEach(function(user) {
+                            var balance = user.wallet ? user.wallet.current_balance : 0;
+                            userSelect.append(`<option value="${user.id}" data-balance="${balance}">${user.name} (${user.code || 'N/A'})</option>`);
+                        });
+                        userSelect.trigger('change');
+                    }
+                });
+            } else {
+                userSelect.prop('disabled', true);
+            }
+        });
+
+        // Listen for user change to show balance
+        userSelect.on('change', function() {
             var selectedOption = $(this).find('option:selected');
             var balance = selectedOption.data('balance');
             

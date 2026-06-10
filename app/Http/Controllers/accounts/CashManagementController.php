@@ -98,6 +98,7 @@ class CashManagementController extends Controller
     public function getUsersByRole(Request $request)
     {
         $users = User::where('role', $request->role)
+            ->with('wallet:id,user_id,current_balance')
             ->select('id', 'name', 'code')
             ->orderBy('name', 'asc')
             ->get();
@@ -106,38 +107,35 @@ class CashManagementController extends Controller
     }
 
     /**
-     * Show the form to send money to a supervisor.
+     * Show the form to send money to a user.
      */
     public function sendForm()
     {
-        // Get all users with the role 'supervisor' and include their wallets
-        $supervisors = User::where('role', 'supervisor')
-            ->with('wallet')
-            ->orderBy('name', 'asc')
-            ->get();
+        // Get all distinct roles for the dropdown
+        $roles = User::select('role')->distinct()->whereNotNull('role')->pluck('role');
 
-        return view('account.send.form', compact('supervisors'));
+        return view('account.send.form', compact('roles'));
     }
 
     /**
-     * Process sending money to a supervisor.
+     * Process sending money to a user.
      */
     public function sendMoney(Request $request)
     {
         $request->validate([
-            'supervisor_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0.01',
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Verify the user is actually a supervisor
-            $supervisor = User::where('id', $request->supervisor_id)->where('role', 'supervisor')->firstOrFail();
+            // Find the user
+            $user = User::findOrFail($request->user_id);
 
             // Find or create their wallet
             $wallet = Wallet::firstOrCreate(
-                ['user_id' => $supervisor->id],
+                ['user_id' => $user->id],
                 ['current_balance' => 0]
             );
 
@@ -159,7 +157,7 @@ class CashManagementController extends Controller
 
             DB::commit();
 
-            return redirect()->route('account.cashmanagement.send')->with('success', 'Money successfully sent to ' . $supervisor->name . '.');
+            return redirect()->route('account.cashmanagement.send')->with('success', 'Money successfully sent to ' . $user->name . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
