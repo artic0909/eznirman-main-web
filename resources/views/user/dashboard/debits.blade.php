@@ -11,7 +11,7 @@
         <span class="summary-stat-val" style="color: var(--secondary); font-size: 24px;">₹{{ number_format($wallet->current_balance, 2) }}</span>
       </div>
       <div class="summary-stat-box" style="padding-left: 10px;">
-        <span class="summary-stat-lbl">Debit History Transactions</span>
+        <span class="summary-stat-lbl">Debit History</span>
         <span class="summary-stat-val highlight" style="color: var(--danger); font-size: 24px;">{{ $debits->total() }} entries</span>
       </div>
     </section>
@@ -19,7 +19,7 @@
     <!-- Debits Ledger List -->
     <section class="transactions-section">
       <div class="section-header">
-        <span class="section-title">Spent Disbursals (Debits)</span>
+        <span class="section-title">All Debits</span>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="debitSearch" placeholder="Search disbursals..." onkeyup="searchDebits()" style="background: var(--surface); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 12px; padding: 6px 12px; border-radius: 10px; outline: none; width: 180px;">
         </div>

@@ -11,7 +11,7 @@
         <span class="summary-stat-val" style="color: var(--secondary); font-size: 24px;">₹{{ number_format($wallet->current_balance, 2) }}</span>
       </div>
       <div class="summary-stat-box" style="padding-left: 10px;">
-        <span class="summary-stat-lbl">Credit History Transactions</span>
+        <span class="summary-stat-lbl">Credit History</span>
         <span class="summary-stat-val highlight" style="color: var(--success); font-size: 24px;">{{ $credits->total() }} entries</span>
       </div>
     </section>
@@ -19,7 +19,7 @@
     <!-- Credits Ledger List -->
     <section class="transactions-section">
       <div class="section-header">
-        <span class="section-title">Received Allocations (Credits)</span>
+        <span class="section-title">All Credits</span>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="creditSearch" placeholder="Search allocations..." onkeyup="searchCredits()" style="background: var(--surface); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 12px; padding: 6px 12px; border-radius: 10px; outline: none; width: 180px;">
         </div>

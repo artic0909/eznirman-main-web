@@ -310,7 +310,8 @@
 
     @media (min-width: 1024px) {
       .header-left-title {
-        display: block;
+        display: flex;
+        flex-direction: column;
       }
     }
 
@@ -1458,7 +1459,7 @@
 
       <!-- HEADER NAVBAR -->
       <header>
-        <div class="header-left-title" style="display: flex; flex-direction: column;">
+        <div class="header-left-title">
           <span>{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
           <span class="site-meta-sub">Active Site Dashboard</span>
         </div>
