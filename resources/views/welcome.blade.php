@@ -821,21 +821,19 @@
   <nav class="sidebar-nav">
     <div class="sidebar-nav-label">Navigation</div>
     <ul class="sidebar-links">
-      <li><a href="#features"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Features<span class="link-arrow">›</span></a></li>
-      <li><a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Projects<span class="link-arrow">›</span></a></li>
-      <li><a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Reports<span class="link-arrow">›</span></a></li>
-      <li><a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Team<span class="link-arrow">›</span></a></li>
+      <li><a href="/login"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Staff Login<span class="link-arrow">›</span></a></li>
+      <li><a href="{{route('account.login')}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Accounts Dashboard<span class="link-arrow">›</span></a></li>
+      <li><a href="{{route('admin.login')}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Administrator Dashboard<span class="link-arrow">›</span></a></li>
     </ul>
     <div class="sidebar-divider"></div>
     <div class="sidebar-nav-label">Support</div>
     <ul class="sidebar-links">
-      <li><a href="#">Documentation<span class="link-arrow">›</span></a></li>
-      <li><a href="#">Contact Us<span class="link-arrow">›</span></a></li>
+      <li><a href="tel:+916292237205">Call Support<span class="link-arrow">›</span></a></li>
+      <li><a href="https://wa.me/+916292237205?text=Hey%20*Saklin*,%20I%20need%20help%20in%20EZ%20Nirman%20Software">Chat Support<span class="link-arrow">›</span></a></li>
     </ul>
   </nav>
   <div class="sidebar-actions">
-    <a href="#" class="sidebar-btn-ghost">Sign In</a>
-    <a href="#" class="sidebar-btn-primary">Get Started</a>
+    <a href="#" class="sidebar-btn-primary">Get App</a>
   </div>
   <div class="sidebar-footer">© 2024 Eznirman.com — Construction OS</div>
 </aside>
@@ -872,7 +870,7 @@
       Eznirman centralises your entire construction workflow — from site scheduling and material procurement to contractor coordination and financial tracking — in one command centre.
     </p>
     <div class="hero-actions">
-      <a href="#" class="btn-large">Enter Dashboard</a>
+      <a href="#" class="btn-large">Get Application</a>
       <a href="#features" class="btn-outline">Explore Features</a>
     </div>
     <div class="hero-stats">
