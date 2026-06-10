@@ -33,7 +33,6 @@
             <ul class="pc-submenu">
               <li class="pc-item"><a class="pc-link" href="#!">Cash Management</a></li>
               <li class="pc-item"><a class="pc-link" href="#!">Make Payments</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Recieve Payments</a></li>
             </ul>
           </li>
 
