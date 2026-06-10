@@ -19,7 +19,7 @@
     <!-- All Transactions Ledger List -->
     <section class="transactions-section">
       <div class="section-header">
-        <span class="section-title">All Transactions History</span>
+        <span class="section-title">All History</span>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="txSearch" placeholder="Search all records..." onkeyup="searchTx()" style="background: var(--surface); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 12px; padding: 6px 12px; border-radius: 10px; outline: none; width: 200px;">
         </div>

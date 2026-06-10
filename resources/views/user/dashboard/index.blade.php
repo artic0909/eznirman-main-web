@@ -38,32 +38,7 @@
       </div>
     </section>
 
-    <!-- DYNAMIC TRANSACTION STATS THIS MONTH -->
-    <section class="monthly-summary-card">
-      <div class="summary-stat-box" style="border-right: 1px solid var(--surface-border); padding-right: 10px;">
-        <span class="summary-stat-lbl">Monthly Transactions</span>
-        <span class="summary-stat-val highlight">{{ $totalTransactionsCount }} Tx</span>
-      </div>
-      <div class="summary-stat-box" style="padding-left: 10px;">
-        <span class="summary-stat-lbl">Total Volume</span>
-        <span class="summary-stat-val">₹{{ number_format($totalTransactionsAmount, 2) }}</span>
-      </div>
-    </section>
 
-    <!-- Monthly Limit Spent -->
-    <section class="spend-metrics">
-      <div class="metrics-header">
-        <span class="metrics-title">Monthly Limit Spent</span>
-        <span class="metrics-amount" id="metricsSummary">₹{{ number_format($monthlySpend, 2) }} / ₹60,000.00</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-bar" id="metricsProgressBar" style="width: {{ min(($monthlySpend / 60000) * 100, 100) }}%"></div>
-      </div>
-      <div class="metrics-footer">
-        <span>Usage Ratio: {{ number_format(min(($monthlySpend / 60000) * 100, 100), 1) }}%</span>
-        <span>Available Limit: ₹{{ number_format(max(60000 - $monthlySpend, 0), 2) }}</span>
-      </div>
-    </section>
 
     <!-- Ledger List -->
     <section class="transactions-section" id="ledgerSection">
@@ -116,11 +91,11 @@
 
     <!-- Quick Action Buttons -->
     <section class="quick-actions">
-      <div class="action-btn" onclick="openModal('qrModal')">
-        <div class="action-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <div class="action-btn" style="cursor: default; pointer-events: none;">
+        <div class="action-icon" style="color: var(--warning); background: rgba(232, 160, 32, 0.1); border: 1px solid rgba(232, 160, 32, 0.2);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
         </div>
-        <span class="action-label">Scan QR</span>
+        <span class="action-label">{{ $totalTransactionsCount }} Tx <br><small style="font-size: 8px; opacity: 0.7;">This Month</small></span>
       </div>
 
       <div class="action-btn" onclick="window.location.href='{{ route('user.sendmoney') }}'">
@@ -150,62 +125,8 @@
       <div class="site-panel-header">
         <div class="site-icon">🏗️</div>
         <div style="display: flex; flex-direction: column;">
-          <span class="site-meta-title">Project Site Alpha</span>
-          <span class="site-meta-sub">Active Location Status Dashboard</span>
-        </div>
-      </div>
-
-      <div class="checklist-section">
-        <span class="check-title">Daily Checklist Status</span>
-        
-        <div class="check-item">
-          <div class="check-box checked">✓</div>
-          <span>Labour attendance uploaded</span>
-        </div>
-
-        <div class="check-item">
-          <div class="check-box checked">✓</div>
-          <span>Site logs checklist verified</span>
-        </div>
-
-        <div class="check-item">
-          <div class="check-box"></div>
-          <span style="color: var(--text-muted);">Cement logistics delivery validation</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Spend Breakdown Analytics -->
-    <section class="budget-chart-card">
-      <span class="check-title" style="margin-bottom: 4px;">Wallet Spend Distribution</span>
-      
-      <div class="chart-item">
-        <div class="chart-lbl-row">
-          <span class="chart-lbl">Materials Sourcing</span>
-          <span class="chart-pct">68%</span>
-        </div>
-        <div class="chart-bar-track">
-          <div class="chart-bar-fill" style="width: 68%; background: var(--secondary); box-shadow: 0 0 6px rgba(232,160,32,0.4);"></div>
-        </div>
-      </div>
-
-      <div class="chart-item">
-        <div class="chart-lbl-row">
-          <span class="chart-lbl">Labour & Wages</span>
-          <span class="chart-pct">22%</span>
-        </div>
-        <div class="chart-bar-track">
-          <div class="chart-bar-fill" style="width: 22%; background: var(--primary); box-shadow: 0 0 6px rgba(124,111,247,0.4);"></div>
-        </div>
-      </div>
-
-      <div class="chart-item">
-        <div class="chart-lbl-row">
-          <span class="chart-lbl">Logistics / Fuel Claim</span>
-          <span class="chart-pct">10%</span>
-        </div>
-        <div class="chart-bar-track">
-          <div class="chart-bar-fill" style="width: 10%; background: var(--success); box-shadow: 0 0 6px rgba(16,185,129,0.4);"></div>
+          <span class="site-meta-title">{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
+          <span class="site-meta-sub">Active Site Dashboard</span>
         </div>
       </div>
     </section>

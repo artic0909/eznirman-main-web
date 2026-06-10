@@ -916,8 +916,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--surface-border);
-      padding-bottom: 16px;
     }
 
     .site-icon {
@@ -1460,7 +1458,10 @@
 
       <!-- HEADER NAVBAR -->
       <header>
-        <span class="header-left-title">Supervisor Command Console</span>
+        <div class="header-left-title" style="display: flex; flex-direction: column;">
+          <span>{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
+          <span class="site-meta-sub">Active Site Dashboard</span>
+        </div>
 
         <!-- Mobile User Greeting Info -->
         <div class="user-info-mobile">
