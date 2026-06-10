@@ -152,6 +152,8 @@ class CashManagementController extends Controller
                 'amount' => $amount,
                 'note' => 'Received from Head Office',
                 'type' => 'credit',
+                'pay_to' => 'from',
+                'pay_to_code' => 'Head Office',
                 'balance_after' => $newBalance,
             ]);
 
