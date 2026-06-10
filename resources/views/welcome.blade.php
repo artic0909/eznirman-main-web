@@ -1023,8 +1023,11 @@
   <h2 class="cta-title">Ready To Build Smarter?</h2>
   <p class="cta-sub">Join hundreds of construction firms already using Eznirman to deliver projects on time and on budget.</p>
   <div class="cta-buttons">
-    <a href="#" class="btn-large">Start Free Trial</a>
-    <a href="#" class="btn-outline">Schedule a Demo</a>
+    <a href="tel:+6292237205" class="btn-large">Call Support</a>
+    <a href="https://wa.me/916292237205?text=Hello%20Saklin,%20I%20am%20interested%20in%20a%20demo%20of%20EZ%20Nirman%20Software.%20Please%20share%20the%20details." class="btn-outline">
+    Get Software Demo
+    </a>
+    
   </div>
 </section>
 
