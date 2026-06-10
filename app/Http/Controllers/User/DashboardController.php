@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
         // 1. Ensure user has a wallet
         $wallet = $user->wallet()->firstOrCreate([], [
-            'current_balance' => 48250.00 // Give initial balance for beautiful demonstration
+            'current_balance' => 0 // Give initial balance for beautiful demonstration
         ]);
 
         // 2. Calculate monthly statistics
@@ -49,7 +49,7 @@ class DashboardController extends Controller
         // 5. Retrieve workers list for select2 dropdown
         $workers = \App\Models\User::where('role', 'worker')->get();
 
-        return view('user.dashbaord.index', compact(
+        return view('user.dashboard.index', compact(
             'wallet',
             'totalTransactionsCount',
             'totalTransactionsAmount',
@@ -135,7 +135,7 @@ class DashboardController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(10);
 
-        return view('user.dashbaord.credits', compact('wallet', 'credits'));
+        return view('user.dashboard.credits', compact('wallet', 'credits'));
     }
 
     /**
@@ -152,7 +152,7 @@ class DashboardController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(10);
 
-        return view('user.dashbaord.debits', compact('wallet', 'debits'));
+        return view('user.dashboard.debits', compact('wallet', 'debits'));
     }
 
     /**
@@ -168,7 +168,7 @@ class DashboardController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(15);
 
-        return view('user.dashbaord.transactions', compact('wallet', 'transactions'));
+        return view('user.dashboard.transactions', compact('wallet', 'transactions'));
     }
 
     /**
@@ -177,7 +177,7 @@ class DashboardController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        return view('user.dashbaord.profile', compact('user'));
+        return view('user.dashboard.profile', compact('user'));
     }
 
     /**
@@ -217,5 +217,29 @@ class DashboardController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Show Send Money page
+     */
+    public function sendMoney()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet()->firstOrCreate([]);
+        $accountCodes = Accountcode::all();
+        $workers = \App\Models\User::where('role', 'worker')->get();
+
+        return view('user.wallet.sendmoney', compact('wallet', 'accountCodes', 'workers'));
+    }
+
+    /**
+     * Show Add Money page
+     */
+    public function addMoney()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet()->firstOrCreate([]);
+
+        return view('user.wallet.addmoney', compact('wallet'));
     }
 }

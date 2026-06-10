@@ -1487,15 +1487,15 @@
 
       <!-- BOTTOM APP NAV FOR MOBILE -->
       <nav class="bottom-nav">
-        <a href="#" class="nav-item active" onclick="window.location.reload();">
+        <a href="{{ route('user.dashboard') }}" class="nav-item {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
           <span>Console</span>
         </a>
-        <a href="#" class="nav-item" onclick="openModal('transferModal');">
+        <a href="{{ route('user.sendmoney') }}" class="nav-item {{ request()->routeIs('user.sendmoney') ? 'active' : '' }}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
           <span>Transfer</span>
         </a>
-        <a href="#" class="nav-item" onclick="openModal('requestModal');">
+        <a href="{{ route('user.addmoney') }}" class="nav-item {{ request()->routeIs('user.addmoney') ? 'active' : '' }}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           <span>Request</span>
         </a>
@@ -1508,112 +1508,6 @@
     </div>
   </div>
 
-  <!-- ── MODAL: TRANSFER MONEY ── -->
-  <div class="modal" id="transferModal">
-    <div class="modal-backdrop" onclick="closeModal('transferModal')"></div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Transfer Funds</h3>
-        <button class="modal-close" onclick="closeModal('transferModal')">×</button>
-      </div>
-      <form id="transferForm" onsubmit="handleTransferSubmit(event)">
-        <!-- Disbursal Date -->
-        <div class="form-group">
-          <label class="form-lbl">Disbursal Date</label>
-          <input type="date" class="form-ctrl" id="transferDate" value="{{ date('Y-m-d') }}" required>
-        </div>
-
-        <!-- Pay To Choice -->
-        <div class="form-group">
-          <label class="form-lbl">Pay To</label>
-          <select class="form-ctrl" id="transferPayTo" required onchange="togglePayToFields()">
-            <option value="worker" selected>Worker</option>
-            <option value="contractor">Contractor</option>
-            <option value="others">Others</option>
-          </select>
-        </div>
-
-        <!-- Conditional Worker search via Select2 -->
-        <div class="form-group" id="workerCodeGroup">
-          <label class="form-lbl">Worker Code & Name</label>
-          <select class="form-ctrl select2-worker" id="transferWorkerCode" style="width: 100%;">
-            <option value="" disabled selected>Search Worker Code or Name...</option>
-            @foreach($workers as $worker)
-              <option value="{{ $worker->code }}">{{ $worker->code }} — {{ $worker->name }}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <!-- Conditional Contractor reference -->
-        <div class="form-group" id="contractorCodeGroup" style="display: none;">
-          <label class="form-lbl">Contractor Name / Reference</label>
-          <input type="text" class="form-ctrl" id="transferContractorCode" placeholder="Enter contractor name or code">
-        </div>
-
-        <!-- Category Reference -->
-        <div class="form-group">
-          <label class="form-lbl">Category Reference</label>
-          <select class="form-ctrl" required id="transferAccountCode">
-            @foreach($accountCodes as $ac)
-              <option value="{{ $ac->id }}">{{ $ac->code }} — {{ $ac->name }}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <!-- Amount -->
-        <div class="form-group">
-          <label class="form-lbl">Transfer Amount (₹)</label>
-          <input type="number" class="form-ctrl" placeholder="Enter amount" min="1" max="{{ $wallet->current_balance }}" required id="transferAmount">
-        </div>
-
-        <!-- Remarks -->
-        <div class="form-group">
-          <label class="form-lbl">Remarks / Purpose</label>
-          <input type="text" class="form-ctrl" placeholder="e.g. concrete cement or local wages" required id="transferRemarks">
-        </div>
-
-        <button type="submit" class="modal-submit">Confirm Disbursal</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ── MODAL: REQUEST CASH ── -->
-  <div class="modal" id="requestModal">
-    <div class="modal-backdrop" onclick="closeModal('requestModal')"></div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Request Budget Allocation</h3>
-        <button class="modal-close" onclick="closeModal('requestModal')">×</button>
-      </div>
-      <form id="requestForm" onsubmit="handleRequestSubmit(event)">
-        <!-- Disbursal Date -->
-        <div class="form-group">
-          <label class="form-lbl">Disbursal Date</label>
-          <input type="date" class="form-ctrl" id="requestDate" value="{{ date('Y-m-d') }}" required>
-        </div>
-
-        <!-- From Name Reference -->
-        <div class="form-group">
-          <label class="form-lbl">From</label>
-          <input type="text" class="form-ctrl" id="requestFrom" placeholder="Enter your name" value="{{ Auth::user()->name }}" required>
-        </div>
-
-        <!-- Required Amount -->
-        <div class="form-group">
-          <label class="form-lbl">Required Amount (₹)</label>
-          <input type="number" class="form-ctrl" placeholder="e.g. ₹15,000" min="1" required id="requestAmount">
-        </div>
-
-        <!-- Justification Details -->
-        <div class="form-group">
-          <label class="form-lbl">Justification Details</label>
-          <input type="text" class="form-ctrl" placeholder="Provide justification remarks" required id="requestJustification">
-        </div>
-
-        <button type="submit" class="modal-submit">Submit Request</button>
-      </form>
-    </div>
-  </div>
 
   <!-- ── MODAL: SCAN QR CODE ── -->
   <div class="modal" id="qrModal">
@@ -1689,136 +1583,6 @@
       }, 4000);
     }
 
-    // Toggle conditional fields based on Pay To selection
-    function togglePayToFields() {
-      const payTo = document.getElementById('transferPayTo').value;
-      const workerGroup = document.getElementById('workerCodeGroup');
-      const contractorGroup = document.getElementById('contractorCodeGroup');
-      
-      workerGroup.style.display = 'none';
-      contractorGroup.style.display = 'none';
-      
-      if (payTo === 'worker') {
-        workerGroup.style.display = 'block';
-      } else if (payTo === 'contractor') {
-        contractorGroup.style.display = 'block';
-      }
-    }
-
-    // Initialize Select2 search dropdown on document ready
-    $(document).ready(function() {
-      if (typeof $.fn.select2 !== 'undefined') {
-        $('.select2-worker').select2({
-          dropdownParent: $('#transferModal'),
-          placeholder: "Search Worker Code or Name..."
-        });
-      }
-      togglePayToFields();
-    });
-
-    // Ajax Submit for Transfer Funds
-    function handleTransferSubmit(event) {
-      event.preventDefault();
-      const date = document.getElementById('transferDate').value;
-      const pay_to = document.getElementById('transferPayTo').value;
-      
-      let pay_to_code = '';
-      if (pay_to === 'worker') {
-        pay_to_code = document.getElementById('transferWorkerCode').value;
-        if (!pay_to_code) {
-          alert('Please select a Worker Code from the search list.');
-          return;
-        }
-      } else if (pay_to === 'contractor') {
-        pay_to_code = document.getElementById('transferContractorCode').value.trim();
-        if (!pay_to_code) {
-          alert('Please enter a Contractor Name or Reference.');
-          return;
-        }
-      }
-
-      const accountcode_id = document.getElementById('transferAccountCode').value;
-      const amount = parseFloat(document.getElementById('transferAmount').value);
-      const remarks = document.getElementById('transferRemarks').value.trim();
-
-      fetch("{{ route('user.transaction.store') }}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({
-          amount: amount,
-          type: 'debit',
-          date: date,
-          pay_to: pay_to,
-          pay_to_code: pay_to_code,
-          note: remarks,
-          accountcode_id: accountcode_id
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          closeModal('transferModal');
-          showNotification('Disbursal Successful', `Sent ₹${amount.toLocaleString('en-IN')} to ${pay_to.toUpperCase()} ${pay_to_code}`);
-          document.getElementById('transferForm').reset();
-          
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          alert(data.message || 'Transfer processing failed.');
-        }
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        alert('Server connection error.');
-      });
-    }
-
-    // Ajax Submit for Request Cash
-    function handleRequestSubmit(event) {
-      event.preventDefault();
-      const date = document.getElementById('requestDate').value;
-      const from = document.getElementById('requestFrom').value.trim();
-      const amount = parseFloat(document.getElementById('requestAmount').value);
-      const justification = document.getElementById('requestJustification').value.trim();
-
-      fetch("{{ route('user.transaction.store') }}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({
-          amount: amount,
-          type: 'credit',
-          date: date,
-          pay_to: 'from',
-          pay_to_code: from,
-          note: justification
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          closeModal('requestModal');
-          showNotification('Request Filed', `Site budget request of ₹${amount.toLocaleString('en-IN')} successfully filed.`);
-          document.getElementById('requestForm').reset();
-          
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          alert(data.message || 'Request submission failed.');
-        }
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        alert('Server connection error.');
-      });
-    }
 
     // Receipt details drawer popup loader
     function openReceiptModal(title, refId, amount, status, date, target, desc, balanceAfter) {
