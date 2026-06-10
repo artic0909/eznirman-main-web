@@ -152,6 +152,28 @@
       });
     }
 
+    // Adjust layout order on mobile
+    function adjustDashboardLayout() {
+      const walletCard = document.querySelector('.wallet-card');
+      const quickActions = document.querySelector('.quick-actions');
+      const colRight = document.querySelector('.col-right');
+      
+      if (window.innerWidth < 768) {
+        // On mobile, move quick actions immediately after ATM card
+        if (walletCard && quickActions && walletCard.nextSibling !== quickActions) {
+          walletCard.parentNode.insertBefore(quickActions, walletCard.nextSibling);
+        }
+      } else {
+        // On desktop, ensure quick actions is at the top of the right column
+        if (colRight && quickActions && colRight.firstChild !== quickActions) {
+          colRight.insertBefore(quickActions, colRight.firstChild);
+        }
+      }
+    }
+
+    window.addEventListener('resize', adjustDashboardLayout);
+    document.addEventListener('DOMContentLoaded', adjustDashboardLayout);
+
     // Scroll trigger
     document.getElementById('historyScrollTrigger').addEventListener('click', () => {
       document.getElementById('ledgerSection').scrollIntoView({ behavior: 'smooth', block: 'start' });

@@ -428,6 +428,8 @@
     }
 
     /* COLUMN GROUPING */
+
+
     .col-left {
       display: flex;
       flex-direction: column;
