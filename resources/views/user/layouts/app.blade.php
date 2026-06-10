@@ -1481,8 +1481,8 @@
             <img src="{{ Auth::user()->profile_image ? asset('storage/' . Auth::user()->profile_image) : 'https://api.dicebear.com/7.x/bottts/svg?seed=' . Auth::user()->code }}" alt="{{ Auth::user()->name }}">
           </div>
           <div class="header-left-title" style="margin-right: 0;">
-            <span>{{ Auth::user()->name }} <span style="color: var(--primary);">({{ Auth::user()->code }})</span></span>
-            <span class="site-meta-sub">{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
+            <span style="text-transform: capitalize;">{{ Auth::user()->name }} <span style="color: var(--primary);">({{ Auth::user()->code }})</span></span>
+            <span style="text-transform: capitalize;" class="site-meta-sub">{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
           </div>
         </div>
 
