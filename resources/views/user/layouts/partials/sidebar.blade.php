@@ -9,7 +9,7 @@
       <img src="{{ Auth::user()->profile_image ? asset('storage/' . Auth::user()->profile_image) : 'https://api.dicebear.com/7.x/bottts/svg?seed=' . Auth::user()->code }}" alt="{{ Auth::user()->name }}">
     </div>
     <div class="d-name">{{ Auth::user()->name }}</div>
-    <div class="d-role-pill">Role: {{ Auth::user()->role }}</div>
+    <div class="d-role-pill">Role: {{ Auth::user()->code }}</div>
   </div>
 
   <nav class="sidebar-menu-links">

@@ -37,11 +37,13 @@
         <!-- Grid Fields -->
         <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
           
-          @media (min-width: 768px) {
-            div[style*="grid-template-columns"] {
-              grid-template-columns: 1fr 1fr !important;
+          <style>
+            @media (min-width: 768px) {
+              div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr 1fr !important;
+              }
             }
-          }
+          </style>
 
           <!-- Name field -->
           <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -72,8 +74,8 @@
 
           <!-- Staff/Supervisor ID (Readonly) -->
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Employee Code & Role</label>
-            <input type="text" readonly value="ID: {{ $user->code }} — ({{ strtoupper($user->role) }})" style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; padding: 12px 16px; border-radius: 12px; outline: none; cursor: not-allowed;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Employee Code</label>
+            <input type="text" readonly value="CODE: {{ $user->code }}" style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; padding: 12px 16px; border-radius: 12px; outline: none; cursor: not-allowed;">
           </div>
         </div>
 
@@ -86,29 +88,7 @@
           @enderror
         </div>
 
-        <!-- Password section banner title -->
-        <div style="border-top: 1px solid var(--surface-border); margin-top: 10px; padding-top: 24px;">
-          <span style="font-size: 14px; font-weight: 600; color: var(--white); display: block; margin-bottom: 4px;">Update Password</span>
-          <span style="font-size: 11px; color: var(--text-muted);">Leave blank if you do not wish to change your password.</span>
-        </div>
 
-        <!-- Password Fields Grid -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
-          <!-- New Password -->
-          <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">New Password</label>
-            <input type="password" name="password" style="background: var(--surface-light); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 14px; padding: 12px 16px; border-radius: 12px; outline: none; transition: border-color 0.25s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--surface-border)'">
-            @error('password')
-              <span style="font-size: 11px; color: var(--danger);">{{ $message }}</span>
-            @enderror
-          </div>
-
-          <!-- Confirm Password -->
-          <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Confirm New Password</label>
-            <input type="password" name="password_confirmation" style="background: var(--surface-light); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 14px; padding: 12px 16px; border-radius: 12px; outline: none; transition: border-color 0.25s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--surface-border)'">
-          </div>
-        </div>
 
         <!-- Submit Button -->
         <div style="margin-top: 10px;">
