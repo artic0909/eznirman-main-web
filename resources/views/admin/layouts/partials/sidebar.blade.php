@@ -136,28 +136,6 @@
             </ul>
           </li>
 
-
-          <!-- Petty Cash Management -->
-          <li class="pc-item pc-caption">
-            <label>Petty Cash Management</label>
-            <i class="ti ti-brand-chrome"></i>
-          </li>
-          <li class="pc-item">
-            <a href="" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-barcode"></i></span>
-              <span class="pc-mtext">A/C Code</span>
-            </a>
-          </li>
-          <li class="pc-item pc-hasmenu">
-            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-currency-rupee"></i></span><span
-                class="pc-mtext">Petty Cash</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-            <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="#!">Cash Management</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Make Payments</a></li>
-              <li class="pc-item"><a class="pc-link" href="#!">Recieve Payments</a></li>
-            </ul>
-          </li>
-
           <!-- Settings -->
           <li class="pc-item pc-caption">
             <label>System Settings</label>
