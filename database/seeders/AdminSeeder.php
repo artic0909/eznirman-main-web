@@ -11,7 +11,7 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        if (DB::table('admins')->where('email', 'admin.ez@nirman.com')->exists()) {
+        if (DB::table('admins')->where('email', 'admin@ez.com')->exists()) {
             return;
         }
 
