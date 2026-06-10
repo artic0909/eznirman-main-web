@@ -26,7 +26,7 @@
             <div class="card-body py-3">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-success mb-0 fw-bold">Total Credits</p>
+                        <p class="text-success mb-0 fw-bold">Total Payments Transfer</p>
                         <h4 class="mb-0 text-success">₹{{ number_format($totalCredits, 2) }}</h4>
                     </div>
                     <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
@@ -41,7 +41,7 @@
             <div class="card-body py-3">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <p class="text-danger mb-0 fw-bold">Total Debits</p>
+                        <p class="text-danger mb-0 fw-bold">Total Debits from User</p>
                         <h4 class="mb-0 text-danger">₹{{ number_format($totalDebits, 2) }}</h4>
                     </div>
                     <div class="bg-danger text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">

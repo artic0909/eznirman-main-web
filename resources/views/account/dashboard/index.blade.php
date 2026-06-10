@@ -67,7 +67,7 @@
                             <h3 class="mb-0 text-warning">{{ $totalWorkers }}</h3>
                         </div>
                         <div class="bg-warning text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="ti ti-helmet fs-3"></i>
+                            <i class="ti ti-tools fs-3"></i>
                         </div>
                     </div>
                 </div>
@@ -170,10 +170,10 @@
     document.addEventListener('DOMContentLoaded', function () {
         var options = {
             series: [{
-                name: 'Credits (In)',
+                name: 'Payments Transfer',
                 data: @json($chartCredits)
             }, {
-                name: 'Debits (Out)',
+                name: 'Debits from Users',
                 data: @json($chartDebits)
             }],
             chart: {
