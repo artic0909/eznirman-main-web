@@ -305,20 +305,35 @@
       font-weight: 700;
       color: var(--white);
       letter-spacing: 0.5px;
-      display: none;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+      margin-right: 12px;
     }
 
-    @media (min-width: 1024px) {
-      .header-left-title {
-        display: flex;
-        flex-direction: column;
-      }
+    .header-left-title > span:first-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-left-title > .site-meta-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+      margin-top: 2px;
     }
 
     .user-info-mobile {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-shrink: 0;
+      margin-right: 12px;
     }
 
     @media (min-width: 1024px) {
@@ -1459,19 +1474,13 @@
 
       <!-- HEADER NAVBAR -->
       <header>
-        <div class="header-left-title">
-          <span>{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
-          <span class="site-meta-sub">Active Site Dashboard</span>
-        </div>
-
-        <!-- Mobile User Greeting Info -->
-        <div class="user-info-mobile">
-          <div class="avatar-wrapper-m">
+        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;">
+          <div class="avatar-wrapper-m" style="flex-shrink: 0;">
             <img src="{{ Auth::user()->profile_image ? asset('storage/' . Auth::user()->profile_image) : 'https://api.dicebear.com/7.x/bottts/svg?seed=' . Auth::user()->code }}" alt="{{ Auth::user()->name }}">
           </div>
-          <div style="display: flex; flex-direction: column;">
-            <span style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Portal</span>
-            <span style="font-size: 14px; font-weight: 600;">{{ Auth::user()->name }}</span>
+          <div class="header-left-title" style="margin-right: 0;">
+            <span>{{ Auth::user()->name }} <span style="color: var(--primary);">({{ Auth::user()->code }})</span></span>
+            <span class="site-meta-sub">{{ Auth::user()->site->site_name ?? 'Not Assigned' }} - {{ Auth::user()->site->site_code ?? '***' }}</span>
           </div>
         </div>
 
