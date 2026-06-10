@@ -18,13 +18,12 @@ class DashboardController extends Controller
         $totalWorkers = \App\Models\User::where('role', 'worker')->count();
         $totalHrs = \App\Models\User::where('role', 'hr')->count();
 
-        // 2. Transaction Metrics
-        $totalTransactions = \App\Models\Transaction::count();
-
-        // 3. Financial Metrics (Yearly Filter)
+        // 2. Year Filter & Transactions Query
         $year = $request->input('year', date('Y'));
-        
         $yearlyTransactions = \App\Models\Transaction::whereYear('date', $year)->get();
+
+        // 3. Transaction & Financial Metrics
+        $totalTransactions = $yearlyTransactions->count();
         
         $totalCredits = $yearlyTransactions->where('type', 'credit')->sum('amount');
         $totalDebits = $yearlyTransactions->where('type', 'debit')->sum('amount');
