@@ -24,5 +24,11 @@
      Route::put('/accountcode/{id}', [AccountcodeController::class, 'update'])->name('accountcode.update');
      Route::delete('/accountcode/{id}', [AccountcodeController::class, 'destroy'])->name('accountcode.destroy');
  
-     Route::get('/logout', [AccountAuthController::class, 'logout'])->name('logout');
+     // Cash Management
+    Route::get('/cashmanagement', [\App\Http\Controllers\Accounts\CashManagementController::class, 'index'])->name('cashmanagement.index');
+    Route::get('/cashmanagement/users-by-role', [\App\Http\Controllers\Accounts\CashManagementController::class, 'getUsersByRole'])->name('cashmanagement.users_by_role');
+    Route::get('/cashmanagement/send', [\App\Http\Controllers\Accounts\CashManagementController::class, 'sendForm'])->name('cashmanagement.send');
+    Route::post('/cashmanagement/send', [\App\Http\Controllers\Accounts\CashManagementController::class, 'sendMoney'])->name('cashmanagement.process');
+
+    Route::get('/logout', [AccountAuthController::class, 'logout'])->name('logout');
  });
