@@ -14,8 +14,8 @@ class AccountSeeder extends Seeder
     public function run(): void
     {
         Account::updateOrCreate(
-            ['email' => 'accounts.ez@nirman.com'],
-            ['password' => Hash::make('accounts.ez123')]
+            ['email' => 'accounts@ez.com'],
+            ['password' => Hash::make('12345678')]
         );
     }
 }
