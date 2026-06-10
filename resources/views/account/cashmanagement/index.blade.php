@@ -114,9 +114,8 @@
                                 <th>Description</th>
                                 <th>Pay To</th>
                                 <th>Account Code</th>
-                                <th>Credit (In)</th>
-                                <th>Debit (Out)</th>
-                                <th>Balance After</th>
+                                <th>Credit/ Debit</th>
+                                <th>After Balance (₹)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,14 +147,10 @@
                                 </td>
                                 <td>
                                     @if($tx->type === 'credit')
-                                        <span class="fw-bold text-success">+₹{{ number_format($tx->amount, 2) }}</span>
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($tx->type === 'debit')
-                                        <span class="fw-bold text-danger">-₹{{ number_format($tx->amount, 2) }}</span>
+                                        <span class="fw-bold text-success">₹{{ number_format($tx->amount, 2) }}</span>
+
+                                    @elseif($tx->type === 'debit')
+                                        <span class="fw-bold text-danger">₹{{ number_format($tx->amount, 2) }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
