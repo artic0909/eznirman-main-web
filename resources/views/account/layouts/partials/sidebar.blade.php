@@ -36,12 +36,12 @@
             </ul>
           </li>
 
-          <li class="pc-item">
+          <!-- <li class="pc-item">
             <a href="" class="pc-link">
               <span class="pc-micon"><i class="ti ti-key"></i></span>
               <span class="pc-mtext">Petty User Login</span>
             </a>
-          </li>
+          </li> -->
 
           <!-- Settings -->
           <li class="pc-item pc-caption">
