@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eznirman — Accountant Login</title>
-<link rel="icon" href="{{ asset('assets/images/logo.gif') }}" type="image/x-icon">
+<link rel="icon" href="{{ asset('logo.png') }}" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
