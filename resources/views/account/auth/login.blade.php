@@ -41,6 +41,20 @@
   .blob-1 { width: 480px; height: 480px; background: var(--teal); opacity: 0.07; top: -160px; left: -80px; }
   .blob-2 { width: 400px; height: 400px; background: var(--amber); opacity: 0.07; bottom: -100px; right: -80px; }
 
+  /* ── Faded Background Logo ── */
+  .faded-bg-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    max-width: 600px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+    filter: grayscale(100%);
+  }
+
   /* ── Page: top nav + centered card ── */
   .topbar {
     position: fixed; top: 0; left: 0; right: 0;
@@ -351,6 +365,7 @@
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
+<img src="{{ asset('logo.png') }}" class="faded-bg-logo" alt="">
 
 <!-- TOP BAR -->
 <header class="topbar">

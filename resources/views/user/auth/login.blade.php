@@ -52,6 +52,20 @@
   .blob-1 { width: 550px; height: 550px; background: var(--violet); opacity: 0.09; bottom: -150px; right: -150px; }
   .blob-2 { width: 300px; height: 300px; background: var(--amber); opacity: 0.07; top: -80px; left: 20%; }
 
+  /* ── Faded Background Logo ── */
+  .faded-bg-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    max-width: 600px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+    filter: grayscale(100%);
+  }
+
   /* ── ROOT LAYOUT ── */
   .page {
     position: relative;
@@ -408,6 +422,7 @@
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
+<img src="{{ asset('logo.png') }}" class="faded-bg-logo" alt="">
 
 <div class="page">
 

@@ -58,6 +58,20 @@
   .blob-1 { width: 600px; height: 600px; background: var(--amber); top: -200px; right: -100px; }
   .blob-2 { width: 400px; height: 400px; background: #4a90d9; bottom: 100px; left: -150px; opacity: 0.1; }
 
+  /* ── Faded Background Logo ── */
+  .faded-bg-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    max-width: 600px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+    filter: grayscale(100%);
+  }
+
   /* ── Nav ── */
   nav {
     position: fixed;
@@ -805,6 +819,7 @@
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
+<img src="{{ asset('logo.png') }}" class="faded-bg-logo" alt="">
 
 <!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
