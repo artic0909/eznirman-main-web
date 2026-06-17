@@ -877,7 +877,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-    <div class="hero-badge">v2.4 — Now Live</div>
+    <div class="hero-badge">v2.O — Now Live</div>
     <h1 class="hero-title">
       Build <span class="accent">Smarter.</span>
       <span class="line-2">Deliver Faster.</span>
@@ -959,7 +959,7 @@
             <span class="proj-status status-active">Active</span>
           </div>
         </div>
-        <div class="mini-metrics">
+        <!-- <div class="mini-metrics">
           <div class="metric-box">
             <div class="metric-val amber">3,245</div>
             <div class="metric-key">Total Staff</div>
@@ -972,7 +972,7 @@
             <div class="metric-val">347</div>
             <div class="metric-key">Total Machinery</div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
