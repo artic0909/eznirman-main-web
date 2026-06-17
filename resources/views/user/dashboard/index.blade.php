@@ -27,14 +27,9 @@
         </div>
       </div>
 
-      <!-- ATM Emulated Card Number -->
-      <div class="atm-card-number">
-        5021 &nbsp; 1107 &nbsp; 4{{ substr(Auth::user()->mobile ?? '9876543210', -4) }} &nbsp; 8847
-      </div>
-
       <div class="atm-details-row">
         <div class="atm-holder-name">{{ strtoupper(Auth::user()->name) }}</div>
-        <div class="atm-expiry">VAL THRU: 12/30</div>
+        <div class="atm-expiry">VALID FROM: RCPL H.O</div>
       </div>
     </section>
 
