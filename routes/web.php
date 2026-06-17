@@ -11,6 +11,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
+
 Route::get('dashboard', [App\Http\Controllers\User\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

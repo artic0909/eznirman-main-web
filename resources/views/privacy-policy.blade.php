@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eznirman — Construction Management System</title>
+<title>Eznirman — Privacy Policy</title>
 <link rel="icon" href="{{ asset('logo.png') }}" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -62,10 +62,10 @@
   .faded-bg-logo {
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50vw;
-    max-width: 600px;
+    right: -10vw;
+    transform: translateY(-50%);
+    width: 60vw;
+    max-width: 800px;
     opacity: 0.04;
     pointer-events: none;
     z-index: 0;
@@ -874,179 +874,39 @@
   </button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-badge">v2.4 — Now Live</div>
-    <h1 class="hero-title">
-      Build <span class="accent">Smarter.</span>
-      <span class="line-2">Deliver Faster.</span>
-    </h1>
-    <p class="hero-sub">
-      Eznirman centralises your entire construction workflow — from site scheduling and material procurement to contractor coordination and financial tracking — in one command centre.
+<!-- PRIVACY POLICY -->
+<section style="position:relative; z-index:1; padding: 160px 56px 80px; max-width: 900px; margin: 0 auto;">
+  <div style="background: rgba(36,48,68,0.8); border: 1px solid rgba(232,160,32,0.15); padding: 48px; border-radius: 4px; backdrop-filter: blur(8px);">
+    <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--amber); margin-bottom: 24px; letter-spacing: 1px;">Privacy Policy</h1>
+    <p style="font-size: 15px; color: var(--concrete); line-height: 1.8; margin-bottom: 16px;">
+      Effective Date: 2026<br>
+      At Eznirman (Ranihati Construction PVT. LTD.), your privacy is our priority. This Privacy Policy outlines how we collect, use, and protect your information when you use our Construction Management System.
     </p>
-    <div class="hero-actions">
-      <a href="#" class="btn-large">Get Application</a>
-      <a href="#features" class="btn-outline">Explore Features</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-number">14<span>K</span></div>
-        <div class="stat-label">Projects Managed</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">98<span>%</span></div>
-        <div class="stat-label">On-time Delivery</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">3<span>X</span></div>
-        <div class="stat-label">Faster Reporting</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div style="position: relative;">
-      <span class="float-tag">Live Dashboard</span>
-      <div class="dashboard-card">
-        <div class="dash-header">
-          <span class="dash-title">Active Monitoring — System 2026</span>
-          <div class="dash-dot"></div>
-        </div>
-        <div class="project-list">
-          <div class="project-row">
-            <div>
-              <div class="proj-name">Machinery Tracking</div>
-              <div class="proj-location">Site Wise ↗ Data flow</div>
-            </div>
-            <div class="proj-progress">
-              <span class="progress-pct">100%</span>
-              <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-            </div>
-            <span class="proj-status status-active">Active</span>
-          </div>
-          <div class="project-row">
-            <div>
-              <div class="proj-name">Material Purchase</div>
-              <div class="proj-location">In Site ↗ Data flow</div>
-            </div>
-            <div class="proj-progress">
-              <span class="progress-pct">80%</span>
-              <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
-            </div>
-            <span class="proj-status status-hold">Active</span>
-          </div>
-          <div class="project-row">
-            <div>
-              <div class="proj-name">Material Consume</div>
-              <div class="proj-location">Site Transfer ↗ Data flow</div>
-            </div>
-            <div class="proj-progress">
-              <span class="progress-pct">92%</span>
-              <div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div>
-            </div>
-            <span class="proj-status status-review">Review</span>
-          </div>
-          <div class="project-row">
-            <div>
-              <div class="proj-name">Human Resource</div>
-              <div class="proj-location">Site Wise ↗ Data flow</div>
-            </div>
-            <div class="proj-progress">
-              <span class="progress-pct">75%</span>
-              <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-            </div>
-            <span class="proj-status status-active">Active</span>
-          </div>
-        </div>
-        <div class="mini-metrics">
-          <div class="metric-box">
-            <div class="metric-val amber">3,245</div>
-            <div class="metric-key">Total Staff</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">375</div>
-            <div class="metric-key">Workers On-site</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">347</div>
-            <div class="metric-key">Total Machinery</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="section-label">// What We Do</div>
-  <h2 class="section-title">Built For The <span class="muted">Site.</span></h2>
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="feature-number">01</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      </div>
-      <div class="feature-name">Project Planning</div>
-      <div class="feature-desc">End-to-end Gantt scheduling, milestone tracking, and resource allocation across multiple sites simultaneously.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">02</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
-      <div class="feature-name">Material Procurement</div>
-      <div class="feature-desc">Vendor management, purchase orders, delivery tracking, and inventory control — all connected to project budgets.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">03</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      </div>
-      <div class="feature-name">Labour Management</div>
-      <div class="feature-desc">Daily attendance, wage calculation, skill-based assignment, and contractor bill management with digital records.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">04</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      </div>
-      <div class="feature-name">Financial Control</div>
-      <div class="feature-desc">Budget vs actual tracking, cash flow monitoring, invoice management, and GST-ready financial reports.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">05</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      </div>
-      <div class="feature-name">Quality & Compliance</div>
-      <div class="feature-desc">Site inspection checklists, defect logging, photo documentation, and safety compliance dashboards.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">06</span>
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
-      <div class="feature-name">Live Reporting</div>
-      <div class="feature-desc">Real-time progress reports, automated client updates, and executive dashboards accessible from any device.</div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <h2 class="cta-title">Ready To Build Smarter?</h2>
-  <p class="cta-sub">Join hundreds of construction firms already using Eznirman to deliver projects on time and on budget.</p>
-  <div class="cta-buttons">
-    <a href="tel:+6292237205" class="btn-large">Call Support</a>
-    <a href="https://wa.me/916292237205?text=Hello%20Saklin,%20I%20am%20interested%20in%20a%20demo%20of%20EZ%20Nirman%20Software.%20Please%20share%20the%20details." class="btn-outline">
-    Get Software Demo
-    </a>
     
+    <h2 style="font-size: 24px; color: var(--white); margin-top: 32px; margin-bottom: 16px;">1. Information We Collect</h2>
+    <p style="font-size: 15px; color: var(--concrete); line-height: 1.8; margin-bottom: 16px;">
+      We collect information that you provide directly to us when using the Eznirman platform, including personal details (such as name and email address), construction project data, financial records, and communication logs. We may also automatically collect system usage data and device information to improve our services.
+    </p>
+
+    <h2 style="font-size: 24px; color: var(--white); margin-top: 32px; margin-bottom: 16px;">2. How We Use Your Information</h2>
+    <ul style="list-style: disc inside; color: var(--concrete); font-size: 15px; line-height: 1.8; margin-bottom: 24px;">
+      <li>To provide, maintain, and improve the Eznirman platform and its features.</li>
+      <li>To process transactions, manage subscriptions, and send related information.</li>
+      <li>To authenticate users and secure the platform against unauthorized access.</li>
+      <li>To communicate with you regarding updates, support, and technical notices.</li>
+    </ul>
+
+    <h2 style="font-size: 24px; color: var(--white); margin-top: 32px; margin-bottom: 16px;">3. Data Security</h2>
+    <p style="font-size: 15px; color: var(--concrete); line-height: 1.8; margin-bottom: 16px;">
+      We implement strict security measures to ensure that your project data and personal information are protected from unauthorized access, alteration, or disclosure. We use industry-standard encryption and secure server infrastructures.
+    </p>
+
+    <h2 style="font-size: 24px; color: var(--white); margin-top: 32px; margin-bottom: 16px;">4. Contact Us</h2>
+    <p style="font-size: 15px; color: var(--concrete); line-height: 1.8; margin-bottom: 16px;">
+      If you have any questions about this Privacy Policy, please contact our support team at <a href="tel:+916292237205" style="color: var(--amber); text-decoration: none;">+91 6292237205</a>.
+    </p>
   </div>
 </section>
-
 <!-- FOOTER -->
 <footer>
   <span class="footer-copy">© 2026 Eznirman.com — Ranihati Construction PVT. LTD. | Management System</span>
