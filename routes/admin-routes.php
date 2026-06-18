@@ -4,14 +4,14 @@ use App\Http\Controllers\admin\Auth\AuthController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\admin\MachineryController;
-use App\Http\Controllers\Admin\UnitController;
-use App\Http\Controllers\Admin\ProductCategoryController;
-use App\Http\Controllers\Admin\MaterialCodeController;
-use App\Http\Controllers\Admin\MaterialPurchaseController;
-use App\Http\Controllers\Admin\MaterialConsumeController;
-use App\Http\Controllers\Admin\SkillController;
-use App\Http\Controllers\Admin\DesignationController;
-use App\Http\Controllers\Admin\HRManagementController;
+use App\Http\Controllers\admin\UnitController;
+use App\Http\Controllers\admin\ProductCategoryController;
+use App\Http\Controllers\admin\MaterialCodeController;
+use App\Http\Controllers\admin\MaterialPurchaseController;
+use App\Http\Controllers\admin\MaterialConsumeController;
+use App\Http\Controllers\admin\SkillController;
+use App\Http\Controllers\admin\DesignationController;
+use App\Http\Controllers\admin\HRManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:admin'])->prefix('admin')->group(function () {
