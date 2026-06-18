@@ -1,7 +1,7 @@
 <?php
  
  use App\Http\Controllers\accounts\Auth\AccountAuthController;
- use App\Http\Controllers\sccounts\DashboardController;
+ use App\Http\Controllers\accounts\DashboardController;
  use Illuminate\Support\Facades\Route;
  use App\Http\Controllers\accounts\ProfileController;
  use App\Http\Controllers\accounts\AccountcodeController;
