@@ -86,8 +86,7 @@ class DashboardController extends Controller
         $credits = $wallet->transactions()
             ->with('accountcode')
             ->where('type', 'credit')
-            ->orderBy('date', 'desc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return response()->json($credits);
@@ -101,8 +100,7 @@ class DashboardController extends Controller
         $debits = $wallet->transactions()
             ->with('accountcode')
             ->where('type', 'debit')
-            ->orderBy('date', 'desc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return response()->json($debits);
@@ -115,8 +113,7 @@ class DashboardController extends Controller
         
         $transactions = $wallet->transactions()
             ->with('accountcode')
-            ->orderBy('date', 'desc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(15);
 
         return response()->json($transactions);
