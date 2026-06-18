@@ -45,7 +45,7 @@ class AuthController extends Controller
             'site',
             'wallet',
             'wallet.transactions' => function ($query) {
-                $query->orderBy('date', 'desc')->take(10);
+                $query->with('accountcode')->orderBy('id', 'desc')->take(10);
             }
         ]);
 
