@@ -66,7 +66,7 @@
             </div>
             <div class="ledger-right">
               <span class="ledger-amount {{ $tx->type }}">
-                {{ $tx->type === 'credit' ? '+' : '-' }}₹{{ number_format($tx->amount, 2) }}
+                ₹{{ number_format($tx->amount, 2) }}
               </span>
               <span class="status-badge success">Success</span>
             </div>
