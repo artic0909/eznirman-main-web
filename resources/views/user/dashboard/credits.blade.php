@@ -42,7 +42,7 @@
               </div>
             </div>
             <div class="ledger-right">
-              <span class="ledger-amount credit">+₹{{ number_format($tx->amount, 2) }}</span>
+              <span class="ledger-amount credit">₹{{ number_format($tx->amount, 2) }}</span>
               <span class="status-badge success">Success</span>
             </div>
           </div>
