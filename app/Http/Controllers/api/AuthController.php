@@ -35,4 +35,25 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    public function dashboard(Request $request)
+    {
+        $user = $request->user();
+
+        // Load the related site, wallet, and the wallet's transactions ordered by date
+        $user->load([
+            'site',
+            'wallet',
+            'wallet.transactions' => function ($query) {
+                $query->orderBy('date', 'desc')->take(10);
+            }
+        ]);
+
+        return response()->json([
+            'user' => $user,
+            'wallet' => $user->wallet,
+            'site' => $user->site,
+            'transactions' => $user->wallet ? $user->wallet->transactions : [],
+        ]);
+    }
 }
