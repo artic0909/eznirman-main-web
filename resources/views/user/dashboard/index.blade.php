@@ -48,7 +48,7 @@
 
       <div class="ledger-list" id="ledgerList">
         @forelse($recentTransactions as $tx)
-          <div class="ledger-item" data-type="{{ $tx->type }}" onclick="openReceiptModal('{{ $tx->note }}', 'EZ-TX-{{ $tx->id }}', '{{ $tx->type === 'credit' ? '+' : '-' }}₹{{ number_format($tx->amount, 2) }}', 'Success', '{{ $tx->date->format('d M Y') }} · {{ $tx->created_at->format('h:i:s A') }}', '{{ $tx->accountcode ? $tx->accountcode->name : 'N/A' }}', '{{ $tx->note }}', '₹{{ number_format($tx->balance_after, 2) }}')">
+          <div class="ledger-item" data-type="{{ $tx->type }}" onclick="openReceiptModal('{{ $tx->note }}', 'EZ-TX-{{ $tx->id }}', '{{ $tx->type === 'credit' ? '+' : '-' }}₹{{ number_format($tx->amount, 2) }}', 'Success', '{{ $tx->created_at->format('d M Y') }} · {{ $tx->created_at->format('h:i:s A') }}', '{{ $tx->accountcode ? $tx->accountcode->name : 'N/A' }}', '{{ $tx->note }}', '₹{{ number_format($tx->balance_after, 2) }}')">
             <div class="ledger-left">
               <div class="ledger-icon-wrap {{ $tx->type }}">
                 {{ $tx->type === 'credit' ? '↓' : '↑' }}
@@ -56,7 +56,7 @@
               <div class="ledger-details">
                 <span class="ledger-desc">{{ $tx->note }}</span>
                 <span class="ledger-sub">
-                  {{ $tx->accountcode ? $tx->accountcode->name : 'General' }} · {{ $tx->date->format('d M Y') }} · {{ $tx->created_at->format('h:i:s A') }}
+                  {{ $tx->accountcode ? $tx->accountcode->name : 'General' }} · {{ $tx->created_at->format('d M Y') }} · {{ $tx->created_at->format('h:i:s A') }}
                 </span>
                 <span style="font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px;">
                   <span style="width: 5px; height: 5px; background: var(--secondary); border-radius: 50%;"></span>
