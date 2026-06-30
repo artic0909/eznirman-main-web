@@ -211,12 +211,15 @@
         <!-- Site Name-Code (Shared) -->
         <div class="form-group" id="group_working_site_id">
           <label class="form-label">Site Name-Code <span class="text-danger">*</span></label>
-          <select name="working_site_id" id="working_site_id" class="form-control select2" required>
-            <option value=""></option>
-            @foreach($sites as $site)
-              <option value="{{ $site->id }}" {{ $purchase->working_site_id == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
-            @endforeach
-          </select>
+          @if(isset($site) && $site)
+            <input type="hidden" name="working_site_id" value="{{ $site->id }}">
+            <input type="text" class="form-control" value="{{ $site->site_code }} - {{ $site->site_name }}" readonly>
+          @elseif($purchase->working_site_id)
+            <input type="hidden" name="working_site_id" value="{{ $purchase->working_site_id }}">
+            <input type="text" class="form-control" value="{{ $purchase->site ? $purchase->site->site_code . ' - ' . $purchase->site->site_name : 'Unknown Site' }}" readonly>
+          @else
+            <input type="text" class="form-control text-danger" value="No Site Assigned" readonly>
+          @endif
         </div>
 
         <!-- Date (Shared) -->

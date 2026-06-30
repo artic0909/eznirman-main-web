@@ -46,11 +46,11 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        $sites = WorkingSite::all();
+        $site = Auth::user()->site;
         $materialCodes = MaterialCode::all();
         $units = Unit::where('status', 'active')->get();
 
-        return view('user.purchase.create', compact('sites', 'materialCodes', 'units'));
+        return view('user.purchase.create', compact('site', 'materialCodes', 'units'));
     }
 
     public function store(Request $request)
@@ -98,11 +98,11 @@ class PurchaseController extends Controller
                         ->where('type', 'user')
                         ->firstOrFail();
 
-        $sites = WorkingSite::all();
+        $site = Auth::user()->site;
         $materialCodes = MaterialCode::all();
         $units = Unit::where('status', 'active')->get();
 
-        return view('user.purchase.edit', compact('purchase', 'sites', 'materialCodes', 'units'));
+        return view('user.purchase.edit', compact('purchase', 'site', 'materialCodes', 'units'));
     }
 
     public function update(Request $request, $id)

@@ -159,11 +159,11 @@
     <!-- Toggle Section -->
     <div class="type-toggle">
       <label class="radio-label">
-        <input type="radio" name="purchase_type" value="authorized" id="type_authorized" checked onchange="toggleFormFields()">
+        <input type="radio" name="purchase_type" value="authorized" id="type_authorized" onchange="toggleFormFields()">
         <span>Authorized Purchase</span>
       </label>
       <label class="radio-label">
-        <input type="radio" name="purchase_type" value="unauthorized" id="type_unauthorized" onchange="toggleFormFields()">
+        <input type="radio" name="purchase_type" value="unauthorized" id="type_unauthorized" checked onchange="toggleFormFields()">
         <span>Unauthorized Purchase</span>
       </label>
     </div>
@@ -177,17 +177,12 @@
         <!-- Site Name-Code (Shared) -->
         <div class="form-group" id="group_working_site_id">
           <label class="form-label">Site Name-Code <span class="text-danger">*</span></label>
-          <select name="working_site_id" id="working_site_id" class="form-control select2" required>
-            <option value=""></option>
-            @if(isset($sites))
-              @foreach($sites as $site)
-                <option value="{{ $site->id }}" selected>{{ $site->site_code }} - {{ $site->site_name }}</option>
-              @endforeach
-            @else
-               <!-- Fallback/Mockup -->
-               <option value="1" selected>SIT001 - Default Working Site</option>
-            @endif
-          </select>
+          @if(isset($site) && $site)
+            <input type="hidden" name="working_site_id" value="{{ $site->id }}">
+            <input type="text" class="form-control" value="{{ $site->site_code }} - {{ $site->site_name }}" readonly>
+          @else
+            <input type="text" class="form-control text-danger" value="No Site Assigned" readonly>
+          @endif
         </div>
 
         <!-- Date (Shared) -->
