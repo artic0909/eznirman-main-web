@@ -26,6 +26,7 @@
  
      // Purchase Management
      Route::prefix('purchase')->name('purchase.')->group(function () {
+         Route::post('unauthorized-purchases/bulk-delete', [\App\Http\Controllers\accounts\UnauthorizedPurchaseController::class, 'bulkDelete'])->name('unauthorized-purchases.bulk-delete');
          Route::resource('unauthorized-purchases', \App\Http\Controllers\accounts\UnauthorizedPurchaseController::class)->except(['create', 'show', 'edit', 'store', 'update']);
      });
 

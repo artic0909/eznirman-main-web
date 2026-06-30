@@ -53,4 +53,23 @@ class UnauthorizedPurchaseController extends Controller
 
         return redirect()->back()->with('success', 'Unauthorized Purchase deleted successfully.');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:unauthorized_purchases,id'
+        ]);
+
+        $purchases = UnauthorizedPurchase::whereIn('id', $request->ids)->get();
+
+        foreach ($purchases as $purchase) {
+            if ($purchase->invoice_file) {
+                Storage::disk('public')->delete($purchase->invoice_file);
+            }
+            $purchase->delete();
+        }
+
+        return redirect()->back()->with('success', 'Selected Unauthorized Purchases deleted successfully.');
+    }
 }

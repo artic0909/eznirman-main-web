@@ -63,28 +63,46 @@
                     </div>
                 </form>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Date</th>
-                                <th>Purchase ID</th>
-                                <th>Product Details</th>
-                                <th>Site</th>
-                                <th>Created by</th>
-                                <th>Total Amount</th>
-                                <th>File</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php 
-                                $startSl = ($purchases->currentPage() - 1) * $purchases->perPage() + 1;
-                            @endphp
-                            @forelse($purchases as $index => $purchase)
-                            <tr>
-                                <td>{{ $startSl + $index }}</td>
+                <form id="bulkDeleteForm" action="{{ route('account.purchase.unauthorized-purchases.bulk-delete') }}" method="POST">
+                    @csrf
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="button" class="btn btn-danger btn-sm d-none" id="bulkDeleteBtn">
+                            <i class="ti ti-trash"></i> Bulk Delete
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="selectAll">
+                                        </div>
+                                    </th>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Purchase ID</th>
+                                    <th>Product Details</th>
+                                    <th>Site</th>
+                                    <th>Created by</th>
+                                    <th>Total Amount</th>
+                                    <th>File</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php 
+                                    $startSl = ($purchases->currentPage() - 1) * $purchases->perPage() + 1;
+                                @endphp
+                                @forelse($purchases as $index => $purchase)
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input row-checkbox" type="checkbox" name="ids[]" value="{{ $purchase->id }}">
+                                        </div>
+                                    </td>
+                                    <td>{{ $startSl + $index }}</td>
                                 <td>{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</td>
                                 <td>
                                     <h6 class="mb-0">
@@ -124,7 +142,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-5">
+                                <td colspan="10" class="text-center text-muted py-5">
                                     <i class="ti ti-receipt text-muted mb-2" style="font-size: 2rem;"></i><br>
                                     No unauthorized purchase records found.
                                 </td>
@@ -133,6 +151,7 @@
                         </tbody>
                     </table>
                 </div>
+                </form>
 
                 <!-- Pagination -->
                 @if($purchases->hasPages())
@@ -142,7 +161,7 @@
                         <input type="number" value="{{ $purchases->currentPage() }}" min="1" max="{{ $purchases->lastPage() }}" id="goto-page" class="form-control form-control-sm" style="width: 60px; text-align: center;">
                         <span class="text-muted">/ {{ $purchases->lastPage() }}</span>
                     </div>
-                    <a href="{{ $purchases->nextPageUrl() }}" class="btn-nav {{ $purchases->hasMorePages() ? '' : 'disabled' }}">Next</a>
+                    <a href="{{ $purchases->nextPageUrl() }}" class="btn-nav {{ !$purchases->hasMorePages() ? 'disabled' : '' }}">Next</a>
                 </div>
                 @endif
             </div>
@@ -150,26 +169,25 @@
     </div>
 </div>
 
-<!-- Global Delete Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Unauthorized Purchase</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center pt-0">
-                <div class="mb-3">
-                    <i class="ti ti-alert-triangle text-danger" style="font-size: 3.5rem;"></i>
-                </div>
+            <div class="modal-body text-center py-4">
+                <i class="ti ti-alert-triangle text-danger display-4 mb-3"></i>
                 <h4 class="mb-2">Are you sure?</h4>
-                <p class="text-muted">Deleting this unauthorized purchase will permanently remove the record and invoice!</p>
+                <p class="text-muted mb-0">This action cannot be undone. This record will be permanently deleted.</p>
             </div>
-            <div class="modal-footer border-0 pt-0 justify-content-center">
+            <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="POST">
+                <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger fw-bold">Delete Record</button>
+                    <button type="submit" class="btn btn-danger">Yes, Delete it!</button>
                 </form>
             </div>
         </div>
@@ -178,15 +196,14 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Global Delete
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-        const deleteForm = document.getElementById('deleteForm');
-
-        document.querySelectorAll('.btn-delete').forEach(btn => {
-            btn.addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Delete Modal Logic
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
-                deleteForm.setAttribute('action', url);
+                document.getElementById('deleteForm').setAttribute('action', url);
                 deleteModal.show();
             });
         });
@@ -230,15 +247,52 @@
             });
         }
 
-        // On load, if role is selected, load users
         if (roleFilter.val()) {
             loadUsers(roleFilter.val(), selectedUserId);
         }
 
-        // On role change
         roleFilter.on('change', function() {
             loadUsers($(this).val());
         });
+
+        // Bulk Delete Logic
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+        const bulkDeleteForm = document.getElementById('bulkDeleteForm');
+
+        function toggleBulkDeleteBtn() {
+            const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+            if (checkedCount > 0) {
+                bulkDeleteBtn.classList.remove('d-none');
+            } else {
+                bulkDeleteBtn.classList.add('d-none');
+            }
+        }
+
+        if(selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                rowCheckboxes.forEach(cb => cb.checked = this.checked);
+                toggleBulkDeleteBtn();
+            });
+        }
+
+        rowCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (!this.checked && selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+                toggleBulkDeleteBtn();
+            });
+        });
+
+        if(bulkDeleteBtn) {
+            bulkDeleteBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete all selected unauthorized purchases?')) {
+                    bulkDeleteForm.submit();
+                }
+            });
+        }
     });
 </script>
 @endpush
