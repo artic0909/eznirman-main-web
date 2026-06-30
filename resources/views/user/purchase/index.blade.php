@@ -3,11 +3,9 @@
 @section('content')
 <style>
   .purchase-container {
-    padding: 20px;
     color: var(--text);
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-column: 1 / -1;
   }
   
   .header-actions {
@@ -64,6 +62,9 @@
     gap: 16px;
   }
   @media (min-width: 768px) {
+    .filter-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
     .filter-grid { grid-template-columns: repeat(4, 1fr); }
   }
   .form-control {

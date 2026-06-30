@@ -3,11 +3,9 @@
 @section('content')
 <style>
   .purchase-container {
-    padding: 20px;
     color: var(--text);
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-column: 1 / -1;
   }
   .form-card {
     background: var(--surface);
