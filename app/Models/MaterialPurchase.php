@@ -65,4 +65,9 @@ class MaterialPurchase extends Model
     {
         return $this->hasMany(MaterialConsume::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

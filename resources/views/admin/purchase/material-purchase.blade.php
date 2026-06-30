@@ -153,6 +153,7 @@
                                 <th>Site</th>
                                 <th>Vendor & Invoice</th>
                                 <th>Qty/Unit</th>
+                                <th>Created by</th>
                                 <th>Total Amount</th>
                                 <th>File</th>
                                 <th>Action</th>
@@ -184,7 +185,17 @@
                                     <small class="text-muted">Inv: {{ $purchase->invoice_no }}</small>
                                 </td>
                                 <td>{{ $purchase->quantity }} <span class="text-muted">{{ $purchase->unit->name }}</span></td>
+                                
+                                <td>
+                                    @if($purchase->user_id)
+                                        <span class="fw-bold">{{ $purchase->user->name }}</span> <br> <span class="fw-bold">{{ $purchase->user->code }}</span>
+                                    @else
+                                        <span class="fw-bold">Admin</span>
+                                    @endif
+                                </td>
+                                
                                 <td><span class="fw-bold">₹{{ number_format($purchase->amount, 2) }}</span></td>
+                                
                                 <td>
                                     @if($purchase->invoice_file)
                                     <a href="{{ asset('storage/' . $purchase->invoice_file) }}" target="_blank" class="btn btn-sm btn-icon btn-light-secondary">
