@@ -31,8 +31,7 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         $authorizedPurchases = MaterialPurchase::with(['site', 'materialCode', 'unit'])
-                    ->where('created_by', Auth::id())
-                    ->where('type', 'user')
+                    ->where('user_id', Auth::id())
                     ->get()
                     ->map(function ($item) {
                         $item->purchase_type = 'authorized';

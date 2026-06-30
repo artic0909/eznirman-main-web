@@ -22,8 +22,7 @@ class PurchaseController extends Controller
 
         // 1. Fetch Authorized Purchases
         $authQuery = MaterialPurchase::with(['site', 'materialCode', 'unit'])
-                    ->where('created_by', Auth::id())
-                    ->where('type', 'user');
+                    ->where('user_id', Auth::id());
 
         if ($request->search) {
             $authQuery->where(function($q) use ($request) {
