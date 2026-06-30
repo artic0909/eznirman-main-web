@@ -134,6 +134,9 @@ class PurchaseController extends Controller
         }
 
         if ($isAuthorized) {
+            $data['user_id'] = Auth::id();
+            $data['created_by'] = Auth::id();
+            $data['type'] = 'user';
             MaterialPurchase::create($data);
         } else {
             UnauthorizedPurchase::create($data);

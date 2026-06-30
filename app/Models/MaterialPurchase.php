@@ -18,10 +18,11 @@ class MaterialPurchase extends Model
         'unit_id', 
         'rate', 
         'gst_amount', 
-        'amount', 
-        'invoice_file', 
+        'amount',
+        'invoice_file',
         'note',
         'created_by',
+        'user_id',
         'type'
     ];
 
@@ -32,13 +33,15 @@ class MaterialPurchase extends Model
             $nextId = $lastPurchase ? $lastPurchase->id + 1 : 1;
             $purchase->material_unique_id = 'PRCH-' . str_pad($nextId, 2, '0', STR_PAD_LEFT);
 
-            if (auth()->guard('admin')->check()) {
-                $purchase->created_by = auth()->guard('admin')->id();
-                $purchase->type = 'admin';
-            } elseif (auth()->check()) {
-                $purchase->created_by = auth()->id();
-                $purchase->user_id = auth()->id();
-                $purchase->type = 'user';
+            if (empty($purchase->type)) {
+                if (auth()->guard('admin')->check()) {
+                    $purchase->created_by = auth()->guard('admin')->id();
+                    $purchase->type = 'admin';
+                } elseif (auth()->check()) {
+                    $purchase->created_by = auth()->id();
+                    $purchase->user_id = auth()->id();
+                    $purchase->type = 'user';
+                }
             }
         });
     }
