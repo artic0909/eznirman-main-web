@@ -311,8 +311,8 @@
     </table>
   </div>
   
-  <div style="margin-top: 20px;">
-    {{ $purchases->links() }}
+  <div style="margin-top: 20px; display: flex; justify-content: center;">
+    {{ $purchases->links('vendor.pagination.custom') }}
   </div>
 </div>
 

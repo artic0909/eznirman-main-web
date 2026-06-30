@@ -55,7 +55,7 @@
 
       <!-- Pagination block -->
       <div style="margin-top: 20px; display: flex; justify-content: center;">
-        {{ $credits->links('pagination::bootstrap-5') }}
+        {{ $credits->links('vendor.pagination.custom') }}
       </div>
     </section>
 

@@ -59,7 +59,7 @@
 
       <!-- Pagination block -->
       <div style="margin-top: 20px; display: flex; justify-content: center;">
-        {{ $transactions->links('pagination::bootstrap-5') }}
+        {{ $transactions->links('vendor.pagination.custom') }}
       </div>
     </section>
 
