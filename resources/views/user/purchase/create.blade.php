@@ -167,7 +167,7 @@
     </div>
 
     <!-- Form Action can be customized by the backend route -->
-    <form action="#" method="POST" enctype="multipart/form-data" id="purchaseForm">
+    <form action="{{ route('user.purchase.store') }}" method="POST" enctype="multipart/form-data" id="purchaseForm">
       @csrf
       
       <div class="form-grid">
