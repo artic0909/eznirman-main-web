@@ -16,24 +16,29 @@ class UnauthorizedPurchaseController extends Controller
 
         $query = UnauthorizedPurchase::with(['site', 'user']);
 
-        if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('product_name', 'like', '%' . $request->search . '%')
-                  ->orWhere('unauthorized_unique_id', 'like', '%' . $request->search . '%');
+        if ($request->filled('from_date')) {
+            $query->whereDate('purchase_date', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('purchase_date', '<=', $request->to_date);
+        }
+
+        if ($request->filled('role')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('role', $request->role);
             });
         }
 
-        if ($request->site_id) {
-            $query->where('working_site_id', $request->site_id);
-        }
-
-        if ($request->date) {
-            $query->whereDate('purchase_date', $request->date);
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
         }
 
         $purchases = $query->latest()->paginate(10)->withQueryString();
+        
+        $roles = \App\Models\User::select('role')->distinct()->whereNotNull('role')->pluck('role');
 
-        return view('account.purchase.unauthorised', compact('sites', 'purchases'));
+        return view('account.purchase.unauthorised', compact('sites', 'purchases', 'roles'));
     }
 
     public function destroy($id)

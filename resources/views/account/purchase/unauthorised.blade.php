@@ -30,23 +30,36 @@
             <div class="card-body">
                 <!-- Filters -->
                 <form action="{{ route('account.purchase.unauthorized-purchases.index') }}" method="GET" class="row mb-4">
-                    <div class="col-md-3 mb-2">
-                        <input type="text" name="search" class="form-control" placeholder="Search Product or ID..." value="{{ request('search') }}">
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <select name="site_id" class="form-control select2" data-placeholder="All Sites">
-                            <option value=""></option>
-                            @foreach($sites as $site)
-                            <option value="{{ $site->id }}" {{ request('site_id') == $site->id ? 'selected' : '' }}>{{ $site->site_code }} - {{ $site->site_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <input type="date" name="date" class="form-control" value="{{ request('date') }}">
-                    </div>
-                    <div class="col-md-3 mb-2 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('account.purchase.unauthorized-purchases.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-2">
+                            <label class="form-label">From Date</label>
+                            <input type="date" name="from_date" class="form-control" value="{{ request('from_date') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">To Date</label>
+                            <input type="date" name="to_date" class="form-control" value="{{ request('to_date') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Role</label>
+                            <select name="role" id="roleFilter" class="form-select select2">
+                                <option value="">All Roles</option>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role }}" {{ request('role') == $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">User</label>
+                            <select name="user_id" id="userFilter" class="form-select select2" data-selected="{{ request('user_id') }}">
+                                <option value="">All Users</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                            <a href="{{ route('account.purchase.unauthorized-purchases.index') }}" class="btn btn-light border px-2 d-flex align-items-center justify-content-center" title="Clear Filters">
+                                <i class="ti ti-x"></i>
+                            </a>
+                        </div>
                     </div>
                 </form>
 
@@ -190,6 +203,42 @@
                 }
             });
         }
+
+        // Role/User Filter Logic
+        const roleFilter = $('#roleFilter');
+        const userFilter = $('#userFilter');
+        const selectedUserId = userFilter.data('selected');
+
+        function loadUsers(role, preselectId = null) {
+            userFilter.empty().append('<option value="">All Users</option>');
+            if (!role) {
+                userFilter.trigger('change');
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route('account.cashmanagement.users_by_role') }}',
+                type: 'GET',
+                data: { role: role },
+                success: function(users) {
+                    users.forEach(function(user) {
+                        const isSelected = preselectId && preselectId == user.id ? 'selected' : '';
+                        userFilter.append(`<option value="${user.id}" ${isSelected}>${user.name} (${user.code || 'N/A'})</option>`);
+                    });
+                    userFilter.trigger('change');
+                }
+            });
+        }
+
+        // On load, if role is selected, load users
+        if (roleFilter.val()) {
+            loadUsers(roleFilter.val(), selectedUserId);
+        }
+
+        // On role change
+        roleFilter.on('change', function() {
+            loadUsers($(this).val());
+        });
     });
 </script>
 @endpush
