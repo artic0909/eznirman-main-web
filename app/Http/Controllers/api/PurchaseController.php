@@ -51,7 +51,7 @@ class PurchaseController extends Controller
                             return $item;
                         });
 
-        $allPurchases = $authorizedPurchases->merge($unauthorizedPurchases)
+        $allPurchases = $authorizedPurchases->concat($unauthorizedPurchases)
                                             ->sortByDesc('purchase_date')
                                             ->values();
 
