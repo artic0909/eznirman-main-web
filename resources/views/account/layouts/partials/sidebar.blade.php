@@ -36,6 +36,21 @@
             </ul>
           </li>
 
+          <!-- Purchase Management -->
+          <li class="pc-item pc-caption">
+            <label>Purchase Management</label>
+            <i class="ti ti-brand-chrome"></i>
+          </li>
+          <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-shopping-cart"></i></span><span
+                class="pc-mtext">Purchase Register</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+              <li class="pc-item {{ Route::is('account.purchase.unauthorized-purchases.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('account.purchase.unauthorized-purchases.index') }}">Unauthorized Purchase</a>
+              </li>
+            </ul>
+          </li>
+
           <!-- <li class="pc-item">
             <a href="" class="pc-link">
               <span class="pc-micon"><i class="ti ti-key"></i></span>

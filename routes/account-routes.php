@@ -24,6 +24,11 @@
      Route::put('/accountcode/{id}', [AccountcodeController::class, 'update'])->name('accountcode.update');
      Route::delete('/accountcode/{id}', [AccountcodeController::class, 'destroy'])->name('accountcode.destroy');
  
+     // Purchase Management
+     Route::prefix('purchase')->name('purchase.')->group(function () {
+         Route::resource('unauthorized-purchases', \App\Http\Controllers\accounts\UnauthorizedPurchaseController::class)->except(['create', 'show', 'edit', 'store', 'update']);
+     });
+
      // Cash Management
     Route::get('/cashmanagement', [\App\Http\Controllers\accounts\CashManagementController::class, 'index'])->name('cashmanagement.index');
     Route::get('/cashmanagement/users-by-role', [\App\Http\Controllers\accounts\CashManagementController::class, 'getUsersByRole'])->name('cashmanagement.users_by_role');
