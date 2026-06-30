@@ -166,7 +166,7 @@
     <div class="form-header">
       <div>
         <h2 class="form-title">Edit Purchase Record</h2>
-        <p class="text-muted" style="font-size: 14px; margin-top: 6px;">{{ $purchase->material_unique_id }}</p>
+        <p class="text-muted" style="font-size: 14px; margin-top: 6px;">{{ $purchase->purchase_type === 'authorized' ? $purchase->material_unique_id : $purchase->unauthorized_unique_id }}</p>
       </div>
       <a href="{{ route('user.purchase.index') }}" class="btn-back">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
@@ -185,16 +185,16 @@
     @endif
 
     @php
-        $isAuthorized = !empty($purchase->material_code_id);
+        $isAuthorized = $purchase->purchase_type === 'authorized';
     @endphp
 
     <!-- Toggle Section -->
     <div class="type-toggle">
-      <label class="radio-label">
+      <label class="radio-label" style="opacity: {{ $isAuthorized ? '1' : '0.5' }}; pointer-events: none;">
         <input type="radio" name="purchase_type" value="authorized" id="type_authorized" {{ $isAuthorized ? 'checked' : '' }} onchange="toggleFormFields()">
         <span>Authorized Purchase</span>
       </label>
-      <label class="radio-label">
+      <label class="radio-label" style="opacity: {{ !$isAuthorized ? '1' : '0.5' }}; pointer-events: none;">
         <input type="radio" name="purchase_type" value="unauthorized" id="type_unauthorized" {{ !$isAuthorized ? 'checked' : '' }} onchange="toggleFormFields()">
         <span>Unauthorized Purchase</span>
       </label>
@@ -203,6 +203,7 @@
     <form action="{{ route('user.purchase.update', $purchase->id) }}" method="POST" enctype="multipart/form-data" id="purchaseForm">
       @csrf
       @method('PUT')
+      <input type="hidden" name="type" value="{{ $purchase->purchase_type }}">
       
       <div class="form-grid">
         

@@ -206,7 +206,7 @@
         @forelse($purchases as $purchase)
         <tr>
           <td>{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</td>
-          <td><span class="badge badge-info">{{ $purchase->material_unique_id }}</span></td>
+          <td><span class="badge badge-info">{{ $purchase->unique_id_display }}</span></td>
           <td>
             <div style="font-weight: 500; color: var(--white);">{{ $purchase->product_name }}</div>
             @if($purchase->materialCode)
@@ -223,7 +223,7 @@
           </td>
           <td style="font-weight: 600; color: var(--white);">₹{{ number_format($purchase->amount, 2) }}</td>
           <td>
-            @if($purchase->material_code_id)
+            @if($purchase->purchase_type === 'authorized')
               <span class="badge badge-success">Authorized</span>
             @else
               <span class="badge" style="background: rgba(255,255,255,0.1); color: var(--text); border: 1px solid var(--surface-border);">Unauthorized</span>
@@ -231,7 +231,7 @@
           </td>
           <td>
             <div style="display: flex; gap: 8px;">
-              <a href="{{ route('user.purchase.edit', $purchase->id) }}" class="btn-icon" title="Edit">
+              <a href="{{ route('user.purchase.edit', ['purchase' => $purchase->id, 'type' => $purchase->purchase_type]) }}" class="btn-icon" title="Edit">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
               </a>
               @if($purchase->invoice_file)
@@ -239,7 +239,7 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 </a>
               @endif
-              <form action="{{ route('user.purchase.destroy', $purchase->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');" style="display: inline;">
+              <form action="{{ route('user.purchase.destroy', ['purchase' => $purchase->id, 'type' => $purchase->purchase_type]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');" style="display: inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-icon danger" title="Delete">

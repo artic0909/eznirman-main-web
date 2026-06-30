@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\MaterialCode;
 use App\Models\MaterialPurchase;
+use App\Models\UnauthorizedPurchase;
 use App\Models\Unit;
 use App\Models\WorkingSite;
 use Illuminate\Http\Request;
@@ -19,27 +20,74 @@ class PurchaseController extends Controller
         $materialCodes = MaterialCode::all();
         $units = Unit::where('status', 'active')->get();
 
-        $query = MaterialPurchase::with(['site', 'materialCode', 'unit'])
+        // 1. Fetch Authorized Purchases
+        $authQuery = MaterialPurchase::with(['site', 'materialCode', 'unit'])
                     ->where('created_by', Auth::id())
                     ->where('type', 'user');
 
         if ($request->search) {
-            $query->where(function($q) use ($request) {
+            $authQuery->where(function($q) use ($request) {
                 $q->where('product_name', 'like', '%' . $request->search . '%')
                   ->orWhere('party_name', 'like', '%' . $request->search . '%')
                   ->orWhere('invoice_no', 'like', '%' . $request->search . '%');
             });
         }
-
         if ($request->site_id) {
-            $query->where('working_site_id', $request->site_id);
+            $authQuery->where('working_site_id', $request->site_id);
         }
-
         if ($request->date) {
-            $query->whereDate('purchase_date', $request->date);
+            $authQuery->whereDate('purchase_date', $request->date);
         }
+        $authorizedPurchases = $authQuery->get();
 
-        $purchases = $query->latest()->paginate(10)->withQueryString();
+        // Add type flag for unified view
+        $authorizedPurchases->map(function ($item) {
+            $item->purchase_type = 'authorized';
+            $item->unique_id_display = $item->material_unique_id;
+            return $item;
+        });
+
+        // 2. Fetch Unauthorized Purchases
+        $unauthQuery = UnauthorizedPurchase::with(['site'])
+                        ->where('user_id', Auth::id());
+
+        if ($request->search) {
+            $unauthQuery->where('product_name', 'like', '%' . $request->search . '%');
+        }
+        if ($request->site_id) {
+            $unauthQuery->where('working_site_id', $request->site_id);
+        }
+        if ($request->date) {
+            $unauthQuery->whereDate('purchase_date', $request->date);
+        }
+        $unauthorizedPurchases = $unauthQuery->get();
+
+        // Add type flag for unified view
+        $unauthorizedPurchases->map(function ($item) {
+            $item->purchase_type = 'unauthorized';
+            $item->unique_id_display = $item->unauthorized_unique_id;
+            // Add missing properties for view compatibility
+            $item->materialCode = null;
+            $item->quantity = null;
+            $item->unit = null;
+            return $item;
+        });
+
+        // 3. Merge and Sort
+        $allPurchases = $authorizedPurchases->merge($unauthorizedPurchases)
+                                            ->sortByDesc('purchase_date')
+                                            ->values();
+
+        // Manual Pagination for merged collection
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $purchases = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allPurchases->forPage($page, $perPage),
+            $allPurchases->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('user.purchase.index', compact('sites', 'materialCodes', 'units', 'purchases'));
     }
@@ -79,24 +127,37 @@ class PurchaseController extends Controller
         }
 
         $request->validate($rules);
-
         $data = $request->except(['purchase_type']);
 
         if ($request->hasFile('invoice_file')) {
             $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
         }
 
-        MaterialPurchase::create($data);
+        if ($isAuthorized) {
+            MaterialPurchase::create($data);
+        } else {
+            UnauthorizedPurchase::create($data);
+        }
 
         return redirect()->route('user.purchase.index')->with('success', 'Purchase recorded successfully.');
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $purchase = MaterialPurchase::where('id', $id)
-                        ->where('created_by', Auth::id())
-                        ->where('type', 'user')
-                        ->firstOrFail();
+        $type = $request->query('type');
+        
+        if ($type === 'unauthorized') {
+            $purchase = UnauthorizedPurchase::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
+            $purchase->purchase_type = 'unauthorized';
+        } else {
+            $purchase = MaterialPurchase::where('id', $id)
+                            ->where('created_by', Auth::id())
+                            ->where('type', 'user')
+                            ->firstOrFail();
+            $purchase->purchase_type = 'authorized';
+        }
 
         $site = Auth::user()->site;
         $materialCodes = MaterialCode::all();
@@ -107,13 +168,8 @@ class PurchaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        $purchase = MaterialPurchase::where('id', $id)
-                        ->where('created_by', Auth::id())
-                        ->where('type', 'user')
-                        ->firstOrFail();
-
-        $isAuthorized = $request->input('purchase_type') === 'authorized';
-
+        $type = $request->input('type');
+        
         $rules = [
             'working_site_id' => 'required|exists:working_sites,id',
             'purchase_date' => 'required|date',
@@ -123,7 +179,7 @@ class PurchaseController extends Controller
             'note' => 'nullable|string'
         ];
 
-        if ($isAuthorized) {
+        if ($type !== 'unauthorized') {
             $rules = array_merge($rules, [
                 'material_code_id' => 'required|exists:material_codes,id',
                 'party_name' => 'required|string|max:255',
@@ -136,17 +192,17 @@ class PurchaseController extends Controller
         }
 
         $request->validate($rules);
+        $data = $request->except(['purchase_type', 'type', '_method', '_token']);
 
-        $data = $request->except(['purchase_type']);
-
-        if (!$isAuthorized) {
-             $data['material_code_id'] = null;
-             $data['party_name'] = null;
-             $data['invoice_no'] = null;
-             $data['quantity'] = null;
-             $data['unit_id'] = null;
-             $data['rate'] = null;
-             $data['gst_amount'] = null;
+        if ($type === 'unauthorized') {
+            $purchase = UnauthorizedPurchase::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
+        } else {
+            $purchase = MaterialPurchase::where('id', $id)
+                            ->where('created_by', Auth::id())
+                            ->where('type', 'user')
+                            ->firstOrFail();
         }
 
         if ($request->hasFile('invoice_file')) {
@@ -161,12 +217,20 @@ class PurchaseController extends Controller
         return redirect()->route('user.purchase.index')->with('success', 'Purchase updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $purchase = MaterialPurchase::where('id', $id)
-                        ->where('created_by', Auth::id())
-                        ->where('type', 'user')
-                        ->firstOrFail();
+        $type = $request->query('type');
+
+        if ($type === 'unauthorized') {
+            $purchase = UnauthorizedPurchase::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
+        } else {
+            $purchase = MaterialPurchase::where('id', $id)
+                            ->where('created_by', Auth::id())
+                            ->where('type', 'user')
+                            ->firstOrFail();
+        }
 
         if ($purchase->invoice_file) {
             Storage::disk('public')->delete($purchase->invoice_file);
