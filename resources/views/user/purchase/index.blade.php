@@ -243,9 +243,8 @@
       <thead>
         <tr>
           <th>Date</th>
-          <th>ID</th>
-          <th>Product</th>
           <th>Site</th>
+          <th>Product</th>
           <th>Qty</th>
           <th>Amount</th>
           <th>Status</th>
@@ -256,14 +255,13 @@
         @forelse($purchases as $purchase)
         <tr>
           <td data-label="Date">{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</td>
-          <td data-label="ID"><span class="badge badge-info">{{ $purchase->unique_id_display }}</span></td>
+          <td data-label="Site">{{ $purchase->site ? $purchase->site->site_name . ' (' . $purchase->site->site_code . ')' : 'N/A' }}</td>
           <td data-label="Product">
             <div style="font-weight: 500; color: var(--white);">{{ $purchase->product_name }}</div>
             @if($purchase->materialCode)
               <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Code: {{ $purchase->materialCode->code }}</div>
             @endif
           </td>
-          <td data-label="Site">{{ $purchase->site ? $purchase->site->site_code : 'N/A' }}</td>
           <td data-label="Qty">
             @if($purchase->quantity)
               {{ $purchase->quantity }} <span style="color: var(--text-muted); font-size: 12px;">{{ $purchase->unit ? $purchase->unit->name : '' }}</span>
