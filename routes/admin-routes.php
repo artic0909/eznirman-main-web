@@ -71,7 +71,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::resource('product-categories', ProductCategoryController::class)->except(['create', 'show', 'edit']);
         Route::resource('material-codes', MaterialCodeController::class)->except(['create', 'show', 'edit']);
         Route::resource('material-purchases', MaterialPurchaseController::class)->except(['create', 'show', 'edit']);
-        Route::resource('unauthorized-purchases', \App\Http\Controllers\Admin\UnauthorizedPurchaseController::class)->except(['create', 'show', 'edit', 'store', 'update']);
+        Route::resource('unauthorized-purchases', \App\Http\Controllers\admin\UnauthorizedPurchaseController::class)->except(['create', 'show', 'edit', 'store', 'update']);
         Route::resource('material-consumes', MaterialConsumeController::class)->only(['index', 'store', 'destroy']);
         Route::get('material-consumes/get-stock-locations/{purchase_id}', [MaterialConsumeController::class, 'getStockLocations'])->name('material-consumes.locations');
     });
