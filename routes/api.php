@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\DashboardController;
+use App\Http\Controllers\api\PurchaseController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -22,6 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Data for forms
     Route::get('/user/send-money-data', [DashboardController::class, 'sendMoneyData']);
+    
+    // Purchase
+    Route::get('/user/purchase/create-data', [PurchaseController::class, 'createData']);
+    Route::post('/user/purchase', [PurchaseController::class, 'store']);
+    Route::get('/user/purchases', [PurchaseController::class, 'index']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
