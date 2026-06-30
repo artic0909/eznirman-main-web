@@ -261,7 +261,7 @@
 
         <!-- Invoice File (Shared) -->
         <div class="form-group" id="group_invoice_file">
-          <label class="form-label">Invoice File (PDF/Image)</label>
+          <label class="form-label">Invoice File (PDF/Image) <span class="text-danger">*</span></label>
           <input type="file" name="invoice_file" class="form-control" accept="image/*,.pdf">
         </div>
 
