@@ -100,6 +100,9 @@
               <li class="pc-item {{ Route::is('admin.purchase.material-purchases.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.material-purchases.index') }}">Material Purchase</a>
               </li>
+              <li class="pc-item {{ Route::is('admin.purchase.unauthorized-purchases.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.unauthorized-purchases.index') }}">Unauthorized Purchase</a>
+              </li>
               <li class="pc-item {{ Route::is('admin.purchase.material-consumes.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.material-consumes.index') }}">Material Consume</a>
               </li>
