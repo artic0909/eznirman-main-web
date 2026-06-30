@@ -154,21 +154,21 @@
       <p class="text-muted" style="font-size: 14px; margin-top: 6px;">Submit a new purchase record for your site.</p>
     </div>
 
-    <!-- Toggle Section -->
-    <div class="type-toggle">
-      <label class="radio-label">
-        <input type="radio" name="purchase_type" value="authorized" id="type_authorized" onchange="toggleFormFields()">
-        <span>Authorized Purchase</span>
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="purchase_type" value="unauthorized" id="type_unauthorized" checked onchange="toggleFormFields()">
-        <span>Unauthorized Purchase</span>
-      </label>
-    </div>
-
     <!-- Form Action can be customized by the backend route -->
     <form action="{{ route('user.purchase.store') }}" method="POST" enctype="multipart/form-data" id="purchaseForm">
       @csrf
+
+      <!-- Toggle Section -->
+      <div class="type-toggle">
+        <label class="radio-label">
+          <input type="radio" name="purchase_type" value="authorized" id="type_authorized" onchange="toggleFormFields()">
+          <span>Authorized Purchase</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="purchase_type" value="unauthorized" id="type_unauthorized" checked onchange="toggleFormFields()">
+          <span>Unauthorized Purchase</span>
+        </label>
+      </div>
       
       <div class="form-grid">
         

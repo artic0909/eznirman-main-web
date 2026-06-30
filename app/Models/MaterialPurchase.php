@@ -37,6 +37,7 @@ class MaterialPurchase extends Model
                 $purchase->type = 'admin';
             } elseif (auth()->check()) {
                 $purchase->created_by = auth()->id();
+                $purchase->user_id = auth()->id();
                 $purchase->type = 'user';
             }
         });
