@@ -116,4 +116,85 @@ class PurchaseController extends Controller
             'message' => 'Purchase recorded successfully.'
         ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        $type = $request->input('purchase_type'); // matches the app payload
+        
+        $rules = [
+            'working_site_id' => 'required|exists:working_sites,id',
+            'purchase_date' => 'required|date',
+            'product_name' => 'required|string|max:255',
+            'amount' => 'required|numeric',
+            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'note' => 'nullable|string'
+        ];
+
+        if ($type !== 'unauthorized') {
+            $rules = array_merge($rules, [
+                'material_code_id' => 'required|exists:material_codes,id',
+                'party_name' => 'required|string|max:255',
+                'invoice_no' => 'required|string|max:255',
+                'quantity' => 'required|numeric',
+                'unit_id' => 'required|exists:units,id',
+                'rate' => 'required|numeric',
+                'gst_amount' => 'nullable|numeric',
+            ]);
+        }
+
+        $request->validate($rules);
+        $data = $request->except(['purchase_type', 'type', '_method', '_token']);
+
+        if ($type === 'unauthorized') {
+            $purchase = UnauthorizedPurchase::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
+        } else {
+            $purchase = MaterialPurchase::where('id', $id)
+                            ->where('created_by', Auth::id())
+                            ->where('type', 'user')
+                            ->firstOrFail();
+        }
+
+        if ($request->hasFile('invoice_file')) {
+            if ($purchase->invoice_file) {
+                Storage::disk('public')->delete($purchase->invoice_file);
+            }
+            $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
+        }
+
+        $purchase->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Purchase updated successfully.',
+            'purchase' => $purchase
+        ], 200);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $type = $request->query('type'); // Passed in query param
+
+        if ($type === 'unauthorized') {
+            $purchase = UnauthorizedPurchase::where('id', $id)
+                            ->where('user_id', Auth::id())
+                            ->firstOrFail();
+        } else {
+            $purchase = MaterialPurchase::where('id', $id)
+                            ->where('created_by', Auth::id())
+                            ->where('type', 'user')
+                            ->firstOrFail();
+        }
+
+        if ($purchase->invoice_file) {
+            Storage::disk('public')->delete($purchase->invoice_file);
+        }
+        $purchase->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Purchase deleted successfully.'
+        ], 200);
+    }
 }
