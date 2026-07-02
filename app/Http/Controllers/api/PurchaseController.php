@@ -108,6 +108,23 @@ class PurchaseController extends Controller
         } else {
             $data['user_id'] = Auth::id();
             UnauthorizedPurchase::create($data);
+
+            $wallet = \App\Models\Wallet::firstOrCreate(
+                ['user_id' => Auth::id()],
+                ['current_balance' => 0]
+            );
+
+            $newBalance = $wallet->current_balance - $data['amount'];
+            $wallet->update(['current_balance' => $newBalance]);
+
+            \App\Models\Transaction::create([
+                'wallet_id' => $wallet->id,
+                'date' => $data['purchase_date'],
+                'amount' => $data['amount'],
+                'note' => 'Unauthorized Purchase: ' . $data['product_name'],
+                'type' => 'debit',
+                'balance_after' => $newBalance,
+            ]);
         }
 
         return response()->json([
