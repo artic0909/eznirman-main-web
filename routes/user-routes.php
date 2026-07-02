@@ -5,7 +5,8 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\PurchaseController;
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('user/purchase', PurchaseController::class)->names('user.purchase');
+    // Route::resource('user/purchase', PurchaseController::class)->names('user.purchase');
+    Route::resource('user/purchase', PurchaseController::class)->except(['edit', 'update', 'destroy'])->names('user.purchase');
     Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
     Route::post('/user/transaction', [DashboardController::class, 'storeTransaction'])->name('user.transaction.store');
     

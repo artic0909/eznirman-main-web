@@ -133,6 +133,7 @@ class PurchaseController extends Controller
         ], 200);
     }
 
+    /*
     public function update(Request $request, $id)
     {
         $type = $request->input('purchase_type'); // matches the app payload
@@ -213,4 +214,5 @@ class PurchaseController extends Controller
             'message' => 'Purchase deleted successfully.'
         ], 200);
     }
+    */
 }

@@ -27,8 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Purchase
     Route::get('/user/purchase/create-data', [PurchaseController::class, 'createData']);
     Route::post('/user/purchase', [PurchaseController::class, 'store']);
-    Route::post('/user/purchase/{id}', [PurchaseController::class, 'update']);
-    Route::delete('/user/purchase/{id}', [PurchaseController::class, 'destroy']);
+    // Route::post('/user/purchase/{id}', [PurchaseController::class, 'update']);
+    // Route::delete('/user/purchase/{id}', [PurchaseController::class, 'destroy']);
     Route::get('/user/purchases', [PurchaseController::class, 'index']);
 });
 

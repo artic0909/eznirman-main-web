@@ -162,6 +162,7 @@ class PurchaseController extends Controller
         return redirect()->route('user.purchase.index')->with('success', 'Purchase recorded successfully.');
     }
 
+    /*
     public function edit(Request $request, $id)
     {
         $type = $request->query('type');
@@ -259,4 +260,5 @@ class PurchaseController extends Controller
 
         return redirect()->back()->with('success', 'Purchase deleted successfully.');
     }
+    */
 }
