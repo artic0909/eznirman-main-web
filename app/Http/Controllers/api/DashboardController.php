@@ -35,13 +35,6 @@ class DashboardController extends Controller
             $wallet = $user->wallet()->create(['current_balance' => 0]);
         }
 
-        if ($request->type === 'debit' && $wallet->current_balance < $request->amount) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Insufficient wallet balance.'
-            ], 422);
-        }
-
         $note = $request->note;
         if ($request->type === 'debit' && $request->pay_to) {
             $payeeLabel = ucfirst($request->pay_to);

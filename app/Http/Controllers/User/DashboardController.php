@@ -78,11 +78,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $wallet = $user->wallet;
 
-        if ($request->type === 'debit' && $wallet->current_balance < $request->amount) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Insufficient wallet balance.'
-            ], 422);
+        if (!$wallet) {
+            $wallet = $user->wallet()->create(['current_balance' => 0]);
         }
 
         $note = $request->note;
