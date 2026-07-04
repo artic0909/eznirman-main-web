@@ -849,7 +849,7 @@
     </ul>
   </nav>
   <div class="sidebar-actions">
-    <a href="#" class="sidebar-btn-primary">Get App</a>
+    <a href="https://play.google.com/store/apps/details?id=com.eznirman.v2&pcampaignid=web_share" target="_blank" class="sidebar-btn-primary">Get App</a>
   </div>
   <div class="sidebar-footer">© 2026 Eznirman.com — Construction OS</div>
 </aside>
@@ -867,7 +867,7 @@
   </ul>
   <div class="nav-cta">
     <a href="/login" class="btn-ghost">Supervisor</a>
-    <a href="#" class="btn-primary">Get App</a>
+    <a href="https://play.google.com/store/apps/details?id=com.eznirman.v2&pcampaignid=web_share" target="_blank" class="btn-primary">Get App</a>
   </div>
   <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -886,7 +886,7 @@
       Eznirman centralises your entire construction workflow — from site scheduling and material procurement to contractor coordination and financial tracking — in one command centre.
     </p>
     <div class="hero-actions">
-      <a href="#" class="btn-large">Get Application</a>
+      <a href="https://play.google.com/store/apps/details?id=com.eznirman.v2&pcampaignid=web_share" target="_blank" class="btn-large">Get Application</a>
       <a href="#features" class="btn-outline">Explore Features</a>
     </div>
     <div class="hero-stats">
