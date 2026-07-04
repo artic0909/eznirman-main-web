@@ -69,7 +69,7 @@ class PurchaseController extends Controller
             'purchase_date' => 'required|date',
             'product_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
             'note' => 'nullable|string'
         ];
 
@@ -97,7 +97,30 @@ class PurchaseController extends Controller
         $data = $request->except(['purchase_type']);
 
         if ($request->hasFile('invoice_file')) {
-            $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
+            $file = $request->file('invoice_file');
+            $extension = strtolower($file->getClientOriginalExtension());
+            
+            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                try {
+                    $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+                    $image = $manager->decode($file->getRealPath());
+                    
+                    // Compress and encode as JPEG with 75% quality
+                    $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(75));
+                    
+                    $filename = uniqid() . '_' . time() . '.jpg';
+                    $path = 'invoices/' . $filename;
+                    
+                    \Illuminate\Support\Facades\Storage::disk('public')->put($path, (string) $encoded);
+                    $data['invoice_file'] = $path;
+                } catch (\Exception $e) {
+                    // Fallback if compression fails
+                    $data['invoice_file'] = $file->store('invoices', 'public');
+                }
+            } else {
+                // PDF or other formats store normally
+                $data['invoice_file'] = $file->store('invoices', 'public');
+            }
         }
 
         if ($isAuthorized) {
