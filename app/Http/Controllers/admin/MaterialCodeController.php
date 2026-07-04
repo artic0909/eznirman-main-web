@@ -25,6 +25,24 @@ class MaterialCodeController extends Controller
             $query->where('product_category_id', $request->category_id);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'material_codes_export.xlsx',
+                function ($code) {
+                    return [
+                        'Code' => $code->code,
+                        'Category' => $code->category->name ?? 'N/A',
+                        'Sub Category' => $code->sub_category,
+                        'Sub Category Two' => $code->sub_category_two,
+                        'Brand' => $code->brand,
+                        'Material Name' => $code->material_name,
+                        'Created At' => $code->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $materialCodes = $query->latest()->paginate(10)->withQueryString();
         return view('admin.purchase.material-code', compact('categories', 'materialCodes'));
     }

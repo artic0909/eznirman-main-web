@@ -47,6 +47,30 @@ class HRManagementController extends Controller
             $query->whereDate('joining_date', $request->joining_date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                $role . 's_export.xlsx',
+                function ($user) use ($role) {
+                    $row = [
+                        'Joining Date' => \Carbon\Carbon::parse($user->joining_date)->format('M d, Y'),
+                        'Code' => $user->code,
+                        'Name' => $user->name,
+                        'Mobile' => $user->mobile,
+                    ];
+                    
+                    if ($role == 'worker') {
+                        $row['Skill'] = $user->skill->name ?? 'N/A';
+                    } else {
+                        $row['Designation'] = $user->designation->name ?? 'N/A';
+                    }
+                    
+                    $row['Status'] = ucfirst($user->status);
+                    return $row;
+                }
+            );
+        }
+
         $users = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.hrmanagement.index', compact('users', 'skills', 'designations', 'sites', 'role'));

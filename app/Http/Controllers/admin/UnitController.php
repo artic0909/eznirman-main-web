@@ -16,6 +16,20 @@ class UnitController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'units_export.xlsx',
+                function ($unit) {
+                    return [
+                        'Name' => $unit->name,
+                        'Status' => ucfirst($unit->status),
+                        'Created At' => $unit->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $units = $query->latest()->paginate(10)->withQueryString();
         
         return view('admin.purchase.units.index', compact('units'));

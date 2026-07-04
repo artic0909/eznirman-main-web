@@ -43,6 +43,25 @@ class MaterialConsumeController extends Controller
             $query->whereDate('consume_date', '<=', $request->to_date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'material_consumes_export.xlsx',
+                function ($consume) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($consume->consume_date)->format('d M, Y'),
+                        'Material ID' => $consume->purchase->material_unique_id ?? 'N/A',
+                        'Material Name' => $consume->purchase->materialCode->material_name ?? 'N/A',
+                        'From Site' => $consume->fromSite->site_name ?? 'N/A',
+                        'Type' => $consume->use_now ? 'Transfer' : 'Consume',
+                        'To Site' => $consume->use_now ? ($consume->toSite->site_name ?? 'N/A') : 'N/A',
+                        'Used Quantity' => $consume->used_quantity,
+                        'Unit' => $consume->unit,
+                    ];
+                }
+            );
+        }
+
         $consumes = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.purchase.material-consume', compact('purchases', 'sites', 'consumes'));

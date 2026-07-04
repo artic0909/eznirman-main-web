@@ -16,6 +16,20 @@ class DesignationController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'designations_export.xlsx',
+                function ($designation) {
+                    return [
+                        'Name' => $designation->name,
+                        'Status' => ucfirst($designation->status),
+                        'Created At' => $designation->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $designations = $query->latest()->paginate(10)->withQueryString();
         return view('admin.hrmanagement.designations', compact('designations'));
     }

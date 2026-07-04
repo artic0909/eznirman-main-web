@@ -36,6 +36,26 @@ class MaterialPurchaseController extends Controller
             $query->whereDate('purchase_date', $request->date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'material_purchases_export.xlsx',
+                function ($purchase) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
+                        'Site' => $purchase->site->site_name ?? 'N/A',
+                        'Material Code' => $purchase->materialCode->code ?? 'N/A',
+                        'Product Name' => $purchase->product_name,
+                        'Party Name' => $purchase->party_name,
+                        'Invoice No' => $purchase->invoice_no,
+                        'Quantity' => $purchase->quantity . ' ' . ($purchase->unit->name ?? ''),
+                        'Rate' => $purchase->rate,
+                        'Amount' => $purchase->amount,
+                    ];
+                }
+            );
+        }
+
         $purchases = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.purchase.material-purchase', compact('sites', 'materialCodes', 'units', 'purchases'));

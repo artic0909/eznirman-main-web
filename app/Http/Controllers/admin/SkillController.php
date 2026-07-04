@@ -16,6 +16,20 @@ class SkillController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'skills_export.xlsx',
+                function ($skill) {
+                    return [
+                        'Name' => $skill->name,
+                        'Status' => ucfirst($skill->status),
+                        'Created At' => $skill->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $skills = $query->latest()->paginate(10)->withQueryString();
         return view('admin.hrmanagement.skills', compact('skills'));
     }

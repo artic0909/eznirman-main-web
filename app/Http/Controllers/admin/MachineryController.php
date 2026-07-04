@@ -13,8 +13,22 @@ use Illuminate\Support\Facades\Storage;
 class MachineryController extends Controller
 {
     // --- Machine Categories ---
-    public function machineCategoryView()
+    public function machineCategoryView(Request $request)
     {
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                MachineCategory::latest(),
+                'machine_categories_export.xlsx',
+                function ($category) {
+                    return [
+                        'Name' => $category->name,
+                        'Status' => $category->status ? 'Active' : 'Inactive',
+                        'Created At' => $category->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $categories = MachineCategory::latest()->get();
         return view('admin.machinery.machine-category', compact('categories'));
     }
@@ -78,6 +92,22 @@ class MachineryController extends Controller
         // Date Filter
         if ($request->date) {
             $query->whereDate('entry_date', $request->date);
+        }
+
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'machineries_export.xlsx',
+                function ($machinery) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                        'Code' => $machinery->machine_code,
+                        'Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                        'Condition' => ucfirst($machinery->condition),
+                    ];
+                }
+            );
         }
 
         $machineries = $query->latest()->paginate(10)->withQueryString();
@@ -197,6 +227,24 @@ class MachineryController extends Controller
             $query->whereDate('transfer_date', $request->date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'transfers_export.xlsx',
+                function ($transfer) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($transfer->transfer_date)->format('M d, Y'),
+                        'Machinery' => $transfer->machinery->name ?? 'N/A',
+                        'Code' => $transfer->machinery->machine_code ?? 'N/A',
+                        'From Site' => $transfer->fromSite->site_name ?? 'N/A',
+                        'To Site' => $transfer->toSite->site_name ?? 'N/A',
+                        'Status' => ucfirst($transfer->status),
+                        'Remarks' => $transfer->remarks,
+                    ];
+                }
+            );
+        }
+
         $transfers = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.machinery.transfer-machinery', compact('machineries', 'sites', 'transfers'));
@@ -248,6 +296,21 @@ class MachineryController extends Controller
                   ->orWhere('site_code', 'like', '%' . $request->search . '%')
                   ->orWhere('location', 'like', '%' . $request->search . '%');
             });
+        }
+
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'working_sites_export.xlsx',
+                function ($site) {
+                    return [
+                        'Code' => $site->site_code,
+                        'Name' => $site->site_name,
+                        'Location' => $site->location,
+                        'Created At' => $site->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
         }
 
         $sites = $query->latest()->paginate(10)->withQueryString();
@@ -314,6 +377,21 @@ class MachineryController extends Controller
             $query->whereDate('entry_date', $request->date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'damaged_machinery_export.xlsx',
+                function ($machinery) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                        'Code' => $machinery->machine_code,
+                        'Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                    ];
+                }
+            );
+        }
+
         $machineries = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.machinery.damaged.index', compact('categories', 'machineries'));
@@ -344,6 +422,21 @@ class MachineryController extends Controller
             $query->whereDate('entry_date', $request->date);
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'running_machinery_export.xlsx',
+                function ($machinery) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                        'Code' => $machinery->machine_code,
+                        'Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                    ];
+                }
+            );
+        }
+
         $machineries = $query->latest()->paginate(10)->withQueryString();
         return view('admin.machinery.running.index', compact('categories', 'machineries'));
     }
@@ -371,6 +464,21 @@ class MachineryController extends Controller
         }
         if ($request->date) {
             $query->whereDate('entry_date', $request->date);
+        }
+
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'repair_machinery_export.xlsx',
+                function ($machinery) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                        'Code' => $machinery->machine_code,
+                        'Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                    ];
+                }
+            );
         }
 
         $machineries = $query->latest()->paginate(10)->withQueryString();

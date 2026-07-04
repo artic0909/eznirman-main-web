@@ -50,8 +50,9 @@
     <!-- Categories List -->
     <div class="col-md-8">
         <div class="card">
-            <div class="card-header">
-                <h5>Categories List</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Categories List</h5>
+                <a href="{{ route('admin.machinery.machine-category', ['export' => 'excel']) }}" class="btn btn-success btn-sm"><i class="ti ti-table-export"></i> Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

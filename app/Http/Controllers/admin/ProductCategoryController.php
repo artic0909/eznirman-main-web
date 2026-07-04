@@ -16,6 +16,20 @@ class ProductCategoryController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'product_categories_export.xlsx',
+                function ($category) {
+                    return [
+                        'Name' => $category->name,
+                        'Status' => ucfirst($category->status),
+                        'Created At' => $category->created_at->format('Y-m-d H:i:s'),
+                    ];
+                }
+            );
+        }
+
         $categories = $query->latest()->paginate(10)->withQueryString();
         return view('admin.purchase.product-category', compact('categories'));
     }

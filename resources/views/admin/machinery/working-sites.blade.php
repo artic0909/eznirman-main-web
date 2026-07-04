@@ -67,6 +67,7 @@
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
                         <a href="{{ route('admin.machinery.working-sites') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
 
