@@ -7,6 +7,7 @@ use App\Models\UnauthorizedPurchase;
 use App\Models\WorkingSite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class UnauthorizedPurchaseController extends Controller
 {
@@ -43,15 +44,47 @@ class UnauthorizedPurchaseController extends Controller
 
     public function destroy($id)
     {
-        $purchase = UnauthorizedPurchase::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        if ($purchase->invoice_file) {
-            Storage::disk('public')->delete($purchase->invoice_file);
+            $purchase = UnauthorizedPurchase::findOrFail($id);
+
+            if ($purchase->invoice_file) {
+                Storage::disk('public')->delete($purchase->invoice_file);
+            }
+
+            // Refund logic
+            if ($purchase->user_id) {
+                $wallet = \App\Models\Wallet::firstOrCreate(
+                    ['user_id' => $purchase->user_id],
+                    ['current_balance' => 0]
+                );
+
+                $amount = $purchase->amount;
+                $newBalance = $wallet->current_balance + $amount;
+
+                $wallet->update(['current_balance' => $newBalance]);
+
+                \App\Models\Transaction::create([
+                    'wallet_id' => $wallet->id,
+                    'date' => now(),
+                    'amount' => $amount,
+                    'note' => 'Refund for deleted unauthorized purchase (' . $purchase->unauthorized_unique_id . ')',
+                    'type' => 'credit',
+                    'pay_to' => 'System',
+                    'pay_to_code' => 'Refund',
+                    'balance_after' => $newBalance,
+                ]);
+            }
+
+            $purchase->delete();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Unauthorized Purchase deleted and amount refunded successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
-
-        $purchase->delete();
-
-        return redirect()->back()->with('success', 'Unauthorized Purchase deleted successfully.');
     }
 
     public function bulkDelete(Request $request)
@@ -61,15 +94,48 @@ class UnauthorizedPurchaseController extends Controller
             'ids.*' => 'exists:unauthorized_purchases,id'
         ]);
 
-        $purchases = UnauthorizedPurchase::whereIn('id', $request->ids)->get();
+        try {
+            DB::beginTransaction();
+            
+            $purchases = UnauthorizedPurchase::whereIn('id', $request->ids)->get();
 
-        foreach ($purchases as $purchase) {
-            if ($purchase->invoice_file) {
-                Storage::disk('public')->delete($purchase->invoice_file);
+            foreach ($purchases as $purchase) {
+                if ($purchase->invoice_file) {
+                    Storage::disk('public')->delete($purchase->invoice_file);
+                }
+
+                // Refund logic
+                if ($purchase->user_id) {
+                    $wallet = \App\Models\Wallet::firstOrCreate(
+                        ['user_id' => $purchase->user_id],
+                        ['current_balance' => 0]
+                    );
+
+                    $amount = $purchase->amount;
+                    $newBalance = $wallet->current_balance + $amount;
+
+                    $wallet->update(['current_balance' => $newBalance]);
+
+                    \App\Models\Transaction::create([
+                        'wallet_id' => $wallet->id,
+                        'date' => now(),
+                        'amount' => $amount,
+                        'note' => 'Refund for deleted unauthorized purchase (' . $purchase->unauthorized_unique_id . ')',
+                        'type' => 'credit',
+                        'pay_to' => 'System',
+                        'pay_to_code' => 'Refund',
+                        'balance_after' => $newBalance,
+                    ]);
+                }
+
+                $purchase->delete();
             }
-            $purchase->delete();
-        }
 
-        return redirect()->back()->with('success', 'Selected Unauthorized Purchases deleted successfully.');
+            DB::commit();
+            return redirect()->back()->with('success', 'Selected Unauthorized Purchases deleted and amount refunded successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
     }
 }

@@ -135,7 +135,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('account.purchase.unauthorized-purchases.destroy', $purchase->id) }}">
+                                    <button type="button" class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('account.purchase.unauthorized-purchases.destroy', $purchase->id) }}">
                                         <i class="ti ti-trash"></i>
                                     </button>
                                 </td>
