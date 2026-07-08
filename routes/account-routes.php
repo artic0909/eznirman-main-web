@@ -33,8 +33,9 @@
      // Cash Management
     Route::get('/cashmanagement', [\App\Http\Controllers\accounts\CashManagementController::class, 'index'])->name('cashmanagement.index');
     Route::get('/cashmanagement/users-by-role', [\App\Http\Controllers\accounts\CashManagementController::class, 'getUsersByRole'])->name('cashmanagement.users_by_role');
-    Route::get('/cashmanagement/send', [\App\Http\Controllers\accounts\CashManagementController::class, 'sendForm'])->name('cashmanagement.send');
-    Route::post('/cashmanagement/send', [\App\Http\Controllers\accounts\CashManagementController::class, 'sendMoney'])->name('cashmanagement.process');
+     Route::get('/cashmanagement/send', [\App\Http\Controllers\accounts\CashManagementController::class, 'sendForm'])->name('cashmanagement.send');
+     Route::post('/cashmanagement/send', [\App\Http\Controllers\accounts\CashManagementController::class, 'sendMoney'])->name('cashmanagement.process');
+     Route::delete('/cashmanagement/{id}/refund', [\App\Http\Controllers\accounts\CashManagementController::class, 'refund'])->name('cashmanagement.refund');
 
     Route::get('/logout', [AccountAuthController::class, 'logout'])->name('logout');
  });

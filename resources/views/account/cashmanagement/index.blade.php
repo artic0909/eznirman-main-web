@@ -116,6 +116,7 @@
                                 <th>Account Code</th>
                                 <th>Credit/ Debit</th>
                                 <th>After Balance (₹)</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -158,10 +159,25 @@
                                 <td>
                                     <span class="fw-500">₹{{ number_format($tx->balance_after, 2) }}</span>
                                 </td>
+                                <td>
+                                    @if($tx->type === 'debit')
+                                        <form action="{{ route('account.cashmanagement.refund', $tx->id) }}" method="POST" class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger px-2 py-1" title="Delete & Refund">
+                                                <i class="ti ti-trash"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button type="button" class="btn btn-sm btn-success px-2 py-1" disabled title="Credit Transaction">
+                                            <i class="ti ti-check"></i>
+                                        </button>
+                                    @endif
+                                </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-5">No transactions found.</td>
+                                <td colspan="8" class="text-center text-muted py-5">No transactions found.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -247,7 +263,29 @@
         roleFilter.on('change', function() {
             loadUsers($(this).val());
         });
+
+        // SweetAlert2 for Delete Confirmation
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this transaction and refund the amount?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete & refund!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
     });
 </script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
 @endsection
