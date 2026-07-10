@@ -160,7 +160,7 @@
                                     <span class="fw-500">₹{{ number_format($tx->balance_after, 2) }}</span>
                                 </td>
                                 <td>
-                                    @if($tx->type === 'debit')
+                                    
                                         <form action="{{ route('account.cashmanagement.refund', $tx->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -168,11 +168,7 @@
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
-                                    @else
-                                        <button type="button" class="btn btn-sm btn-success px-2 py-1" disabled title="Credit Transaction">
-                                            <i class="ti ti-check"></i>
-                                        </button>
-                                    @endif
+                                    
                                 </td>
                             </tr>
                             @empty
@@ -270,12 +266,12 @@
                 e.preventDefault();
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "You want to delete this transaction and refund the amount?",
+                    text: "You want to delete this transaction? The wallet balance will be adjusted accordingly.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete & refund!'
+                    confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();

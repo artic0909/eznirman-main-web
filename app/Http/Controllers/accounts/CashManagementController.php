@@ -166,46 +166,48 @@ class CashManagementController extends Controller
         }
     }
 
-    /**
-     * Delete a transaction and refund the amount to the wallet.
-     */
     public function refund($id)
     {
         try {
             DB::beginTransaction();
 
             $transaction = Transaction::findOrFail($id);
-            
-            if ($transaction->type !== 'debit') {
-                return back()->with('error', 'Only debit transactions can be refunded.');
-            }
-
             $wallet = Wallet::findOrFail($transaction->wallet_id);
 
             $amount = $transaction->amount;
-            $newBalance = $wallet->current_balance + $amount;
 
-            // Update wallet balance
-            $wallet->update(['current_balance' => $newBalance]);
+            if ($transaction->type === 'debit') {
+                $newBalance = $wallet->current_balance + $amount;
+                // Update wallet balance
+                $wallet->update(['current_balance' => $newBalance]);
 
-            // Create a refund transaction
-            Transaction::create([
-                'wallet_id' => $wallet->id,
-                'date' => now(),
-                'amount' => $amount,
-                'note' => 'Refund for deleted transaction',
-                'type' => 'credit',
-                'pay_to' => $transaction->pay_to,
-                'pay_to_code' => $transaction->pay_to_code,
-                'balance_after' => $newBalance,
-            ]);
+                // Create a refund transaction
+                Transaction::create([
+                    'wallet_id' => $wallet->id,
+                    'date' => now(),
+                    'amount' => $amount,
+                    'note' => 'Refund for deleted transaction',
+                    'type' => 'credit',
+                    'pay_to' => $transaction->pay_to,
+                    'pay_to_code' => $transaction->pay_to_code,
+                    'balance_after' => $newBalance,
+                ]);
+            } elseif ($transaction->type === 'credit') {
+                $newBalance = $wallet->current_balance - $amount;
+                // Update wallet balance
+                $wallet->update(['current_balance' => $newBalance]);
+                
+                // No transaction record is auto-stored for deducted credits
+            } else {
+                return back()->with('error', 'Only debit and credit transactions can be deleted.');
+            }
 
             // Delete original transaction
             $transaction->delete();
 
             DB::commit();
 
-            return back()->with('success', 'Transaction deleted and amount refunded successfully.');
+            return back()->with('success', 'Transaction deleted successfully.');
 
         } catch (\Exception $e) {
             DB::rollBack();
