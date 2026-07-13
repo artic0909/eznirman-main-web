@@ -61,6 +61,7 @@
                             <option value="running">Running</option>
                             <option value="repair">Under Repair</option>
                             <option value="damage">Damaged</option>
+                            <option value="missing">Missing</option>
                         </select>
                     </div>
                     <div class="col-md-4 form-group mb-3">
@@ -110,6 +111,7 @@
                             <option value="running" {{ request('condition') == 'running' ? 'selected' : '' }}>Running</option>
                             <option value="repair" {{ request('condition') == 'repair' ? 'selected' : '' }}>Repairing</option>
                             <option value="damage" {{ request('condition') == 'damage' ? 'selected' : '' }}>Damaged</option>
+                            <option value="missing" {{ request('condition') == 'missing' ? 'selected' : '' }}>Missing</option>
                         </select>
                     </div>
                     <div class="col-md-2 mb-2">
@@ -170,8 +172,10 @@
                                     <span class="badge bg-light-success text-success">Running</span>
                                     @elseif($machine->condition == 'repair')
                                     <span class="badge bg-light-warning text-warning">Repairing</span>
-                                    @else
+                                    @elseif($machine->condition == 'damage')
                                     <span class="badge bg-light-danger text-danger">Damaged</span>
+                                    @elseif($machine->condition == 'missing')
+                                    <span class="badge bg-light-danger text-danger">Missing</span>
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($machine->entry_date)->format('d M, Y') }}</td>
@@ -223,6 +227,7 @@
                                                                 <option value="running" {{ $machine->condition == 'running' ? 'selected' : '' }}>Running</option>
                                                                 <option value="repair" {{ $machine->condition == 'repair' ? 'selected' : '' }}>Repairing</option>
                                                                 <option value="damage" {{ $machine->condition == 'damage' ? 'selected' : '' }}>Damaged</option>
+                                                                <option value="missing" {{ $machine->condition == 'missing' ? 'selected' : '' }}>Missing</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-6 form-group mb-3">

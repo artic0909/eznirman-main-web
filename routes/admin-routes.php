@@ -63,6 +63,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         // Repair Machinery
         Route::get('/repair', [MachineryController::class, 'repairMachineryView'])->name('repair');
         Route::get('/repair/{id}', [MachineryController::class, 'repairMachineryShow'])->name('repair.show');
+
+        // Missing Machinery
+        Route::get('/missing', [MachineryController::class, 'missingMachineryView'])->name('missing');
+        Route::get('/missing/{id}', [MachineryController::class, 'missingMachineryShow'])->name('missing.show');
     });
 
     // Purchase Register (Materials)

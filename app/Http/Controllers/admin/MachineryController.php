@@ -140,7 +140,7 @@ class MachineryController extends Controller
             'name' => 'required|string|max:255',
             'machine_code' => 'required|string|max:255|unique:machinaries,machine_code',
             'entry_date' => 'required|date',
-            'condition' => 'required|in:running,repair,damage',
+            'condition' => 'required|in:running,repair,damage,missing',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -162,7 +162,7 @@ class MachineryController extends Controller
             'name' => 'required|string|max:255',
             'machine_code' => 'required|string|max:255|unique:machinaries,machine_code,' . $id,
             'entry_date' => 'required|date',
-            'condition' => 'required|in:running,repair,damage',
+            'condition' => 'required|in:running,repair,damage,missing',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -489,5 +489,49 @@ class MachineryController extends Controller
     {
         $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
         return view('admin.machinery.repair.show', compact('machinery'));
+    }
+
+    // --- Missing Machinery ---
+    public function missingMachineryView(Request $request)
+    {
+        $categories = MachineCategory::where('status', true)->get();
+        $query = Machinary::with('category')->where('condition', 'missing');
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('machine_code', 'like', '%' . $request->search . '%');
+            });
+        }
+        if ($request->category_id) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+        if ($request->date) {
+            $query->whereDate('entry_date', $request->date);
+        }
+
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'missing_machinery_export.xlsx',
+                function ($machinery) {
+                    return [
+                        'Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                        'Code' => $machinery->machine_code,
+                        'Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                    ];
+                }
+            );
+        }
+
+        $machineries = $query->latest()->paginate(10)->withQueryString();
+        return view('admin.machinery.missing.index', compact('categories', 'machineries'));
+    }
+
+    public function missingMachineryShow($id)
+    {
+        $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
+        return view('admin.machinery.missing.show', compact('machinery'));
     }
 }
