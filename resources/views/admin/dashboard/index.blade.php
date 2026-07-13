@@ -103,7 +103,7 @@
         <div class="col-12 mt-5">
             <div class="d-flex align-items-center mb-1">
                 <div class="bg-warning rounded-circle p-2 me-2" style="width: 10px; height: 10px;"></div>
-                <h5 class="mb-0 fw-bold text-dark">Machinery & Fleet Status</h5>
+                <h5 class="mb-0 fw-bold text-dark">Machinery & Tools Status</h5>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
                     <div class="card shadow-sm border-0 h-100 bg-light-primary bg-opacity-10 border-start border-4 border-primary">
                         <div class="card-body py-4 d-flex align-items-center justify-content-between">
                             <div>
-                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Total Fleet</h6>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Total Machinary</h6>
                                 <h2 class="fw-bold mb-0 text-primary">{{ $machineryCounts['total'] }}</h2>
                                 <div class="mt-1 small text-muted">Registered Assets</div>
                             </div>
