@@ -21,6 +21,7 @@ class DashboardController extends Controller
             'running' => Machinary::where('condition', 'running')->count(),
             'repair' => Machinary::where('condition', 'repair')->count(),
             'damage' => Machinary::where('condition', 'damage')->count(),
+            'missing' => Machinary::where('condition', 'missing')->count(),
         ];
 
         // HR Counts

@@ -168,6 +168,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100 border-start border-4 border-secondary">
+                        <div class="card-body py-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2 small fw-bold">Missing</h6>
+                                <h2 class="fw-bold mb-0 text-secondary">{{ $machineryCounts['missing'] }}</h2>
+                                <div class="mt-1 small text-muted">Lost or Stolen</div>
+                            </div>
+                            <div class="avtar avtar-l bg-light-secondary text-secondary rounded-circle">
+                                <i class="ti ti-help f-24"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -178,18 +193,22 @@
                 </div>
                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
                     <div id="machinery-pie-chart" style="min-height: 250px; width: 100%;"></div>
-                    <div class="row g-2 w-100 mt-3 text-center">
-                        <div class="col-4">
+                    <div class="row g-1 w-100 mt-3 text-center">
+                        <div class="col-3 border-end px-0">
                             <h6 class="mb-0 fw-bold text-success">{{ round(($machineryCounts['running'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
-                            <small class="text-muted">Running</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Running</small>
                         </div>
-                        <div class="col-4 border-start border-end">
+                        <div class="col-3 border-end px-0">
                             <h6 class="mb-0 fw-bold text-warning">{{ round(($machineryCounts['repair'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
-                            <small class="text-muted">Repair</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Repair</small>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3 border-end px-0">
                             <h6 class="mb-0 fw-bold text-danger">{{ round(($machineryCounts['damage'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
-                            <small class="text-muted">Damage</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">Damage</small>
+                        </div>
+                        <div class="col-3 px-0">
+                            <h6 class="mb-0 fw-bold text-secondary">{{ round(($machineryCounts['missing'] / max($machineryCounts['total'], 1)) * 100) }}%</h6>
+                            <small class="text-muted" style="font-size: 0.75rem;">Missing</small>
                         </div>
                     </div>
                 </div>
@@ -359,10 +378,11 @@
                 series: [
                     {{ $machineryCounts['running'] }}, 
                     {{ $machineryCounts['repair'] }}, 
-                    {{ $machineryCounts['damage'] }}
+                    {{ $machineryCounts['damage'] }},
+                    {{ $machineryCounts['missing'] }}
                 ],
-                labels: ['Running', 'Repairing', 'Damaged'],
-                colors: ['#2ca87f', '#e58a00', '#dc2626'],
+                labels: ['Running', 'Repairing', 'Damaged', 'Missing'],
+                colors: ['#2ca87f', '#e58a00', '#dc2626', '#6c757d'],
                 legend: {
                     show: false,
                     position: 'bottom'
