@@ -104,7 +104,7 @@
 
                 @if($machineries->hasPages())
                 <div class="custom-pagination mt-4">
-                    {{ $machineries->links('vendor.pagination.bootstrap-5') }}
+                    {{ $machineries->links('pagination::bootstrap-5') }}
                 </div>
                 @endif
             </div>
