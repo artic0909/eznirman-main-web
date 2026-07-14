@@ -104,11 +104,37 @@
 
                 @if($machineries->hasPages())
                 <div class="custom-pagination mt-4">
-                    {{ $machineries->links('pagination::bootstrap-5') }}
+                    <a href="{{ $machineries->previousPageUrl() }}" class="btn-nav {{ $machineries->onFirstPage() ? 'disabled' : '' }}">Prev</a>
+                    
+                    <div class="page-input-group">
+                        <input type="number" value="{{ $machineries->currentPage() }}" min="1" max="{{ $machineries->lastPage() }}" id="goto-page">
+                        <span>/ {{ $machineries->lastPage() }}</span>
+                    </div>
+
+                    <a href="{{ $machineries->nextPageUrl() }}" class="btn-nav {{ $machineries->hasMorePages() ? '' : 'disabled' }}">Next</a>
                 </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Pagination Goto Logic
+        const gotoInput = document.getElementById('goto-page');
+        if (gotoInput) {
+            gotoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const page = gotoInput.value;
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('page', page);
+                    window.location.href = url.href;
+                }
+            });
+        }
+    });
+</script>
+@endpush
 @endsection
