@@ -3,7 +3,7 @@
       <div class="m-header">
         <a href="{{ route('admin.dashboard') }}" class="b-brand text-primary">
           <!-- ========   Change your logo from here   ============ -->
-          <img src="{{ asset('assets/images/logo.gif') }}" class="img-fluid" width="70" alt="logo">
+          <img src="{{ asset('logo_with_bg.png') }}" class="img-fluid" width="50" alt="logo" style="border-radius: 5px;">
           <span class="b-title fw-bold text-decoration-none text-dark fs-4">EZ NIRMAN</span>
         </a>
       </div>
