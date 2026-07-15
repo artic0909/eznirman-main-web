@@ -87,7 +87,7 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          showNotification('Request Filed', `Site budget request of ₹${amount.toLocaleString('en-IN')} successfully filed.`);
+          showNotification('Request Submitted', `Site budget request of ₹${amount.toLocaleString('en-IN')} successfully submitted.`);
           document.getElementById('requestFormPage').reset();
           
           setTimeout(() => {
