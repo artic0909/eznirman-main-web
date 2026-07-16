@@ -74,7 +74,13 @@ class CashManagementController extends Controller
                     $debit = $tx->type === 'debit' ? $tx->amount : 0;
                     $payTo = $tx->pay_to ? $tx->pay_to . ($tx->pay_to_code ? ' ('.$tx->pay_to_code.')' : '') : 'N/A';
                     
-                    fputcsv($file, [$date, $time, $userName, $userCode, $role, $accountCode, $tx->note, $payTo, $credit, $debit, $tx->balance_after]);
+                    $note = $tx->note;
+                    if (strpos($note, '—') !== false) {
+                        $noteParts = explode('—', $note, 2);
+                        $note = trim($noteParts[1] ?? '');
+                    }
+                    
+                    fputcsv($file, [$date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit, $tx->balance_after]);
                 }
                 
                 fclose($file);
