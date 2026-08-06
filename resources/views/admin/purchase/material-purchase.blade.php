@@ -208,12 +208,125 @@
                                 </td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $purchase->id }}">
+                                        <button class="btn btn-sm btn-icon btn-light-info" data-bs-toggle="modal" data-bs-target="#viewModal{{ $purchase->id }}" title="View Details">
+                                            <i class="ti ti-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $purchase->id }}" title="Edit">
                                             <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.purchase.material-purchases.destroy', $purchase->id) }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.purchase.material-purchases.destroy', $purchase->id) }}" title="Delete">
                                             <i class="ti ti-trash"></i>
                                         </button>
+                                    </div>
+
+                                    <!-- View Modal -->
+                                    <div class="modal fade" id="viewModal{{ $purchase->id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-info">
+                                                    <h5 class="modal-title text-white">Purchase Bill Details</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body p-4 bg-light">
+                                                    <div class="card shadow-none border">
+                                                        <div class="card-body">
+                                                            <!-- Bill Header -->
+                                                            <div class="row border-bottom pb-3 mb-3">
+                                                                <div class="col-sm-6">
+                                                                    <h3 class="text-primary mb-1">Purchase Invoice</h3>
+                                                                    <p class="mb-0 text-muted"><strong>Inv No:</strong> {{ $purchase->invoice_no }}</p>
+                                                                    <p class="mb-0 text-muted"><strong>Purchase ID:</strong> {{ $purchase->material_unique_id }}</p>
+                                                                </div>
+                                                                <div class="col-sm-6 text-sm-end">
+                                                                    <p class="mb-0"><strong>Date:</strong> {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</p>
+                                                                    <p class="mb-0"><strong>Site:</strong> <span class="badge bg-light-info text-info">{{ $purchase->site->site_code }} - {{ $purchase->site->site_name }}</span></p>
+                                                                    <p class="mb-0"><strong>Created By:</strong> 
+                                                                        @if($purchase->user_id)
+                                                                            {{ $purchase->user->name }} ({{ $purchase->user->code }})
+                                                                        @else
+                                                                            Admin
+                                                                        @endif
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <!-- Vendor Info -->
+                                                            <div class="row mb-4">
+                                                                <div class="col-sm-12">
+                                                                    <h6 class="text-uppercase text-muted mb-2">Vendor Information</h6>
+                                                                    <h5 class="mb-0">{{ $purchase->party_name }}</h5>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Item Table -->
+                                                            <div class="table-responsive mb-4">
+                                                                <table class="table table-bordered mb-0">
+                                                                    <thead class="table-light">
+                                                                        <tr>
+                                                                            <th class="text-center" style="width: 50px;">#</th>
+                                                                            <th>Product Details</th>
+                                                                            <th class="text-end">Quantity</th>
+                                                                            <th class="text-end">Rate</th>
+                                                                            <th class="text-end">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="text-center">1</td>
+                                                                            <td>
+                                                                                <h6 class="mb-0">{{ $purchase->product_name }}</h6>
+                                                                                <small class="text-muted">Code: {{ $purchase->materialCode->code }}</small>
+                                                                            </td>
+                                                                            <td class="text-end">{{ $purchase->quantity }} {{ $purchase->unit->name }}</td>
+                                                                            <td class="text-end">₹{{ number_format($purchase->rate, 2) }}</td>
+                                                                            <td class="text-end">₹{{ number_format($purchase->quantity * $purchase->rate, 2) }}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <!-- Totals Section -->
+                                                            <div class="row">
+                                                                <div class="col-sm-7">
+                                                                    <h6 class="text-uppercase text-muted mb-2">Remarks/Notes</h6>
+                                                                    <div class="p-3 bg-light border rounded" style="min-height: 80px;">
+                                                                        {{ $purchase->note ?: 'No remarks provided.' }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-5">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-sm table-borderless text-end mb-0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="fw-bold text-muted">Sub Total :</td>
+                                                                                    <td>₹{{ number_format($purchase->quantity * $purchase->rate, 2) }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="fw-bold text-muted">GST Amount :</td>
+                                                                                    <td>₹{{ number_format($purchase->gst_amount, 2) }}</td>
+                                                                                </tr>
+                                                                                <tr class="border-top">
+                                                                                    <td class="fw-bold fs-5 pt-2">Grand Total :</td>
+                                                                                    <td class="fw-bold fs-5 text-primary pt-2">₹{{ number_format($purchase->amount, 2) }}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    @if($purchase->invoice_file)
+                                                    <a href="{{ asset('storage/' . $purchase->invoice_file) }}" target="_blank" class="btn btn-outline-primary">
+                                                        <i class="ti ti-file-text me-1"></i> View Original Invoice
+                                                    </a>
+                                                    @endif
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Edit Modal -->
