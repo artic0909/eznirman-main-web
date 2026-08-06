@@ -72,34 +72,41 @@
           </li>
 
 
-          <!-- Purchase Register -->
+          <!-- Material Management -->
           <li class="pc-item pc-caption">
-            <label>Purchase Register</label>
-            <i class="ti ti-brand-chrome"></i>
+            <label>Material Management</label>
+            <i class="ti ti-box"></i>
           </li>
-          <li class="pc-item {{ Route::is('admin.purchase.units.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.purchase.units.index') }}" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-layout"></i></span>
-              <span class="pc-mtext">Units</span>
-            </a>
-          </li>
-          <li class="pc-item pc-hasmenu {{ Request::is('admin/purchase/product-categories*') || Request::is('admin/purchase/material-codes*') || Request::is('admin/purchase/material-purchases*') || Request::is('admin/purchase/material-consumes*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu {{ Route::is('admin.purchase.units.*') || Route::is('admin.purchase.product-categories.*') || Route::is('admin.purchase.material-codes.*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-stack"></i></span><span
                 class="pc-mtext">Material Management</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
+              <li class="pc-item {{ Route::is('admin.purchase.units.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('admin.purchase.units.index') }}">Units</a>
+              </li>
               <li class="pc-item {{ Route::is('admin.purchase.product-categories.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.product-categories.index') }}">Material Category</a>
               </li>
               <li class="pc-item {{ Route::is('admin.purchase.material-codes.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.material-codes.index') }}">Material Code</a>
               </li>
+            </ul>
+          </li>
+
+          <!-- Purchase Register -->
+          <li class="pc-item pc-caption">
+            <label>Purchase Register</label>
+            <i class="ti ti-brand-chrome"></i>
+          </li>
+          <li class="pc-item pc-hasmenu {{ Route::is('admin.purchase.material-purchases.*') || Route::is('admin.purchase.material-consumes.*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-shopping-cart"></i></span><span
+                class="pc-mtext">Material Purchase</span><span class="pc-arrow"><i
+                  data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
               <li class="pc-item {{ Route::is('admin.purchase.material-purchases.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.material-purchases.index') }}">Material Purchase</a>
               </li>
-              <!-- <li class="pc-item {{ Route::is('admin.purchase.unauthorized-purchases.*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('admin.purchase.unauthorized-purchases.index') }}">Unauthorized Purchase</a>
-              </li> -->
               <li class="pc-item {{ Route::is('admin.purchase.material-consumes.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route('admin.purchase.material-consumes.index') }}">Material Consume</a>
               </li>
@@ -110,29 +117,28 @@
           <!-- Human Resources -->
           <li class="pc-item pc-caption">
             <label>HR Management</label>
-            <i class="ti ti-brand-chrome"></i>
+            <i class="ti ti-users"></i>
           </li>
-          <li class="pc-item {{ Route::is('admin.hrmanagement.designations.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.hrmanagement.designations.index') }}" class="pc-link">
-              <span class="pc-micon"><i class="fas fa-graduation-cap"></i></span>
-              <span class="pc-mtext">Designations</span>
-            </a>
-          </li>
-          <li class="pc-item {{ Route::is('admin.hrmanagement.skills.*') ? 'active' : '' }}">
-            <a href="{{ route('admin.hrmanagement.skills.index') }}" class="pc-link">
-              <span class="pc-micon"><i class="fas fa-chart-line"></i></span>
-              <span class="pc-mtext">Skills</span>
-            </a>
-          </li>
-          <li class="pc-item pc-hasmenu {{ Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
-            <a href="#!" class="pc-link"><span class="pc-micon"><i class="fas fa-users"></i></span><span
-                class="pc-mtext">Human Resource</span><span class="pc-arrow"><i
+          <li class="pc-item pc-hasmenu {{ Route::is('admin.hrmanagement.designations.*') || Route::is('admin.hrmanagement.skills.*') || Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="fas fa-users-cog"></i></span><span
+                class="pc-mtext">HR Management</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item {{ request('role') == 'worker' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'worker']) }}">Add Workers</a></li>
-              <li class="pc-item {{ request('role') == 'supervisor' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'supervisor']) }}">Add Supervisors</a></li>
-              <li class="pc-item {{ request('role') == 'staff' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'staff']) }}">Add Staffs</a></li>
-              <li class="pc-item {{ request('role') == 'hr' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'hr']) }}">Add HRs</a></li>
+              <li class="pc-item {{ Route::is('admin.hrmanagement.designations.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.hrmanagement.designations.index') }}" class="pc-link">Designations</a>
+              </li>
+              <li class="pc-item {{ Route::is('admin.hrmanagement.skills.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.hrmanagement.skills.index') }}" class="pc-link">Skills</a>
+              </li>
+              <li class="pc-item pc-hasmenu {{ Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
+                <a href="#!" class="pc-link">Human Resource<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                <ul class="pc-submenu">
+                  <li class="pc-item {{ request('role') == 'worker' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'worker']) }}">Add Workers</a></li>
+                  <li class="pc-item {{ request('role') == 'supervisor' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'supervisor']) }}">Add Supervisors</a></li>
+                  <li class="pc-item {{ request('role') == 'staff' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'staff']) }}">Add Staffs</a></li>
+                  <li class="pc-item {{ request('role') == 'hr' ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.hrmanagement.index', ['role' => 'hr']) }}">Add HRs</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
 
