@@ -1,4 +1,43 @@
-  <nav class="pc-sidebar">
+<style>
+  /* Sidebar Section Custom Colors */
+  .pc-sidebar .pc-item.pc-caption.theme-asset label { color: #6610f2 !important; }
+  .pc-sidebar .theme-asset.active > .pc-link { color: #6610f2 !important; }
+  .pc-sidebar .theme-asset.active > .pc-link .pc-micon { color: #6610f2 !important; }
+  .pc-sidebar .theme-asset .pc-submenu .pc-item.active > .pc-link { color: #6610f2 !important; }
+  .pc-sidebar .theme-asset .pc-submenu .pc-item.active > .pc-link:before { background-color: #6610f2 !important; }
+
+  .pc-sidebar .pc-item.pc-caption.theme-site label { color: #20c997 !important; }
+  .pc-sidebar .theme-site.active > .pc-link { color: #20c997 !important; }
+  .pc-sidebar .theme-site.active > .pc-link .pc-micon { color: #20c997 !important; }
+  .pc-sidebar .theme-site .pc-submenu .pc-item.active > .pc-link { color: #20c997 !important; }
+  .pc-sidebar .theme-site .pc-submenu .pc-item.active > .pc-link:before { background-color: #20c997 !important; }
+
+  .pc-sidebar .pc-item.pc-caption.theme-material label { color: #fd7e14 !important; }
+  .pc-sidebar .theme-material.active > .pc-link { color: #fd7e14 !important; }
+  .pc-sidebar .theme-material.active > .pc-link .pc-micon { color: #fd7e14 !important; }
+  .pc-sidebar .theme-material .pc-submenu .pc-item.active > .pc-link { color: #fd7e14 !important; }
+  .pc-sidebar .theme-material .pc-submenu .pc-item.active > .pc-link:before { background-color: #fd7e14 !important; }
+
+  .pc-sidebar .pc-item.pc-caption.theme-purchase label { color: #d63384 !important; }
+  .pc-sidebar .theme-purchase.active > .pc-link { color: #d63384 !important; }
+  .pc-sidebar .theme-purchase.active > .pc-link .pc-micon { color: #d63384 !important; }
+  .pc-sidebar .theme-purchase .pc-submenu .pc-item.active > .pc-link { color: #d63384 !important; }
+  .pc-sidebar .theme-purchase .pc-submenu .pc-item.active > .pc-link:before { background-color: #d63384 !important; }
+
+  .pc-sidebar .pc-item.pc-caption.theme-hr label { color: #0d6efd !important; }
+  .pc-sidebar .theme-hr.active > .pc-link { color: #0d6efd !important; }
+  .pc-sidebar .theme-hr.active > .pc-link .pc-micon { color: #0d6efd !important; }
+  .pc-sidebar .theme-hr .pc-submenu .pc-item.active > .pc-link { color: #0d6efd !important; }
+  .pc-sidebar .theme-hr .pc-submenu .pc-item.active > .pc-link:before { background-color: #0d6efd !important; }
+
+  .pc-sidebar .pc-item.pc-caption.theme-settings label { color: #17a2b8 !important; }
+  .pc-sidebar .theme-settings.active > .pc-link { color: #17a2b8 !important; }
+  .pc-sidebar .theme-settings.active > .pc-link .pc-micon { color: #17a2b8 !important; }
+  .pc-sidebar .theme-settings .pc-submenu .pc-item.active > .pc-link { color: #17a2b8 !important; }
+  .pc-sidebar .theme-settings .pc-submenu .pc-item.active > .pc-link:before { background-color: #17a2b8 !important; }
+</style>
+
+<nav class="pc-sidebar">
     <div class="navbar-wrapper">
       <div class="m-header">
         <a href="{{ route('admin.dashboard') }}" class="b-brand text-primary">
@@ -18,11 +57,11 @@
 
 
           <!-- Asset Management -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-asset">
             <label>Asset Management</label>
             <i class="ti ti-dashboard"></i>
           </li>
-          <li class="pc-item pc-hasmenu {{ Route::is('admin.machinery.machine-category') || Route::is('admin.machinery.add-machinery') || Route::is('admin.machinery.transfer-machinery') || Request::is('admin/machinery/running*') || Request::is('admin/machinery/repair*') || Request::is('admin/machinery/damaged*') || Request::is('admin/machinery/missing*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-asset {{ Route::is('admin.machinery.machine-category') || Route::is('admin.machinery.add-machinery') || Route::is('admin.machinery.transfer-machinery') || Request::is('admin/machinery/running*') || Request::is('admin/machinery/repair*') || Request::is('admin/machinery/damaged*') || Request::is('admin/machinery/missing*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-tools"></i></span><span
                 class="pc-mtext">Machinery & Tools</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -58,11 +97,11 @@
 
 
           <!-- Working Sites -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-site">
             <label>Site Management</label>
             <i class="ti ti-news"></i>
           </li>
-          <li class="pc-item pc-hasmenu {{ Route::is('admin.machinery.working-sites') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-site {{ Route::is('admin.machinery.working-sites') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-building-skyscraper"></i></span><span
                 class="pc-mtext">Working Sites</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -73,11 +112,11 @@
 
 
           <!-- Material Management -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-material">
             <label>Material Management</label>
             <i class="ti ti-box"></i>
           </li>
-          <li class="pc-item pc-hasmenu {{ Route::is('admin.purchase.units.*') || Route::is('admin.purchase.product-categories.*') || Route::is('admin.purchase.material-codes.*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-material {{ Route::is('admin.purchase.units.*') || Route::is('admin.purchase.product-categories.*') || Route::is('admin.purchase.material-codes.*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-stack"></i></span><span
                 class="pc-mtext">Material Management</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -95,11 +134,11 @@
           </li>
 
           <!-- Purchase Register -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-purchase">
             <label>Purchase Register</label>
             <i class="ti ti-brand-chrome"></i>
           </li>
-          <li class="pc-item pc-hasmenu {{ Route::is('admin.purchase.material-purchases.*') || Route::is('admin.purchase.material-consumes.*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-purchase {{ Route::is('admin.purchase.material-purchases.*') || Route::is('admin.purchase.material-consumes.*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-shopping-cart"></i></span><span
                 class="pc-mtext">Material Purchase</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -115,11 +154,11 @@
 
 
           <!-- Human Resources -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-hr">
             <label>HR Management</label>
             <i class="ti ti-users"></i>
           </li>
-          <li class="pc-item pc-hasmenu {{ Route::is('admin.hrmanagement.designations.*') || Route::is('admin.hrmanagement.skills.*') || Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-hr {{ Route::is('admin.hrmanagement.designations.*') || Route::is('admin.hrmanagement.skills.*') || Request::is('admin/hrmanagement') || Request::is('admin/hrmanagement/create*') || Request::is('admin/hrmanagement/*/edit*') || Request::is('admin/hrmanagement/*/show*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="fas fa-users-cog"></i></span><span
                 class="pc-mtext">HR Management</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -143,11 +182,11 @@
           </li>
 
           <!-- Settings -->
-          <li class="pc-item pc-caption">
+          <li class="pc-item pc-caption theme-settings">
             <label>System Settings</label>
             <i class="ti ti-settings"></i>
           </li>
-          <li class="pc-item {{ Route::is('admin.profile.*') ? 'active' : '' }}">
+          <li class="pc-item theme-settings {{ Route::is('admin.profile.*') ? 'active' : '' }}">
             <a href="{{ route('admin.profile.index') }}" class="pc-link">
               <span class="pc-micon"><i class="ti ti-settings"></i></span>
               <span class="pc-mtext">Account Settings</span>
