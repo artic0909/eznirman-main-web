@@ -17,50 +17,41 @@
           </li>
 
 
-          <!-- Machinery & Tools -->
+          <!-- Asset Management -->
           <li class="pc-item pc-caption">
-            <label>Machinery & Tools</label>
+            <label>Asset Management</label>
             <i class="ti ti-dashboard"></i>
           </li>
-          <li class="pc-item {{ Route::is('admin.machinery.machine-category') ? 'active' : '' }}">
-            <a href="{{ route('admin.machinery.machine-category') }}" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-list"></i></span>
-              <span class="pc-mtext">Machine Category</span>
-            </a>
-          </li>
-          <li class="pc-item {{ Route::is('admin.machinery.add-machinery') ? 'active' : '' }}">
-            <a href="{{ route('admin.machinery.add-machinery') }}" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-tools"></i></span>
-              <span class="pc-mtext">Add Machinery</span>
-            </a>
-          </li>
-          <li class="pc-item {{ Route::is('admin.machinery.transfer-machinery') ? 'active' : '' }}">
-            <a href="{{ route('admin.machinery.transfer-machinery') }}" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-share"></i></span>
-              <span class="pc-mtext">Transferred Machinery</span>
-            </a>
-          </li>
-          <!-- Machinery Condition-->
-          <li class="pc-item pc-caption">
-            <label>Machinery Condition</label>
-            <i class="ti ti-dashboard"></i>
-          </li>
-          <li class="pc-item pc-hasmenu {{ Request::is('admin/machinery/running*') || Request::is('admin/machinery/repair*') || Request::is('admin/machinery/damaged*') || Request::is('admin/machinery/missing*') ? 'active pc-trigger' : '' }}">
-            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-stack"></i></span><span
-                class="pc-mtext">Machine Condition</span><span class="pc-arrow"><i
+          <li class="pc-item pc-hasmenu {{ Route::is('admin.machinery.machine-category') || Route::is('admin.machinery.add-machinery') || Route::is('admin.machinery.transfer-machinery') || Request::is('admin/machinery/running*') || Request::is('admin/machinery/repair*') || Request::is('admin/machinery/damaged*') || Request::is('admin/machinery/missing*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-tools"></i></span><span
+                class="pc-mtext">Machinery & Tools</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item {{ Route::is('admin.machinery.running*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('admin.machinery.running') }}">Running</a>
+              <li class="pc-item {{ Route::is('admin.machinery.machine-category') ? 'active' : '' }}">
+                <a href="{{ route('admin.machinery.machine-category') }}" class="pc-link">Machine Category</a>
               </li>
-              <li class="pc-item {{ Route::is('admin.machinery.repair*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('admin.machinery.repair') }}">Repairing</a>
+              <li class="pc-item {{ Route::is('admin.machinery.add-machinery') ? 'active' : '' }}">
+                <a href="{{ route('admin.machinery.add-machinery') }}" class="pc-link">Add Machinery</a>
               </li>
-              <li class="pc-item {{ Route::is('admin.machinery.damaged*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('admin.machinery.damaged') }}">Damage</a>
+              <li class="pc-item {{ Route::is('admin.machinery.transfer-machinery') ? 'active' : '' }}">
+                <a href="{{ route('admin.machinery.transfer-machinery') }}" class="pc-link">Transferred Machinery</a>
               </li>
-              <li class="pc-item {{ Route::is('admin.machinery.missing*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('admin.machinery.missing') }}">Missing</a>
+              <li class="pc-item pc-hasmenu {{ Request::is('admin/machinery/running*') || Request::is('admin/machinery/repair*') || Request::is('admin/machinery/damaged*') || Request::is('admin/machinery/missing*') ? 'active pc-trigger' : '' }}">
+                <a href="#!" class="pc-link">Machine Condition<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                <ul class="pc-submenu">
+                  <li class="pc-item {{ Route::is('admin.machinery.running*') ? 'active' : '' }}">
+                    <a class="pc-link" href="{{ route('admin.machinery.running') }}">Running</a>
+                  </li>
+                  <li class="pc-item {{ Route::is('admin.machinery.repair*') ? 'active' : '' }}">
+                    <a class="pc-link" href="{{ route('admin.machinery.repair') }}">Repairing</a>
+                  </li>
+                  <li class="pc-item {{ Route::is('admin.machinery.damaged*') ? 'active' : '' }}">
+                    <a class="pc-link" href="{{ route('admin.machinery.damaged') }}">Damage</a>
+                  </li>
+                  <li class="pc-item {{ Route::is('admin.machinery.missing*') ? 'active' : '' }}">
+                    <a class="pc-link" href="{{ route('admin.machinery.missing') }}">Missing</a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
