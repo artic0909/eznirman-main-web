@@ -186,7 +186,7 @@
         <!-- Date (Shared) -->
         <div class="form-group" id="group_purchase_date">
           <label class="form-label">Purchase Date <span class="text-danger">*</span></label>
-          <input type="date" name="purchase_date" id="purchase_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+          <input type="date" name="purchase_date" id="purchase_date" class="form-control" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
         </div>
 
         <!-- Material Code (Authorized Only) -->
@@ -305,6 +305,9 @@
       // Product name becomes readonly (populated by Material Code select)
       productInput.setAttribute('readonly', 'readonly');
       
+      // Remove date restriction for authorized purchases
+      document.getElementById('purchase_date').removeAttribute('min');
+      
     } else {
       // Hide authorized fields
       authElements.forEach(el => {
@@ -321,6 +324,9 @@
       
       // Product name becomes editable
       productInput.removeAttribute('readonly');
+
+      // Re-apply date restriction for unauthorized purchases
+      document.getElementById('purchase_date').setAttribute('min', "{{ date('Y-m-d') }}");
     }
   }
 

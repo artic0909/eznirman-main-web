@@ -23,7 +23,7 @@ class DashboardController extends Controller
             'type' => 'required|in:credit,debit',
             'note' => 'nullable|string|max:255',
             'accountcode_id' => 'nullable|exists:accountcodes,id',
-            'date' => 'nullable|date',
+            'date' => 'nullable|date|after_or_equal:today',
             'pay_to' => 'nullable|in:worker,contractor,others,from',
             'pay_to_code' => 'nullable|string',
         ]);

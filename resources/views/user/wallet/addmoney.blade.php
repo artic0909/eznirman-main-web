@@ -25,7 +25,7 @@
         <!-- Disbursal Date -->
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Request Date</label>
-          <input type="date" id="requestDatePage" value="{{ date('Y-m-d') }}" required style="background: var(--surface-light); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 14px; padding: 12px 16px; border-radius: 12px; outline: none; transition: border-color 0.25s;" onfocus="this.style.borderColor='var(--success)'" onblur="this.style.borderColor='var(--surface-border)'">
+          <input type="date" id="requestDatePage" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" required style="background: var(--surface-light); border: 1px solid var(--surface-border); color: var(--white); font-family: var(--font-outfit); font-size: 14px; padding: 12px 16px; border-radius: 12px; outline: none; transition: border-color 0.25s;" onfocus="this.style.borderColor='var(--success)'" onblur="this.style.borderColor='var(--surface-border)'">
         </div>
 
         <!-- From Name Reference -->

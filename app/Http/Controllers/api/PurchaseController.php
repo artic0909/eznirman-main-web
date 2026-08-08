@@ -66,7 +66,7 @@ class PurchaseController extends Controller
 
         $rules = [
             'working_site_id' => 'required|exists:working_sites,id',
-            'purchase_date' => 'required|date',
+            'purchase_date' => $isAuthorized ? 'required|date' : 'required|date|after_or_equal:today',
             'product_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
             'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
