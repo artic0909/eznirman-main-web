@@ -403,6 +403,10 @@
                                                             <label class="form-label">Update Invoice File</label>
                                                             <input type="file" name="invoice_file" class="form-control" accept="image/*,.pdf">
                                                         </div>
+                                                        <div class="col-md-12 form-group mb-3">
+                                                            <label class="form-label">Note/Remarks</label>
+                                                            <input type="text" name="note" class="form-control" placeholder="Any additional info" value="{{ $purchase->note }}">
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

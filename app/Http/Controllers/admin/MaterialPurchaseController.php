@@ -106,6 +106,7 @@ class MaterialPurchaseController extends Controller
             'gst_amount' => 'nullable|numeric',
             'amount' => 'required|numeric',
             'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'note' => 'nullable|string',
         ]);
 
         $data = $request->all();
