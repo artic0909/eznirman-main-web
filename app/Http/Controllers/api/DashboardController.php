@@ -18,7 +18,7 @@ class DashboardController extends Controller
      */
     public function storeTransaction(Request $request)
     {
-        $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'amount' => 'required|numeric|min:1',
             'type' => 'required|in:credit,debit',
             'note' => 'nullable|string|max:255',
@@ -26,7 +26,16 @@ class DashboardController extends Controller
             'date' => 'nullable|date|after_or_equal:today',
             'pay_to' => 'nullable|in:worker,contractor,others,from',
             'pay_to_code' => 'nullable|string',
+        ], [
+            'date.after_or_equal' => 'you cant choose past date',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
 
         $user = $request->user();
         $wallet = $user->wallet;

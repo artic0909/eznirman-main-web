@@ -125,7 +125,16 @@ class PurchaseController extends Controller
             ]);
         }
 
-        $request->validate($rules);
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $rules, [
+            'purchase_date.after_or_equal' => 'you cant choose past date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
         $data = $request->except(['purchase_type']);
 
         if ($request->hasFile('invoice_file')) {

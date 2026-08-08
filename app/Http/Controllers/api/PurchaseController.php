@@ -85,11 +85,14 @@ class PurchaseController extends Controller
             ]);
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, [
+            'purchase_date.after_or_equal' => 'you cant choose past date',
+        ]);
         
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
+                'message' => $validator->errors()->first(),
                 'errors' => $validator->errors()
             ], 422);
         }
