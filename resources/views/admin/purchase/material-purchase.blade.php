@@ -156,6 +156,7 @@
                                 <th>Qty/Unit</th>
                                 <th>Created by</th>
                                 <th>Total Amount</th>
+                                <th>Remarks</th>
                                 <th>File</th>
                                 <th>Action</th>
                             </tr>
@@ -196,6 +197,10 @@
                                 </td>
                                 
                                 <td><span class="fw-bold">₹{{ number_format($purchase->amount, 2) }}</span></td>
+                                
+                                <td class="text-wrap text-break" style="max-width: 200px;">
+                                    <small>{{ $purchase->note ?: 'N/A' }}</small>
+                                </td>
                                 
                                 <td>
                                     @if($purchase->invoice_file)
