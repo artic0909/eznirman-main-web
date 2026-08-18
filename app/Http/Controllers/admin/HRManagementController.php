@@ -96,6 +96,8 @@ class HRManagementController extends Controller
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',
             'working_site_id' => 'nullable|exists:working_sites,id',
+            'assigned_sites_ids' => 'nullable|array',
+            'assigned_sites_ids.*' => 'exists:working_sites,id',
             'pancard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'adhaarcard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_image' => 'nullable|image|max:2048',
@@ -138,7 +140,19 @@ class HRManagementController extends Controller
             $data['profile_image'] = $request->file('profile_image')->store('hrmanagement/profiles', 'public');
         }
 
-        User::create($data);
+        $user = User::create($data);
+
+        if ($request->designation_id) {
+            $designation = Designation::find($request->designation_id);
+            if ($designation && strtolower($designation->name) === 'coordinator') {
+                if ($request->has('assigned_sites_ids')) {
+                    \App\Models\Coordinator::create([
+                        'user_id' => $user->id,
+                        'assigned_sites_ids' => $request->assigned_sites_ids,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' added successfully.');
     }
@@ -156,8 +170,14 @@ class HRManagementController extends Controller
         $skills = Skill::where('status', 'active')->get();
         $designations = Designation::where('status', 'active')->get();
         $sites = WorkingSite::all();
+        
+        $assignedSitesIds = [];
+        $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+        if ($coordinator && $coordinator->assigned_sites_ids) {
+            $assignedSitesIds = $coordinator->assigned_sites_ids;
+        }
 
-        return view('admin.hrmanagement.edit', compact('user', 'role', 'skills', 'designations', 'sites'));
+        return view('admin.hrmanagement.edit', compact('user', 'role', 'skills', 'designations', 'sites', 'assignedSitesIds'));
     }
 
     public function update(Request $request, $id)
@@ -171,6 +191,8 @@ class HRManagementController extends Controller
             'mobile' => 'required|string|max:15',
             'joining_date' => 'required|date',
             'working_site_id' => 'nullable|exists:working_sites,id',
+            'assigned_sites_ids' => 'nullable|array',
+            'assigned_sites_ids.*' => 'exists:working_sites,id',
             'pancard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'adhaarcard' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'profile_image' => 'nullable|image|max:2048',
@@ -209,6 +231,20 @@ class HRManagementController extends Controller
         }
 
         $user->update($data);
+
+        if ($request->designation_id) {
+            $designation = Designation::find($request->designation_id);
+            if ($designation && strtolower($designation->name) === 'coordinator') {
+                \App\Models\Coordinator::updateOrCreate(
+                    ['user_id' => $user->id],
+                    ['assigned_sites_ids' => $request->assigned_sites_ids ?? []]
+                );
+            } else {
+                \App\Models\Coordinator::where('user_id', $user->id)->delete();
+            }
+        } else if ($role === 'worker' || $role === 'hr') {
+            \App\Models\Coordinator::where('user_id', $user->id)->delete();
+        }
 
         return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' updated successfully.');
     }

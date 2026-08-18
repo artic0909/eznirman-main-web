@@ -97,12 +97,24 @@
                         </div>
                         @endif
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="working-site-container">
                             <label class="form-label">Working Site</label>
                             <select name="working_site_id" class="form-select select2">
                                 <option value="">Select Site</option>
                                 @foreach($sites as $site)
                                 <option value="{{ $site->id }}" {{ old('working_site_id', $user->working_site_id) == $site->id ? 'selected' : '' }}>{{ $site->site_code }}-{{ $site->site_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-4" id="assigned-sites-container" style="display: none;">
+                            <label class="form-label">Assigned Sites</label>
+                            <select name="assigned_sites_ids[]" class="form-select select2" multiple data-placeholder="Select Assigned Sites" style="width: 100%;">
+                                @foreach($sites as $site)
+                                @php
+                                    $selectedAssignedSites = old('assigned_sites_ids', isset($assignedSitesIds) ? $assignedSitesIds : []);
+                                @endphp
+                                <option value="{{ $site->id }}" {{ (is_array($selectedAssignedSites) && in_array($site->id, $selectedAssignedSites)) ? 'selected' : '' }}>{{ $site->site_code }}-{{ $site->site_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -191,6 +203,27 @@
                 }
             });
         });
+
+        const designationSelect = document.querySelector('select[name="designation_id"]');
+        const workingSiteContainer = document.getElementById('working-site-container');
+        const assignedSitesContainer = document.getElementById('assigned-sites-container');
+
+        if (designationSelect) {
+            $(designationSelect).on('change', function() {
+                const selectedText = $(this).find('option:selected').text().trim().toLowerCase();
+                if (selectedText === 'coordinator') {
+                    if (workingSiteContainer) workingSiteContainer.style.display = 'none';
+                    if (assignedSitesContainer) {
+                        assignedSitesContainer.style.display = 'block';
+                        $(assignedSitesContainer).find('.select2').select2({ width: '100%' });
+                    }
+                } else {
+                    if (workingSiteContainer) workingSiteContainer.style.display = 'block';
+                    if (assignedSitesContainer) assignedSitesContainer.style.display = 'none';
+                }
+            });
+            $(designationSelect).trigger('change');
+        }
     });
 </script>
 @endpush
