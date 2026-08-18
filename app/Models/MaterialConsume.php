@@ -74,7 +74,7 @@ class MaterialConsume extends Model
 
         $consumptions = self::where('material_purchase_id', $purchaseId)
             ->where('from_site_id', $siteId)
-            ->where('use_now', 0)
+            ->whereIn('use_now', [0, 2])
             ->sum('used_quantity');
 
         return round(($initial + $transfersIn) - ($transfersOut + $consumptions), 2);

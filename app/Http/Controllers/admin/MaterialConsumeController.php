@@ -12,18 +12,25 @@ class MaterialConsumeController extends Controller
 {
     public function index(Request $request)
     {
-        $purchasesQuery = MaterialPurchase::with('materialCode');
+        $purchases = MaterialPurchase::with('materialCode')->get();
         
         if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
             $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
             $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
             if ($coordinator && $coordinator->assigned_sites_ids) {
-                $purchasesQuery->whereIn('working_site_id', $coordinator->assigned_sites_ids);
+                $assignedSites = $coordinator->assigned_sites_ids;
+                $purchases = $purchases->filter(function($purchase) use ($assignedSites) {
+                    foreach ($assignedSites as $siteId) {
+                        if (\App\Models\MaterialConsume::getSiteStock($purchase->id, $siteId) > 0) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
             } else {
-                $purchasesQuery->where('id', 0); // Hide all
+                $purchases = collect(); // Hide all
             }
         }
-        $purchases = $purchasesQuery->get();
 
         $sites = WorkingSite::all();
 
