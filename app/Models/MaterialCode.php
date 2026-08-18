@@ -12,7 +12,11 @@ class MaterialCode extends Model
         'sub_category',
         'sub_category_two',
         'brand',
-        'material_name'
+        'material_name',
+        'created_by',
+        'updated_by',
+        'creator_type',
+        'updater_type'
     ];
 
     protected static function booted()

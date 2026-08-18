@@ -8,6 +8,10 @@ class Unit extends Model
 {
     protected $fillable = [
         'name',
-        'status'
+        'status',
+        'created_by',
+        'updated_by',
+        'creator_type',
+        'updater_type'
     ];
 }

@@ -18,7 +18,10 @@ class MaterialConsume extends Model
         'to_site_id', 
         'note',
         'created_by',
-        'type'
+        'type',
+        'updated_by',
+        'creator_type',
+        'updater_type'
     ];
 
     protected static function booted()

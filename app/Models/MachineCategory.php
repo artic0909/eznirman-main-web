@@ -9,7 +9,7 @@ class MachineCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'status'];
+    protected $fillable = ['name', 'status', 'created_by', 'updated_by', 'creator_type', 'updater_type'];
 
     public function machineries()
     {

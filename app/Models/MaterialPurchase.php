@@ -23,7 +23,10 @@ class MaterialPurchase extends Model
         'note',
         'created_by',
         'user_id',
-        'type'
+        'type',
+        'updated_by',
+        'creator_type',
+        'updater_type'
     ];
 
     protected static function booted()
