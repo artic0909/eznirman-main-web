@@ -52,6 +52,7 @@
                         <select name="use_now" id="use_type" class="form-control select2" required>
                             <option value="0">Consume at Site</option>
                             <option value="1">Site to Site Transfer</option>
+                            <option value="2">Wastage</option>
                         </select>
                     </div>
 
@@ -116,9 +117,10 @@
                     </div>
                     <div class="col-md-4 mb-2">
                         <select name="type" class="form-control select2" data-placeholder="All Types">
-                            <option value=""></option>
-                            <option value="0" {{ request('type') === '0' ? 'selected' : '' }}>Consumed</option>
-                            <option value="1" {{ request('type') === '1' ? 'selected' : '' }}>Transfer</option>
+                            <option value="">All Types</option>
+                            <option value="0" {{ request('type') == '0' ? 'selected' : '' }}>Consume</option>
+                            <option value="1" {{ request('type') == '1' ? 'selected' : '' }}>Transfer</option>
+                            <option value="2" {{ request('type') == '2' ? 'selected' : '' }}>Wastage</option>
                         </select>
                     </div>
                     <div class="col-md-4 mb-2">
@@ -173,8 +175,10 @@
                                 <td>
                                     @if($consume->use_now == 0)
                                     <span class="badge bg-light-info text-info">Consumed</span>
-                                    @else
+                                    @elseif($consume->use_now == 1)
                                     <span class="badge bg-light-warning text-warning">Transfer</span>
+                                    @elseif($consume->use_now == 2)
+                                    <span class="badge bg-light-danger text-danger">Wastage</span>
                                     @endif
                                 </td>
                                 <td>
@@ -188,12 +192,14 @@
                                 <td>
                                     @if($consume->use_now == 0)
                                     <span class="text-muted"><i class="ti ti-map-pin"></i> {{ $consume->fromSite->site_code }} - {{ $consume->fromSite->site_name ?? 'N/A' }}</span>
-                                    @else
+                                    @elseif($consume->use_now == 1)
                                     <div class="d-flex align-items-center">
                                         <small class="text-muted">{{ $consume->fromSite->site_code }} - {{ $consume->fromSite->site_name ?? 'N/A' }}</small>
                                         <i class="ti ti-arrow-right mx-2 text-success"></i>
                                         <span class="fw-bold">{{ $consume->toSite->site_code }} - {{ $consume->toSite->site_name ?? 'N/A' }}</span>
                                     </div>
+                                    @elseif($consume->use_now == 2)
+                                    <span class="text-muted"><i class="ti ti-trash"></i> {{ $consume->fromSite->site_code }} - {{ $consume->fromSite->site_name ?? 'N/A' }}</span>
                                     @endif
                                 </td>
                                 <td>@include('admin.partials.tracked-by', ['model' => $consume])</td>

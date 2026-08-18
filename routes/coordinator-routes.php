@@ -74,6 +74,7 @@ Route::middleware(['auth:web', IsCoordinator::class])->prefix('coordinator')->na
         Route::resource('unauthorized-purchases', \App\Http\Controllers\admin\UnauthorizedPurchaseController::class)->except(['create', 'show', 'edit', 'store', 'update']);
         Route::resource('material-consumes', MaterialConsumeController::class)->only(['index', 'store', 'destroy']);
         Route::get('material-consumes/get-stock-locations/{purchase_id}', [MaterialConsumeController::class, 'getStockLocations'])->name('material-consumes.locations');
+        Route::get('material-wastage', [MaterialConsumeController::class, 'wastage'])->name('material-wastage');
     });
 
     // HR Management

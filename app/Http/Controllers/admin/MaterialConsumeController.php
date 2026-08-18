@@ -93,6 +93,44 @@ class MaterialConsumeController extends Controller
         return view('admin.purchase.material-consume', compact('purchases', 'sites', 'consumes'));
     }
 
+    public function wastage(Request $request)
+    {
+        $sites = WorkingSite::all();
+        $query = MaterialConsume::with(['purchase.materialCode', 'fromSite'])->where('use_now', 2);
+
+        if ($request->search) {
+            $query->whereHas('purchase.materialCode', function($q) use ($request) {
+                $q->where('material_name', 'like', '%' . $request->search . '%');
+                $q->orWhere('material_unique_id', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $query->whereIn('from_site_id', $coordinator->assigned_sites_ids);
+            } else {
+                $query->where('id', 0); // Hide all
+            }
+        }
+
+        if ($request->site_id) {
+            $query->where('from_site_id', $request->site_id);
+        }
+
+        if ($request->from_date) {
+            $query->whereDate('consume_date', '>=', $request->from_date);
+        }
+        if ($request->to_date) {
+            $query->whereDate('consume_date', '<=', $request->to_date);
+        }
+
+        $wastages = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.purchase.material-wastage', compact('sites', 'wastages'));
+    }
+
     public function getStockLocations($purchase_id)
     {
         $locations = MaterialConsume::getStockLocations($purchase_id);
@@ -105,7 +143,7 @@ class MaterialConsumeController extends Controller
             'material_purchase_id' => 'required|exists:material_purchases,id',
             'consume_date' => 'required|date',
             'used_quantity' => 'required|numeric|min:0.01',
-            'use_now' => 'required|in:0,1',
+            'use_now' => 'required|in:0,1,2',
             'from_site_id' => 'required|exists:working_sites,id',
             'to_site_id' => 'nullable|required_if:use_now,1|exists:working_sites,id',
         ]);
