@@ -11,28 +11,30 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $admin = Auth::guard('admin')->user();
-        return view('admin.settings.index', compact('admin'));
+        $user = Auth::guard('web')->check() ? Auth::guard('web')->user() : Auth::guard('admin')->user();
+        return view('admin.settings.index', compact('user'));
     }
 
     public function update(Request $request)
     {
-        $admin = Auth::guard('admin')->user();
+        $isWeb = Auth::guard('web')->check();
+        $user = $isWeb ? Auth::guard('web')->user() : Auth::guard('admin')->user();
+        $table = $isWeb ? 'users' : 'admins';
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins,email,' . $admin->id,
+            'email' => 'required|string|email|max:255|unique:' . $table . ',email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $admin->name = $request->name;
-        $admin->email = $request->email;
+        $user->name = $request->name;
+        $user->email = $request->email;
 
         if ($request->password) {
-            $admin->password = Hash::make($request->password);
+            $user->password = Hash::make($request->password);
         }
 
-        $admin->save();
+        $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }

@@ -97,18 +97,20 @@
 
 
           <!-- Working Sites -->
+          @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
           <li class="pc-item pc-caption theme-site">
             <label>Site Management</label>
-            <i class="ti ti-news"></i>
+            <i class="ti ti-dashboard"></i>
           </li>
           <li class="pc-item pc-hasmenu theme-site {{ Route::is(getRoutePrefix() . 'machinery.working-sites') ? 'active pc-trigger' : '' }}">
-            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-building-skyscraper"></i></span><span
-                class="pc-mtext">Working Sites</span><span class="pc-arrow"><i
-                  data-feather="chevron-right"></i></span></a>
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-building"></i></span><span
+                class="pc-mtext">Working Sites</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="{{ route(getRoutePrefix() . 'machinery.working-sites') }}">Manage Sites</a></li>
+              <li class="pc-item {{ Route::is(getRoutePrefix() . 'machinery.working-sites') ? 'active' : '' }}"><a class="pc-link"
+                  href="{{ route(getRoutePrefix() . 'machinery.working-sites') }}">Manage Sites</a></li>
             </ul>
           </li>
+          @endif
 
 
           <!-- Material Management -->

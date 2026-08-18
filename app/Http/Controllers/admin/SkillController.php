@@ -41,7 +41,15 @@ class SkillController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        Skill::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+        Skill::create($data);
 
         return redirect()->back()->with('success', 'Skill created successfully.');
     }
@@ -54,7 +62,15 @@ class SkillController extends Controller
         ]);
 
         $skill = Skill::findOrFail($id);
-        $skill->update($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+        $skill->update($data);
 
         return redirect()->back()->with('success', 'Skill updated successfully.');
     }

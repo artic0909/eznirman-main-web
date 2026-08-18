@@ -39,6 +39,10 @@ class User extends Authenticatable
         'adhaarcard',
         'profile_image',
         'status',
+        'created_by',
+        'updated_by',
+        'creator_type',
+        'updater_type',
     ];
 
     /**

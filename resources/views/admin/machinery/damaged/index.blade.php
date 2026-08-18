@@ -66,6 +66,7 @@
                                 <th>Category</th>
                                 <th>Condition</th>
                                 <th>Entry Date</th>
+                                <th>Updated By</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -92,6 +93,7 @@
                                     <span class="badge bg-light-danger text-danger">Damaged</span>
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($machine->entry_date)->format('d M, Y') }}</td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $machine])</td>
                                 <td class="text-center">
                                     <a href="{{ route(getRoutePrefix() . 'machinery.damaged.show', $machine->id) }}" class="btn btn-sm btn-info fw-bold">
                                         <i class="ti ti-eye me-1"></i> View Details

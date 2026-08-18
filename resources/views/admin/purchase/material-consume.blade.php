@@ -151,6 +151,7 @@
                                 <th>Used Qty</th>
                                 <th>Avl Qty</th>
                                 <th>Location Flow</th>
+                                <th>Updated By</th>
                                 <th>Remarks</th>
                                 <!-- <th>Action</th> -->
                             </tr>
@@ -195,7 +196,8 @@
                                     </div>
                                     @endif
                                 </td>
-                                <td><small>{{ $consume->note ?? 'N/A' }}</small></td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $consume])</td>
+                                <td class="text-wrap" style="max-width: 150px;"><small>{{ $consume->note ?? 'N/A' }}</small></td>
                                 <!-- <td>
                                     <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'purchase.material-consumes.destroy', $consume->id) }}">
                                         <i class="ti ti-trash"></i>

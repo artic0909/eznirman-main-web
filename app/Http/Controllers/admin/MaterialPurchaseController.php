@@ -14,11 +14,32 @@ class MaterialPurchaseController extends Controller
 {
     public function index(Request $request)
     {
-        $sites = WorkingSite::all();
+        $sites = WorkingSite::query();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $sites->whereIn('id', $coordinator->assigned_sites_ids);
+            } else {
+                $sites->whereIn('id', []); // Coordinator with no sites
+            }
+        }
+        $sites = $sites->get();
+        
         $materialCodes = MaterialCode::all();
         $units = Unit::where('status', 'active')->get();
 
         $query = MaterialPurchase::with(['site', 'materialCode', 'unit']);
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $query->whereIn('working_site_id', $coordinator->assigned_sites_ids);
+            } else {
+                $query->whereIn('working_site_id', []); // Hide all
+            }
+        }
 
         if ($request->search) {
             $query->where(function($q) use ($request) {
@@ -84,6 +105,16 @@ class MaterialPurchaseController extends Controller
             $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
         }
 
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+            // Wait, does material purchase also have user_id? Yes, earlier migrations had user_id
+            $data['user_id'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+
         MaterialPurchase::create($data);
 
         return redirect()->back()->with('success', 'Material Purchase recorded successfully.');
@@ -116,6 +147,14 @@ class MaterialPurchaseController extends Controller
                 Storage::disk('public')->delete($purchase->invoice_file);
             }
             $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
+        }
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
         }
 
         $purchase->update($data);

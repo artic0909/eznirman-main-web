@@ -73,6 +73,7 @@
                                 <th>SL.</th>
                                 <th>Category Name</th>
                                 <th>Status</th>
+                                <th>Updated By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -91,6 +92,7 @@
                                     <span class="badge bg-light-danger text-danger">Inactive</span>
                                     @endif
                                 </td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $category])</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $category->id }}">

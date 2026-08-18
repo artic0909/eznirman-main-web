@@ -18,7 +18,11 @@ class Machinary extends Model
         'image', 
         'entry_date', 
         'condition', 
-        'status'
+        'status',
+        'created_by',
+        'updated_by',
+        'creator_type',
+        'updater_type'
     ];
 
     public function category()

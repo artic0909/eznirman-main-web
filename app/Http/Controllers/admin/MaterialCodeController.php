@@ -57,7 +57,15 @@ class MaterialCodeController extends Controller
             'material_name' => 'required|string|max:255',
         ]);
 
-        MaterialCode::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+        MaterialCode::create($data);
 
         return redirect()->back()->with('success', 'Material Code created successfully.');
     }
@@ -74,7 +82,15 @@ class MaterialCodeController extends Controller
         ]);
 
         $materialCode = MaterialCode::findOrFail($id);
-        $materialCode->update($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+        $materialCode->update($data);
 
         return redirect()->back()->with('success', 'Material Code updated successfully.');
     }

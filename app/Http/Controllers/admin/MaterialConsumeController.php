@@ -13,7 +13,18 @@ class MaterialConsumeController extends Controller
     public function index(Request $request)
     {
         $purchases = MaterialPurchase::with('materialCode')->get();
-        $sites = WorkingSite::all();
+
+        $sites = WorkingSite::query();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $sites->whereIn('id', $coordinator->assigned_sites_ids);
+            } else {
+                $sites->whereIn('id', []); // Coordinator with no sites
+            }
+        }
+        $sites = $sites->get();
 
         $query = MaterialConsume::with(['purchase.materialCode', 'fromSite', 'toSite']);
 
@@ -22,6 +33,20 @@ class MaterialConsumeController extends Controller
                 $q->where('material_name', 'like', '%' . $request->search . '%');
                 $q->orWhere('material_unique_id', 'like', '%' . $request->search . '%');
             });
+        }
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $assignedSites = $coordinator->assigned_sites_ids;
+                $query->where(function($q) use ($assignedSites) {
+                    $q->whereIn('from_site_id', $assignedSites)
+                      ->orWhereIn('to_site_id', $assignedSites);
+                });
+            } else {
+                $query->where('id', 0); // Hide all
+            }
         }
 
         if ($request->site_id) {
@@ -97,6 +122,16 @@ class MaterialConsumeController extends Controller
         $data['quantity_current'] = $siteBalance;
         $data['available_quantity'] = $siteBalance - $request->used_quantity;
         $data['unit'] = $purchase->unit->name;
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+            $data['type'] = 'coordinator'; // Ensure older type column is populated
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+            $data['type'] = 'admin';
+        }
 
         MaterialConsume::create($data);
 

@@ -42,7 +42,15 @@ class UnitController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        Unit::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+        Unit::create($data);
 
         return redirect()->back()->with('success', 'Unit created successfully.');
     }
@@ -55,7 +63,15 @@ class UnitController extends Controller
         ]);
 
         $unit = Unit::findOrFail($id);
-        $unit->update($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+        $unit->update($data);
 
         return redirect()->back()->with('success', 'Unit updated successfully.');
     }

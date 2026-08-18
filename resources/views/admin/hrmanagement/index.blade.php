@@ -116,6 +116,7 @@
                                 <th>Designation</th>
                                 @endif
                                 <th>Status</th>
+                                <th>Updated By</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -143,6 +144,7 @@
                                         {{ ucfirst($user->status) }}
                                     </span>
                                 </td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $user])</td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
                                         <a href="{{ route(getRoutePrefix() . 'hrmanagement.show', $user->id) }}" class="btn btn-sm btn-icon btn-light-info" title="View">

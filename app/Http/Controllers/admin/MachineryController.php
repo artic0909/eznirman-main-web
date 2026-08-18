@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\Storage;
 
 class MachineryController extends Controller
 {
+    private function applyCoordinatorFilter($query)
+    {
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $assignedSites = $coordinator->assigned_sites_ids;
+                $query->where(function($q) use ($assignedSites) {
+                    $q->whereHas('transfers', function($sq) use ($assignedSites) {
+                        $sq->whereIn('to_site_id', $assignedSites)
+                           ->where('id', function($subQuery) {
+                               $subQuery->select('id')->from('transfers')->whereColumn('machinery_id', 'machinaries.id')->orderByDesc('id')->limit(1);
+                           });
+                    })->orWhereDoesntHave('transfers');
+                });
+            } else {
+                $query->where('id', 0);
+            }
+        }
+        return $query;
+    }
     // --- Machine Categories ---
     public function machineCategoryView(Request $request)
     {
@@ -39,7 +60,16 @@ class MachineryController extends Controller
             'name' => 'required|string|max:255|unique:machine_categories,name',
         ]);
 
-        MachineCategory::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+
+        MachineCategory::create($data);
 
         return redirect()->back()->with('success', 'Machine Category created successfully.');
     }
@@ -51,7 +81,17 @@ class MachineryController extends Controller
         ]);
 
         $category = MachineCategory::findOrFail($id);
-        $category->update($request->all());
+        
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+
+        $category->update($data);
 
         return redirect()->back()->with('success', 'Machine Category updated successfully.');
     }
@@ -70,6 +110,7 @@ class MachineryController extends Controller
         $categories = MachineCategory::where('status', true)->get();
         
         $query = Machinary::with('category');
+        $query = $this->applyCoordinatorFilter($query);
 
         // Search Filter
         if ($request->search) {
@@ -150,6 +191,14 @@ class MachineryController extends Controller
             $data['image'] = $request->file('image')->store('machinery', 'public');
         }
 
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+
         Machinary::create($data);
 
         return redirect()->back()->with('success', 'Machinery added successfully.');
@@ -176,6 +225,14 @@ class MachineryController extends Controller
             $data['image'] = $request->file('image')->store('machinery', 'public');
         }
 
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+
         $machinery->update($data);
 
         return redirect()->back()->with('success', 'Machinery updated successfully.');
@@ -195,7 +252,9 @@ class MachineryController extends Controller
     // --- Transfers ---
     public function transferMachineryView(Request $request)
     {
-        $machineries = Machinary::where('status', true)->where('condition', 'running')->get();
+        $machineryQuery = Machinary::where('status', true)->where('condition', 'running');
+        $machineryQuery = $this->applyCoordinatorFilter($machineryQuery);
+        $machineries = $machineryQuery->get();
         $sites = WorkingSite::all();
         
         $query = Transfer::with(['machinery', 'fromSite', 'toSite']);
@@ -358,6 +417,7 @@ class MachineryController extends Controller
         $categories = MachineCategory::where('status', true)->get();
         
         $query = Machinary::with('category')->where('condition', 'damage');
+        $query = $this->applyCoordinatorFilter($query);
 
         // Search Filter
         if ($request->search) {
@@ -408,6 +468,7 @@ class MachineryController extends Controller
     {
         $categories = MachineCategory::where('status', true)->get();
         $query = Machinary::with('category')->where('condition', 'running');
+        $query = $this->applyCoordinatorFilter($query);
 
         if ($request->search) {
             $query->where(function($q) use ($request) {
@@ -452,6 +513,7 @@ class MachineryController extends Controller
     {
         $categories = MachineCategory::where('status', true)->get();
         $query = Machinary::with('category')->where('condition', 'repair');
+        $query = $this->applyCoordinatorFilter($query);
 
         if ($request->search) {
             $query->where(function($q) use ($request) {
@@ -496,6 +558,7 @@ class MachineryController extends Controller
     {
         $categories = MachineCategory::where('status', true)->get();
         $query = Machinary::with('category')->where('condition', 'missing');
+        $query = $this->applyCoordinatorFilter($query);
 
         if ($request->search) {
             $query->where(function($q) use ($request) {

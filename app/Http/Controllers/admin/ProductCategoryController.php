@@ -41,7 +41,15 @@ class ProductCategoryController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        ProductCategory::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+        ProductCategory::create($data);
 
         return redirect()->back()->with('success', 'Product Category created successfully.');
     }
@@ -54,7 +62,15 @@ class ProductCategoryController extends Controller
         ]);
 
         $category = ProductCategory::findOrFail($id);
-        $category->update($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+        $category->update($data);
 
         return redirect()->back()->with('success', 'Product Category updated successfully.');
     }

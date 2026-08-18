@@ -99,6 +99,7 @@
                                 <th>Sub Category</th>
                                 <th>Brand</th>
                                 <th>Material Name</th>
+                                <th>Updated By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -121,6 +122,7 @@
                                 </td>
                                 <td>{{ $mCode->brand }}</td>
                                 <td>{{ $mCode->material_name }}</td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $mCode])</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $mCode->id }}">

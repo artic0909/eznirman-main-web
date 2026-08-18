@@ -41,7 +41,15 @@ class DesignationController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        Designation::create($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+        Designation::create($data);
 
         return redirect()->back()->with('success', 'Designation created successfully.');
     }
@@ -54,7 +62,15 @@ class DesignationController extends Controller
         ]);
 
         $designation = Designation::findOrFail($id);
-        $designation->update($request->all());
+        $data = $request->all();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
+        }
+        $designation->update($data);
 
         return redirect()->back()->with('success', 'Designation updated successfully.');
     }

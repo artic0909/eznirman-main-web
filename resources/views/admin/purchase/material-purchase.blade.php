@@ -154,7 +154,7 @@
                                 <th>Site</th>
                                 <th>Vendor & Invoice</th>
                                 <th>Qty/Unit</th>
-                                <th>Created by</th>
+                                <th>Updated By</th>
                                 <th>Total Amount</th>
                                 <th>Remarks</th>
                                 <th>File</th>
@@ -189,11 +189,7 @@
                                 <td>{{ $purchase->quantity }} <span class="text-muted">{{ $purchase->unit->name }}</span></td>
                                 
                                 <td>
-                                    @if($purchase->user_id)
-                                        <span class="fw-bold">{{ $purchase->user->name }}</span> <br> <span class="fw-bold">{{ $purchase->user->code }}</span>
-                                    @else
-                                        <span class="fw-bold">Admin</span>
-                                    @endif
+                                    @include('admin.partials.tracked-by', ['model' => $purchase])
                                 </td>
                                 
                                 <td><span class="fw-bold">₹{{ number_format($purchase->amount, 2) }}</span></td>
@@ -246,11 +242,7 @@
                                                                     <p class="mb-0"><strong>Date:</strong> {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</p>
                                                                     <p class="mb-0"><strong>Site:</strong> <span class="badge bg-light-info text-info">{{ $purchase->site->site_code }} - {{ $purchase->site->site_name }}</span></p>
                                                                     <p class="mb-0"><strong>Created By:</strong> 
-                                                                        @if($purchase->user_id)
-                                                                            {{ $purchase->user->name }} ({{ $purchase->user->code }})
-                                                                        @else
-                                                                            Admin
-                                                                        @endif
+                                                                        @include('admin.partials.tracked-by', ['model' => $purchase])
                                                                     </p>
                                                                 </div>
                                                             </div>

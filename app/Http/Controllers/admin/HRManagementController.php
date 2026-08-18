@@ -140,6 +140,14 @@ class HRManagementController extends Controller
             $data['profile_image'] = $request->file('profile_image')->store('hrmanagement/profiles', 'public');
         }
 
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['creator_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['created_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['creator_type'] = 'admin';
+        }
+
         $user = User::create($data);
 
         if ($request->designation_id) {
@@ -228,6 +236,14 @@ class HRManagementController extends Controller
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) Storage::disk('public')->delete($user->profile_image);
             $data['profile_image'] = $request->file('profile_image')->store('hrmanagement/profiles', 'public');
+        }
+
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
+            $data['updater_type'] = 'coordinator';
+        } else if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+            $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('admin')->id();
+            $data['updater_type'] = 'admin';
         }
 
         $user->update($data);

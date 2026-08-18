@@ -140,6 +140,7 @@
                                 <th>Category</th>
                                 <th>Condition</th>
                                 <th>Entry Date</th>
+                                <th>Updated By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -179,6 +180,9 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($machine->entry_date)->format('d M, Y') }}</td>
+                                <td>
+                                    @include('admin.partials.tracked-by', ['model' => $machine])
+                                </td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $machine->id }}">

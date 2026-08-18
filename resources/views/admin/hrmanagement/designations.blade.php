@@ -68,6 +68,7 @@
                                 <th>Creation Date</th>
                                 <th>Designation</th>
                                 <th>Status</th>
+                                <th>Updated By</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -87,6 +88,7 @@
                                         {{ ucfirst($designation->status) }}
                                     </span>
                                 </td>
+                                <td>@include('admin.partials.tracked-by', ['model' => $designation])</td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" title="Edit"
