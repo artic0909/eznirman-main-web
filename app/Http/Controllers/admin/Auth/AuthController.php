@@ -32,7 +32,7 @@ class AuthController extends Controller
                 $request->session()->regenerate();
 
                 return redirect()
-                    ->route('admin.dashboard')
+                    ->route(getRoutePrefix() . 'dashboard')
                     ->with('success', 'Welcome back, ' . $admin->name . '!');
             } elseif (Auth::guard('web')->attempt($credentials)) {
                 $user = Auth::guard('web')->user();

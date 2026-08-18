@@ -16,7 +16,7 @@
                         <h5 class="m-b-10">Dashboard</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                         <li class="breadcrumb-item">Admin</li>
                         <li class="breadcrumb-item" aria-current="page">Dashboard</li>
                     </ul>
@@ -27,6 +27,37 @@
     <!-- [ breadcrumb ] end -->
     <!-- [ Main Content ] start -->
     <div class="row g-4">
+        @if(\Illuminate\Support\Facades\Auth::guard('web')->check() && isset($assignedSites))
+            <div class="col-12 mt-4">
+                <div class="card bg-primary text-white shadow-sm border-0" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);">
+                    <div class="card-body p-5 text-center">
+                        <h2 class="text-white fw-bold mb-3">Welcome Back, Coordinator!</h2>
+                        <p class="fs-5 opacity-75">Here are the sites currently assigned to you.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 mt-4">
+                <h5 class="mb-3 fw-bold text-dark">Your Assigned Sites</h5>
+                <div class="row">
+                    @forelse($assignedSites as $site)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">{{ $site->name ?? 'N/A' }}</h5>
+                                    <p class="card-text text-muted mb-0"><strong>Code:</strong> {{ $site->site_code ?? 'N/A' }}</p>
+                                    <p class="card-text text-muted"><strong>Address:</strong> {{ $site->address ?? 'N/A' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-12">
+                            <div class="alert alert-warning">No sites have been assigned to you yet.</div>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        @else
         <!-- HR Summary -->
         <div class="col-12 mt-4">
             <div class="d-flex align-items-center mb-1">
@@ -275,7 +306,7 @@
         <div class="col-lg-7 mt-5">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <h5 class="mb-0 fw-bold text-dark"><i class="ti ti-replace me-2"></i>Recent Machinery Transfers</h5>
-                <a href="{{ route('admin.machinery.transfer-machinery') }}" class="btn btn-sm btn-light-primary">View All</a>
+                <a href="{{ route(getRoutePrefix() . 'machinery.transfer-machinery') }}" class="btn btn-sm btn-light-primary">View All</a>
             </div>
             <div class="card shadow-sm border-0 tbl-card">
                 <div class="card-body p-0">
@@ -325,7 +356,7 @@
         <div class="col-lg-5 mt-5">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <h5 class="mb-0 fw-bold text-dark"><i class="ti ti-users me-2"></i>New Personnel</h5>
-                <a href="{{ route('admin.hrmanagement.index') }}" class="btn btn-sm btn-light-primary">Manage</a>
+                <a href="{{ route(getRoutePrefix() . 'hrmanagement.index') }}" class="btn btn-sm btn-light-primary">Manage</a>
             </div>
             <div class="card shadow-sm border-0 tbl-card">
                 <div class="card-body p-0">
@@ -360,6 +391,7 @@
             </div>
         </div>
     </div>
+    @endif
 @endsection
 
 @push('scripts')

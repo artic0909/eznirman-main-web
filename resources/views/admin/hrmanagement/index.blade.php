@@ -20,7 +20,7 @@
     </div>
 
     <div class="page-header-actions col-md-2 text-end">
-        <a href="{{ route('admin.hrmanagement.create', ['role' => $role]) }}" class="btn btn-success btn-sm fw-bold">
+        <a href="{{ route(getRoutePrefix() . 'hrmanagement.create', ['role' => $role]) }}" class="btn btn-success btn-sm fw-bold">
             <i class="ti ti-plus me-2"></i><span>Add {{ ucfirst($role) }}</span>
         </a>
     </div>
@@ -34,16 +34,16 @@
             <div class="card-body p-2">
                 <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
-                        <a class="nav-link {{ $role == 'worker' ? 'active' : '' }}" href="{{ route('admin.hrmanagement.index', ['role' => 'worker']) }}">Workers</a>
+                        <a class="nav-link {{ $role == 'worker' ? 'active' : '' }}" href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => 'worker']) }}">Workers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $role == 'supervisor' ? 'active' : '' }}" href="{{ route('admin.hrmanagement.index', ['role' => 'supervisor']) }}">Supervisors</a>
+                        <a class="nav-link {{ $role == 'supervisor' ? 'active' : '' }}" href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => 'supervisor']) }}">Supervisors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $role == 'staff' ? 'active' : '' }}" href="{{ route('admin.hrmanagement.index', ['role' => 'staff']) }}">Staffs</a>
+                        <a class="nav-link {{ $role == 'staff' ? 'active' : '' }}" href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => 'staff']) }}">Staffs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $role == 'hr' ? 'active' : '' }}" href="{{ route('admin.hrmanagement.index', ['role' => 'hr']) }}">HR</a>
+                        <a class="nav-link {{ $role == 'hr' ? 'active' : '' }}" href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => 'hr']) }}">HR</a>
                     </li>
                 </ul>
             </div>
@@ -59,7 +59,7 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('admin.hrmanagement.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'hrmanagement.index') }}" method="GET" class="row mb-4">
                     <input type="hidden" name="role" value="{{ $role }}">
                     <div class="col-md-3 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Code, Name, Mobile..." value="{{ request('search') }}">
@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-md-4 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.hrmanagement.index', ['role' => $role]) }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role]) }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i> Excel</button>
                     </div>
                 </form>
@@ -145,13 +145,13 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ route('admin.hrmanagement.show', $user->id) }}" class="btn btn-sm btn-icon btn-light-info" title="View">
+                                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.show', $user->id) }}" class="btn btn-sm btn-icon btn-light-info" title="View">
                                             <i class="ti ti-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.hrmanagement.edit', $user->id) }}" class="btn btn-sm btn-icon btn-light-primary" title="Edit">
+                                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.edit', $user->id) }}" class="btn btn-sm btn-icon btn-light-primary" title="Edit">
                                             <i class="ti ti-edit"></i>
                                         </a>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" title="Delete" data-url="{{ route('admin.hrmanagement.destroy', $user->id) }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" title="Delete" data-url="{{ route(getRoutePrefix() . 'hrmanagement.destroy', $user->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>

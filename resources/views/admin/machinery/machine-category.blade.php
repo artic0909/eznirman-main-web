@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Machine Categories</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
                     <li class="breadcrumb-item" aria-current="page">Machine Category</li>
                 </ul>
@@ -28,7 +28,7 @@
                 <h5>Add New Category</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.machinery.machine-category.store') }}" method="POST">
+                <form action="{{ route(getRoutePrefix() . 'machinery.machine-category.store') }}" method="POST">
                     @csrf
                     <div class="form-group mb-3">
                         <label class="form-label">Category Name <span class="text-danger">*</span></label>
@@ -52,7 +52,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Categories List</h5>
-                <a href="{{ route('admin.machinery.machine-category', ['export' => 'excel']) }}" class="btn btn-success btn-sm"><i class="ti ti-table-export"></i> Export</a>
+                <a href="{{ route(getRoutePrefix() . 'machinery.machine-category', ['export' => 'excel']) }}" class="btn btn-success btn-sm"><i class="ti ti-table-export"></i> Export</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -84,7 +84,7 @@
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $category->id }}">
                                             <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.machinery.machine-category.delete', $category->id) }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'machinery.machine-category.delete', $category->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -97,7 +97,7 @@
                                                     <h5 class="modal-title text-white">Update Category</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ route('admin.machinery.machine-category.update', $category->id) }}" method="POST">
+                                                <form action="{{ route(getRoutePrefix() . 'machinery.machine-category.update', $category->id) }}" method="POST">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body">

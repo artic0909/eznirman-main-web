@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Running Machinery</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
                     <li class="breadcrumb-item" aria-current="page">Running Machinery</li>
                 </ul>
@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('admin.machinery.running') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'machinery.running') }}" method="GET" class="row mb-4">
                     <div class="col-md-4 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Code or Name..." value="{{ request('search') }}">
                     </div>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.machinery.running') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'machinery.running') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
@@ -88,7 +88,7 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($machine->entry_date)->format('d M, Y') }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('admin.machinery.running.show', $machine->id) }}" class="btn btn-sm btn-info fw-bold">
+                                    <a href="{{ route(getRoutePrefix() . 'machinery.running.show', $machine->id) }}" class="btn btn-sm btn-info fw-bold">
                                         <i class="ti ti-eye me-1"></i> View Details
                                     </a>
                                 </td>

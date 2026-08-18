@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Stock Consumption & Transfers</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Purchase Register</li>
                     <li class="breadcrumb-item" aria-current="page">Material Consume</li>
                 </ul>
@@ -28,7 +28,7 @@
                 <h5>Log Material Usage or Internal Transfer</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.purchase.material-consumes.store') }}" method="POST" class="row">
+                <form action="{{ route(getRoutePrefix() . 'purchase.material-consumes.store') }}" method="POST" class="row">
                     @csrf
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Material Purchase Ref. <span class="text-danger">*</span></label>
@@ -102,7 +102,7 @@
             </div>
             <div class="card-body">
                 <!-- Search Filter -->
-                <form action="{{ route('admin.purchase.material-consumes.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'purchase.material-consumes.index') }}" method="GET" class="row mb-4">
                     <div class="col-md-4 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Material ID or Material Name..." value="{{ request('search') }}">
                     </div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-md-5 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Apply Filters</button>
-                        <a href="{{ route('admin.purchase.material-consumes.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'purchase.material-consumes.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
@@ -197,7 +197,7 @@
                                 </td>
                                 <td><small>{{ $consume->note ?? 'N/A' }}</small></td>
                                 <!-- <td>
-                                    <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.purchase.material-consumes.destroy', $consume->id) }}">
+                                    <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'purchase.material-consumes.destroy', $consume->id) }}">
                                         <i class="ti ti-trash"></i>
                                     </button>
                                 </td> -->

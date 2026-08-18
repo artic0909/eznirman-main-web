@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Add {{ ucfirst($role) }}</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.hrmanagement.index', ['role' => $role]) }}">HR Management</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role]) }}">HR Management</a></li>
                     <li class="breadcrumb-item" aria-current="page">Add {{ ucfirst($role) }}</li>
                 </ul>
             </div>
@@ -26,7 +26,7 @@
                 <h5>{{ ucfirst($role) }} Information</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.hrmanagement.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route(getRoutePrefix() . 'hrmanagement.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="role" value="{{ $role }}">
                     
@@ -159,7 +159,7 @@
                     </div>
 
                     <div class="mt-4 text-end">
-                        <a href="{{ route('admin.hrmanagement.index', ['role' => $role]) }}" class="btn btn-light border">Cancel</a>
+                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role]) }}" class="btn btn-light border">Cancel</a>
                         <button type="submit" class="btn btn-success">Save {{ ucfirst($role) }}</button>
                     </div>
                 </form>

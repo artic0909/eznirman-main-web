@@ -11,9 +11,9 @@
                     <h5 class="m-b-10">Machinery Details</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.machinery.missing') }}">Missing Machinery</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'machinery.missing') }}">Missing Machinery</a></li>
                     <li class="breadcrumb-item" aria-current="page">{{ $machinery->machine_code }}</li>
                 </ul>
             </div>
@@ -133,7 +133,7 @@
 
 <div class="row mt-4">
     <div class="col-12 text-center">
-        <a href="{{ route('admin.machinery.missing') }}" class="btn btn-secondary px-5 fw-bold">
+        <a href="{{ route(getRoutePrefix() . 'machinery.missing') }}" class="btn btn-secondary px-5 fw-bold">
             <i class="ti ti-arrow-left me-2"></i> Back to Missing List
         </a>
     </div>

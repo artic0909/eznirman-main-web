@@ -45,13 +45,13 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('admin.hrmanagement.designations.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'hrmanagement.designations.index') }}" method="GET" class="row mb-4">
                     <div class="col-md-9 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search designation name..." value="{{ request('search') }}">
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.hrmanagement.designations.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.designations.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
@@ -95,7 +95,7 @@
                                         </button>
 
                                         <button class="btn btn-sm btn-icon btn-light-danger btn-delete" title="Delete"
-                                            data-url="{{ route('admin.hrmanagement.designations.destroy', $designation->id) }}">
+                                            data-url="{{ route(getRoutePrefix() . 'hrmanagement.designations.destroy', $designation->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -109,7 +109,7 @@
                                             <h5 class="modal-title text-white">Edit Designation</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <form action="{{ route('admin.hrmanagement.designations.update', $designation->id) }}" method="POST">
+                                        <form action="{{ route(getRoutePrefix() . 'hrmanagement.designations.update', $designation->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <div class="modal-body row">
@@ -163,7 +163,7 @@
                 <h5 class="modal-title text-white">Add Designation</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route('admin.hrmanagement.designations.store') }}" method="POST">
+            <form action="{{ route(getRoutePrefix() . 'hrmanagement.designations.store') }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                 <div class="col-md-6 mb-3">
@@ -263,7 +263,7 @@
         // Bulk Delete Action
         bulkDeleteBtn.addEventListener('click', () => {
             const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
-            deleteForm.setAttribute('action', "{{ route('admin.hrmanagement.designations.bulk-action') }}");
+            deleteForm.setAttribute('action', "{{ route(getRoutePrefix() . 'hrmanagement.designations.bulk-action') }}");
             methodContainer.innerHTML = '<input type="hidden" name="action" value="delete">'; 
             deleteMsg.innerText = `Are you sure you want to delete ${selectedIds.length} selected designations?`;
             

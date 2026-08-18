@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Add & Manage Machinery</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
                     <li class="breadcrumb-item" aria-current="page">Add Machinery</li>
                 </ul>
@@ -31,7 +31,7 @@
                 </button>
             </div>
             <div class="card-body collapse" id="addFormCollapse">
-                <form action="{{ route('admin.machinery.machinery.store') }}" method="POST" enctype="multipart/form-data" class="row">
+                <form action="{{ route(getRoutePrefix() . 'machinery.machinery.store') }}" method="POST" enctype="multipart/form-data" class="row">
                     @csrf
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Category <span class="text-danger">*</span></label>
@@ -93,7 +93,7 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('admin.machinery.add-machinery') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'machinery.add-machinery') }}" method="GET" class="row mb-4">
                     <div class="col-md-3 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Code or Name..." value="{{ request('search') }}">
                     </div>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.machinery.add-machinery') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'machinery.add-machinery') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
@@ -184,7 +184,7 @@
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $machine->id }}">
                                             <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.machinery.machinery.delete', $machine->id) }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'machinery.machinery.delete', $machine->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -197,7 +197,7 @@
                                                     <h5 class="modal-title text-white">Update Machinery Asset</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ route('admin.machinery.machinery.update', $machine->id) }}" method="POST" enctype="multipart/form-data">
+                                                <form action="{{ route(getRoutePrefix() . 'machinery.machinery.update', $machine->id) }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body row">
@@ -348,7 +348,7 @@
         // Bulk Delete Action
         bulkDeleteBtn.addEventListener('click', () => {
             const selectedIds = Array.from(document.querySelectorAll('.check-item:checked')).map(cb => cb.value);
-            deleteForm.setAttribute('action', "{{ route('admin.machinery.machinery.bulk-delete') }}");
+            deleteForm.setAttribute('action', "{{ route(getRoutePrefix() . 'machinery.machinery.bulk-delete') }}");
             methodContainer.innerHTML = ""; // No method override needed for POST bulk-delete
             deleteMsg.innerText = `Are you sure you want to delete ${selectedIds.length} selected assets?`;
             

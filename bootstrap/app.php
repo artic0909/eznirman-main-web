@@ -6,6 +6,20 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+if (!function_exists('getRoutePrefix')) {
+    function getRoutePrefix()
+    {
+        return \Illuminate\Support\Facades\Auth::guard('admin')->check() ? 'admin.' : 'coordinator.';
+    }
+}
+
+if (!function_exists('getRouteUrlPrefix')) {
+    function getRouteUrlPrefix()
+    {
+        return \Illuminate\Support\Facades\Auth::guard('admin')->check() ? 'admin/' : 'coordinator/';
+    }
+}
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [

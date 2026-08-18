@@ -154,7 +154,7 @@ class HRManagementController extends Controller
             }
         }
 
-        return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' added successfully.');
+        return redirect()->route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' added successfully.');
     }
 
     public function show($id)
@@ -246,7 +246,7 @@ class HRManagementController extends Controller
             \App\Models\Coordinator::where('user_id', $user->id)->delete();
         }
 
-        return redirect()->route('admin.hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' updated successfully.');
+        return redirect()->route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role])->with('success', ucfirst($role) . ' updated successfully.');
     }
 
     public function destroy($id)

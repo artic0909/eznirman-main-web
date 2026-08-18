@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Account Settings</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Settings</li>
                     <li class="breadcrumb-item" aria-current="page">Profile</li>
                 </ul>
@@ -27,7 +27,7 @@
                 <h5>Profile Information</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.profile.update') }}" method="POST">
+                <form action="{{ route(getRoutePrefix() . 'profile.update') }}" method="POST">
                     @csrf
                     @method('PUT')
                     

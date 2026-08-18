@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Machinery Transfer Management</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
                     <li class="breadcrumb-item" aria-current="page">Transfer Machinery</li>
                 </ul>
@@ -28,7 +28,7 @@
                 <h5>Initiate Asset Transfer</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.machinery.transfer.store') }}" method="POST" class="row">
+                <form action="{{ route(getRoutePrefix() . 'machinery.transfer.store') }}" method="POST" class="row">
                     @csrf
                     <div class="col-md-4 form-group mb-3">
                         <label class="form-label">Select Machinery <span class="text-danger">*</span></label>
@@ -77,7 +77,7 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('admin.machinery.transfer-machinery') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'machinery.transfer-machinery') }}" method="GET" class="row mb-4">
                     <div class="col-md-3 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Machine or Site..." value="{{ request('search') }}">
                     </div>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.machinery.transfer-machinery') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'machinery.transfer-machinery') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>

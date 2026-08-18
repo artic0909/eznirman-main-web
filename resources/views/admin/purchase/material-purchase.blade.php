@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Material Purchase Management</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Purchase Register</li>
                     <li class="breadcrumb-item" aria-current="page">Material Purchase</li>
                 </ul>
@@ -31,7 +31,7 @@
                 </button>
             </div>
             <div class="card-body collapse {{ $errors->any() ? 'show' : '' }}" id="addFormCollapse">
-                <form action="{{ route('admin.purchase.material-purchases.store') }}" method="POST" enctype="multipart/form-data" class="row">
+                <form action="{{ route(getRoutePrefix() . 'purchase.material-purchases.store') }}" method="POST" enctype="multipart/form-data" class="row">
                     @csrf
                     <div class="col-md-3 form-group mb-3">
                         <label class="form-label">Select Site <span class="text-danger">*</span></label>
@@ -121,7 +121,7 @@
             </div>
             <div class="card-body">
                 <!-- Filters -->
-                <form action="{{ route('admin.purchase.material-purchases.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'purchase.material-purchases.index') }}" method="GET" class="row mb-4">
                     <div class="col-md-3 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Product, Party or Invoice..." value="{{ request('search') }}">
                     </div>
@@ -138,7 +138,7 @@
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('admin.purchase.material-purchases.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'purchase.material-purchases.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                         <button type="submit" name="export" value="excel" class="btn btn-success flex-grow-1"><i class="ti ti-table-export"></i></button>
                     </div>
                 </form>
@@ -219,7 +219,7 @@
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $purchase->id }}" title="Edit">
                                             <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('admin.purchase.material-purchases.destroy', $purchase->id) }}" title="Delete">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'purchase.material-purchases.destroy', $purchase->id) }}" title="Delete">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -342,7 +342,7 @@
                                                     <h5 class="modal-title text-white">Update Purchase Record</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ route('admin.purchase.material-purchases.update', $purchase->id) }}" method="POST" enctype="multipart/form-data">
+                                                <form action="{{ route(getRoutePrefix() . 'purchase.material-purchases.update', $purchase->id) }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body row">

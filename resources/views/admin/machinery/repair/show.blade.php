@@ -11,9 +11,9 @@
                     <h5 class="m-b-10">Machinery Details</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Machinery & Tools</li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.machinery.repair') }}">Repairing Machinery</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'machinery.repair') }}">Repairing Machinery</a></li>
                     <li class="breadcrumb-item" aria-current="page">{{ $machinery->machine_code }}</li>
                 </ul>
             </div>

@@ -47,13 +47,24 @@ class CoordinatorDashboardController extends Controller
         $recentTransfers = Transfer::with(['machinery', 'fromSite', 'toSite'])->latest()->take(5)->get();
         $recentUsers = User::whereIn('role', ['worker', 'supervisor', 'staff', 'hr'])->latest()->take(5)->get();
 
+        // Fetch Assigned Sites if the user is a Coordinator
+        $assignedSites = collect();
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $assignedSites = WorkingSite::whereIn('id', $coordinator->assigned_sites_ids)->get();
+            }
+        }
+
         return view('admin.dashboard.index', compact(
             'machineryCounts', 
             'hrCounts', 
             'siteCount', 
             'materialCounts',
             'recentTransfers',
-            'recentUsers'
+            'recentUsers',
+            'assignedSites'
         ));
     }
 }

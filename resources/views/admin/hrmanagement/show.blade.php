@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">View {{ ucfirst($user->role) }}</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.hrmanagement.index', ['role' => $user->role]) }}">HR Management</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $user->role]) }}">HR Management</a></li>
                     <li class="breadcrumb-item" aria-current="page">View {{ ucfirst($user->role) }}</li>
                 </ul>
             </div>
@@ -36,7 +36,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5>Detailed Information</h5>
-                <a href="{{ route('admin.hrmanagement.edit', $user->id) }}" class="btn btn-primary btn-sm">
+                <a href="{{ route(getRoutePrefix() . 'hrmanagement.edit', $user->id) }}" class="btn btn-primary btn-sm">
                     <i class="ti ti-edit me-1"></i> Edit
                 </a>
             </div>
@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="card-footer text-end">
-                <a href="{{ route('admin.hrmanagement.index', ['role' => $user->role]) }}" class="btn btn-light border">Back to List</a>
+                <a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $user->role]) }}" class="btn btn-light border">Back to List</a>
             </div>
         </div>
     </div>

@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Edit {{ ucfirst($role) }}</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.hrmanagement.index', ['role' => $role]) }}">HR Management</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role]) }}">HR Management</a></li>
                     <li class="breadcrumb-item" aria-current="page">Edit {{ ucfirst($role) }}</li>
                 </ul>
             </div>
@@ -26,7 +26,7 @@
                 <h5>{{ ucfirst($role) }} Information - {{ $user->code }}</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.hrmanagement.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route(getRoutePrefix() . 'hrmanagement.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     
@@ -177,7 +177,7 @@
                     </div>
 
                     <div class="mt-4 text-end">
-                        <a href="{{ route('admin.hrmanagement.index', ['role' => $role]) }}" class="btn btn-light border">Cancel</a>
+                        <a href="{{ route(getRoutePrefix() . 'hrmanagement.index', ['role' => $role]) }}" class="btn btn-light border">Cancel</a>
                         <button type="submit" class="btn btn-warning">Update {{ ucfirst($role) }}</button>
                     </div>
                 </form>

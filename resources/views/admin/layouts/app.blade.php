@@ -195,7 +195,7 @@
             @php
               $isAdmin = Auth::guard('admin')->check();
               $authUser = $isAdmin ? Auth::guard('admin')->user() : Auth::guard('web')->user();
-              $logoutRoute = $isAdmin ? route('admin.logout') : route('coordinator.logout');
+              $logoutRoute = $isAdmin ? route(getRoutePrefix() . 'logout') : route('coordinator.logout');
               $roleName = $isAdmin ? 'Administrator' : 'Coordinator';
             @endphp
             <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button"
@@ -231,7 +231,7 @@
               <div class="tab-content" id="mysrpTabContent">
                 <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel" aria-labelledby="drp-t1"
                   tabindex="0">
-                  <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
+                  <a href="{{ route(getRoutePrefix() . 'profile.index') }}" class="dropdown-item">
                     <i class="ti ti-user"></i>
                     <span>Account Settings</span>
                   </a>
