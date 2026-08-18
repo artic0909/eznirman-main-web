@@ -57,7 +57,9 @@
                     @endforelse
                 </div>
             </div>
-        @else
+        @endif
+
+        @if(!\Illuminate\Support\Facades\Auth::guard('web')->check())
         <!-- HR Summary -->
         <div class="col-12 mt-4">
             <div class="d-flex align-items-center mb-1">
@@ -129,6 +131,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Machinery Summary -->
         <div class="col-12 mt-5">
@@ -353,6 +356,7 @@
             </div>
         </div>
 
+        @if(!\Illuminate\Support\Facades\Auth::guard('web')->check())
         <div class="col-lg-5 mt-5">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <h5 class="mb-0 fw-bold text-dark"><i class="ti ti-users me-2"></i>New Personnel</h5>
@@ -390,8 +394,8 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
-    @endif
 @endsection
 
 @push('scripts')

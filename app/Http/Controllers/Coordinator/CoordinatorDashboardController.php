@@ -16,46 +16,68 @@ class CoordinatorDashboardController extends Controller
 {
     public function index()
     {
-        // Machinery Counts (TODO: Filter by assigned_sites_ids)
-        $machineryCounts = [
-            'total' => Machinary::count(),
-            'running' => Machinary::where('condition', 'running')->count(),
-            'repair' => Machinary::where('condition', 'repair')->count(),
-            'damage' => Machinary::where('condition', 'damage')->count(),
-            'missing' => Machinary::where('condition', 'missing')->count(),
-        ];
-
-        // HR Counts
-        $hrCounts = [
-            'total' => User::whereIn('role', ['worker', 'supervisor', 'staff', 'hr'])->count(),
-            'worker' => User::where('role', 'worker')->count(),
-            'supervisor' => User::where('role', 'supervisor')->count(),
-            'staff' => User::where('role', 'staff')->count(),
-            'hr' => User::where('role', 'hr')->count(),
-        ];
-
-        // Site Counts
-        $siteCount = WorkingSite::count();
-
-        // Material Counts
-        $materialCounts = [
-            'purchases' => MaterialPurchase::count(),
-            'consumes' => MaterialConsume::count(),
-        ];
-
-        // Recent Activities
-        $recentTransfers = Transfer::with(['machinery', 'fromSite', 'toSite'])->latest()->take(5)->get();
-        $recentUsers = User::whereIn('role', ['worker', 'supervisor', 'staff', 'hr'])->latest()->take(5)->get();
-
         // Fetch Assigned Sites if the user is a Coordinator
         $assignedSites = collect();
+        $assignedSitesIds = [];
         if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
             $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
             $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
             if ($coordinator && $coordinator->assigned_sites_ids) {
-                $assignedSites = WorkingSite::whereIn('id', $coordinator->assigned_sites_ids)->get();
+                $assignedSitesIds = $coordinator->assigned_sites_ids;
+                $assignedSites = WorkingSite::whereIn('id', $assignedSitesIds)->get();
             }
         }
+
+        // Helper to filter machinery by assigned sites
+        $machineryQuery = Machinary::where(function($q) use ($assignedSitesIds) {
+            if (empty($assignedSitesIds)) {
+                $q->where('id', 0);
+            } else {
+                $q->whereHas('transfers', function($sq) use ($assignedSitesIds) {
+                    $sq->whereIn('to_site_id', $assignedSitesIds)
+                       ->where('id', function($subQuery) {
+                           $subQuery->select('id')->from('transfers')->whereColumn('machinery_id', 'machinaries.id')->orderByDesc('id')->limit(1);
+                       });
+                })->orWhereDoesntHave('transfers');
+            }
+        });
+
+        // Machinery Counts
+        $machineryCounts = [
+            'total' => (clone $machineryQuery)->count(),
+            'running' => (clone $machineryQuery)->where('condition', 'running')->count(),
+            'repair' => (clone $machineryQuery)->where('condition', 'repair')->count(),
+            'damage' => (clone $machineryQuery)->where('condition', 'damage')->count(),
+            'missing' => (clone $machineryQuery)->where('condition', 'missing')->count(),
+        ];
+
+        // HR Counts (Hide for coordinator)
+        $hrCounts = [
+            'total' => 0,
+            'worker' => 0,
+            'supervisor' => 0,
+            'staff' => 0,
+            'hr' => 0,
+        ];
+
+        // Site Counts
+        $siteCount = $assignedSites->count();
+
+        // Material Counts
+        $materialCounts = [
+            'purchases' => empty($assignedSitesIds) ? 0 : MaterialPurchase::whereIn('working_site_id', $assignedSitesIds)->count(),
+            'consumes' => empty($assignedSitesIds) ? 0 : MaterialConsume::where(function($q) use ($assignedSitesIds) {
+                $q->whereIn('from_site_id', $assignedSitesIds)->orWhereIn('to_site_id', $assignedSitesIds);
+            })->count(),
+        ];
+
+        // Recent Activities
+        $recentTransfers = empty($assignedSitesIds) ? collect() : Transfer::with(['machinery', 'fromSite', 'toSite'])
+            ->where(function($q) use ($assignedSitesIds) {
+                $q->whereIn('from_site_id', $assignedSitesIds)->orWhereIn('to_site_id', $assignedSitesIds);
+            })->latest()->take(5)->get();
+            
+        $recentUsers = collect(); // Hidden for coordinator
 
         return view('admin.dashboard.index', compact(
             'machineryCounts', 
