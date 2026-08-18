@@ -274,7 +274,7 @@
 
             // Fetch sites that have stock for this purchase
             $.ajax({
-                url: `/admin/purchase/material-consumes/get-stock-locations/${purchaseId}`,
+                url: `{{ url(rtrim(getRoutePrefix(), '.')) }}/purchase/material-consumes/get-stock-locations/${purchaseId}`,
                 type: 'GET',
                 success: function(locations) {
                     fromSite.empty().append('<option value=""></option>');

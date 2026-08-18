@@ -25,17 +25,7 @@ class MaterialConsumeController extends Controller
         }
         $purchases = $purchasesQuery->get();
 
-        $sites = WorkingSite::query();
-        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
-            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
-            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
-            if ($coordinator && $coordinator->assigned_sites_ids) {
-                $sites->whereIn('id', $coordinator->assigned_sites_ids);
-            } else {
-                $sites->whereIn('id', []); // Coordinator with no sites
-            }
-        }
-        $sites = $sites->get();
+        $sites = WorkingSite::all();
 
         $query = MaterialConsume::with(['purchase.materialCode', 'fromSite', 'toSite']);
 
