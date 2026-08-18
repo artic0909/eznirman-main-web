@@ -34,6 +34,18 @@ class AuthController extends Controller
                 return redirect()
                     ->route('admin.dashboard')
                     ->with('success', 'Welcome back, ' . $admin->name . '!');
+            } elseif (Auth::guard('web')->attempt($credentials)) {
+                $user = Auth::guard('web')->user();
+                $isCoordinator = \App\Models\Coordinator::where('user_id', $user->id)->exists();
+                
+                if ($isCoordinator) {
+                    $request->session()->regenerate();
+                    return redirect()
+                        ->route('coordinator.dashboard')
+                        ->with('success', 'Welcome back, Coordinator ' . $user->name . '!');
+                } else {
+                    Auth::guard('web')->logout();
+                }
             }
 
             return back()
