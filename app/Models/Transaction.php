@@ -19,10 +19,13 @@ class Transaction extends Model
         'balance_after',
         'pay_to',
         'pay_to_code',
+        'site_id',
+        'approval',
     ];
 
     protected $casts = [
         'date' => 'datetime',
+        'approval' => 'boolean',
     ];
 
     public function wallet()
@@ -33,5 +36,10 @@ class Transaction extends Model
     public function accountcode()
     {
         return $this->belongsTo(Accountcode::class);
+    }
+
+    public function site()
+    {
+        return $this->belongsTo(WorkingSite::class, 'site_id');
     }
 }

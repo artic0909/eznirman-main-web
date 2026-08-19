@@ -98,7 +98,7 @@ class DashboardController extends Controller
             $note = "Disbursal to {$payeeLabel}{$payeeCode} — " . ($request->note ?? 'General Disbursal');
         }
 
-        $transaction = \Illuminate\Support\Facades\DB::transaction(function () use ($wallet, $request, $note) {
+        $transaction = \Illuminate\Support\Facades\DB::transaction(function () use ($wallet, $request, $note, $user) {
             // Update wallet balance first to ensure exact running state
             if ($request->type === 'credit') {
                 $wallet->increment('current_balance', $request->amount);
@@ -118,6 +118,8 @@ class DashboardController extends Controller
                 'balance_after' => $balanceAfter,
                 'pay_to' => $request->pay_to,
                 'pay_to_code' => $request->pay_to_code,
+                'site_id' => $user->working_site_id,
+                'approval' => $request->type === 'debit' ? 0 : null,
             ]);
         });
 

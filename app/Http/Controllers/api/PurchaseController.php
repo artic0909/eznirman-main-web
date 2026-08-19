@@ -150,6 +150,8 @@ class PurchaseController extends Controller
                 'note' => 'Unauthorized Purchase: ' . $data['product_name'],
                 'type' => 'debit',
                 'balance_after' => $newBalance,
+                'site_id' => Auth::user()->working_site_id,
+                'approval' => 0,
             ]);
         }
 

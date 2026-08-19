@@ -161,6 +161,7 @@ class CashManagementController extends Controller
                 'pay_to' => 'from',
                 'pay_to_code' => 'Head Office',
                 'balance_after' => $newBalance,
+                'site_id' => $user->working_site_id,
             ]);
 
             DB::commit();
