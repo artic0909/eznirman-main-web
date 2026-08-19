@@ -12,6 +12,8 @@ class Accountcode extends Model
     protected $fillable = [
         'code',
         'name',
+        'created_by',
+        'updated_by',
     ];
 
     protected static function booted()

@@ -6,6 +6,12 @@
   .pc-sidebar .theme-asset .pc-submenu .pc-item.active > .pc-link { color: #6610f2 !important; }
   .pc-sidebar .theme-asset .pc-submenu .pc-item.active > .pc-link:before { background-color: #6610f2 !important; }
 
+  .pc-sidebar .pc-item.pc-caption.theme-pettycash label { color: #198754 !important; }
+  .pc-sidebar .theme-pettycash.active > .pc-link { color: #198754 !important; }
+  .pc-sidebar .theme-pettycash.active > .pc-link .pc-micon { color: #198754 !important; }
+  .pc-sidebar .theme-pettycash .pc-submenu .pc-item.active > .pc-link { color: #198754 !important; }
+  .pc-sidebar .theme-pettycash .pc-submenu .pc-item.active > .pc-link:before { background-color: #198754 !important; }
+
   .pc-sidebar .pc-item.pc-caption.theme-site label { color: #20c997 !important; }
   .pc-sidebar .theme-site.active > .pc-link { color: #20c997 !important; }
   .pc-sidebar .theme-site.active > .pc-link .pc-micon { color: #20c997 !important; }
@@ -55,6 +61,35 @@
             </a>
           </li>
 
+
+          <!-- Petty Cash Management (Coordinator) -->
+          @if(getRoutePrefix() == 'coordinator.')
+          <li class="pc-item pc-caption theme-pettycash">
+            <label>Petty Cash Management</label>
+            <i class="ti ti-cash"></i>
+          </li>
+          <li class="pc-item pc-hasmenu theme-pettycash {{ Route::is('coordinator.accountcode.*') || Route::is('coordinator.pettycash.*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-currency-rupee"></i></span><span
+                class="pc-mtext">Petty Cash</span><span class="pc-arrow"><i
+                  data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+              <li class="pc-item {{ Route::is('coordinator.accountcode.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route('coordinator.accountcode.index') }}">A/C Code</a>
+              </li>
+              @php
+                  $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+                  $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+                  $assignedSitesIds = $coordinator ? $coordinator->assigned_sites_ids : [];
+                  $assignedSites = \App\Models\WorkingSite::whereIn('id', $assignedSitesIds ?? [])->get();
+              @endphp
+              @foreach($assignedSites as $site)
+                <li class="pc-item {{ request()->is('coordinator/pettycash/site/'.$site->id) ? 'active' : '' }}">
+                  <a class="pc-link" href="{{ url('coordinator/pettycash/site/'.$site->id) }}">{{ $site->name }}</a>
+                </li>
+              @endforeach
+            </ul>
+          </li>
+          @endif
 
           <!-- Asset Management -->
           <li class="pc-item pc-caption theme-asset">

@@ -29,8 +29,11 @@ class AccountcodeController extends Controller
             'name' => 'required|string|max:255|unique:accountcodes,name',
         ]);
 
+        $user = \Illuminate\Support\Facades\Auth::guard('web')->user() ?? \Illuminate\Support\Facades\Auth::guard('account')->user();
+
         Accountcode::create([
             'name' => $request->name,
+            'created_by' => $user ? $user->name : null,
         ]);
 
         return redirect()->back()->with('success', 'Account Code created successfully.');
@@ -42,9 +45,12 @@ class AccountcodeController extends Controller
             'name' => 'required|string|max:255|unique:accountcodes,name,' . $id,
         ]);
 
+        $user = \Illuminate\Support\Facades\Auth::guard('web')->user() ?? \Illuminate\Support\Facades\Auth::guard('account')->user();
+
         $accountCode = Accountcode::findOrFail($id);
         $accountCode->update([
             'name' => $request->name,
+            'updated_by' => $user ? $user->name : null,
         ]);
 
         return redirect()->back()->with('success', 'Account Code updated successfully.');

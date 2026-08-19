@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\MaterialConsumeController;
 use App\Http\Controllers\admin\SkillController;
 use App\Http\Controllers\admin\DesignationController;
 use App\Http\Controllers\admin\HRManagementController;
+use App\Http\Controllers\accounts\AccountcodeController;
 use App\Http\Middleware\IsCoordinator;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,12 @@ Route::middleware(['auth:web', IsCoordinator::class])->prefix('coordinator')->na
     // Profile Settings
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Petty Cash Management (A/C Code)
+    Route::get('/accountcode', [AccountcodeController::class, 'index'])->name('accountcode.index');
+    Route::post('/accountcode', [AccountcodeController::class, 'store'])->name('accountcode.store');
+    Route::put('/accountcode/{id}', [AccountcodeController::class, 'update'])->name('accountcode.update');
+    Route::delete('/accountcode/{id}', [AccountcodeController::class, 'destroy'])->name('accountcode.destroy');
 
     // Machinery Management
     Route::prefix('machinery')->name('machinery.')->group(function () {

@@ -1,4 +1,4 @@
-@extends('account.layouts.app')
+@extends(getRoutePrefix() == 'coordinator.' ? 'admin.layouts.app' : 'account.layouts.app')
 
 @section('title', 'Account Codes')
 
@@ -11,7 +11,7 @@
                     <h5 class="m-b-10">Account Code Registry</h5>
                 </div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('account.dashboard') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route(getRoutePrefix() . 'dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item">Settings</li>
                     <li class="breadcrumb-item" aria-current="page">Account Code</li>
                 </ul>
@@ -28,7 +28,7 @@
                 <h5>Add New Account Code</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('account.accountcode.store') }}" method="POST">
+                <form action="{{ route(getRoutePrefix() . 'accountcode.store') }}" method="POST">
                     @csrf
                     <div class="form-group mb-3">
                         <label class="form-label">Account Name <span class="text-danger">*</span></label>
@@ -49,13 +49,13 @@
             </div>
             <div class="card-body">
                 <!-- Filters Section -->
-                <form action="{{ route('account.accountcode.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route(getRoutePrefix() . 'accountcode.index') }}" method="GET" class="row mb-4">
                     <div class="col-md-9 mb-2">
                         <input type="text" name="search" class="form-control" placeholder="Search Code or Name..." value="{{ request('search') }}">
                     </div>
                     <div class="col-md-3 mb-2 d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                        <a href="{{ route('account.accountcode.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
+                        <a href="{{ route(getRoutePrefix() . 'accountcode.index') }}" class="btn btn-light flex-grow-1 border">Clear</a>
                     </div>
                 </form>
 
@@ -66,6 +66,7 @@
                                 <th>SL.</th>
                                 <th>Code</th>
                                 <th>Account Name</th>
+                                <th>Created/Updated By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -79,11 +80,20 @@
                                 <td><span class="badge bg-light-primary text-primary fw-bold text-uppercase">{{ $aCode->code }}</span></td>
                                 <td><span class="text-dark fw-500">{{ $aCode->name }}</span></td>
                                 <td>
+                                    @if($aCode->updated_by)
+                                        <small class="text-muted d-block">Updated: {{ $aCode->updated_by }}</small>
+                                    @elseif($aCode->created_by)
+                                        <small class="text-muted d-block">Created: {{ $aCode->created_by }}</small>
+                                    @else
+                                        <small class="text-muted d-block">-</small>
+                                    @endif
+                                </td>
+                                <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-light-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $aCode->id }}">
                                             <i class="ti ti-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('account.accountcode.destroy', $aCode->id) }}">
+                                        <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'accountcode.destroy', $aCode->id) }}">
                                             <i class="ti ti-trash"></i>
                                         </button>
                                     </div>
@@ -96,7 +106,7 @@
                                                     <h5 class="modal-title text-white">Update Account Code</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{ route('account.accountcode.update', $aCode->id) }}" method="POST">
+                                                <form action="{{ route(getRoutePrefix() . 'accountcode.update', $aCode->id) }}" method="POST">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body">
