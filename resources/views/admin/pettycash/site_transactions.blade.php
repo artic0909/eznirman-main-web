@@ -115,6 +115,7 @@
                                 <th>Account Code</th>
                                 <th>Credit/ Debit</th>
                                 <th>After Balance (₹)</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,10 +157,36 @@
                                 <td>
                                     <span class="fw-500">₹{{ number_format($tx->balance_after, 2) }}</span>
                                 </td>
+                                <td>
+                                    @if($tx->type === 'debit')
+                                        @if($tx->approval === 1)
+                                            <span class="badge bg-light-success text-success"><i class="ti ti-check me-1"></i>Approved</span>
+                                        @else
+                                            <div class="d-flex gap-1">
+                                                <form action="{{ route('coordinator.pettycash.transaction.approve', $tx->id) }}" method="POST" class="d-inline approve-form">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-success px-2 py-1" title="Approve">
+                                                        <i class="ti ti-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('coordinator.pettycash.transaction.destroy', $tx->id) }}" method="POST" class="d-inline delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger px-2 py-1" title="Delete & Refund">
+                                                        <i class="ti ti-x"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-5">No transactions found for this site.</td>
+                                <td colspan="8" class="text-center text-muted py-5">No transactions found for this site.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -240,7 +267,49 @@
         roleFilter.on('change', function() {
             loadUsers($(this).val());
         });
+
+        // SweetAlert2 for Delete Confirmation
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this transaction? The wallet balance will be adjusted and refunded.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // SweetAlert2 for Approve Confirmation
+        document.querySelectorAll('.approve-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Approve Transaction?',
+                    text: "Are you sure you want to approve this debit transaction?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, approve it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
     });
 </script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
 @endsection

@@ -142,4 +142,58 @@ class CoordinatorPettyCashController extends Controller
             
         return response()->json($users);
     }
+    /**
+     * Approve a debit transaction.
+     */
+    public function approveTransaction(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        // Check if coordinator is assigned to this site
+        $user = Auth::guard('web')->user();
+        $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+        $assignedSitesIds = $coordinator ? $coordinator->assigned_sites_ids : [];
+        
+        if (!in_array($transaction->site_id, $assignedSitesIds ?? [])) {
+            abort(403, 'Unauthorized access to this transaction.');
+        }
+
+        $transaction->approval = 1;
+        $transaction->save();
+
+        // Also flash success message to session for sweetalert or standard alert
+        return back()->with('success', 'Transaction approved successfully.');
+    }
+
+    /**
+     * Delete and refund a transaction.
+     */
+    public function deleteTransaction(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        // Check if coordinator is assigned to this site
+        $user = Auth::guard('web')->user();
+        $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+        $assignedSitesIds = $coordinator ? $coordinator->assigned_sites_ids : [];
+        
+        if (!in_array($transaction->site_id, $assignedSitesIds ?? [])) {
+            abort(403, 'Unauthorized access to this transaction.');
+        }
+
+        \Illuminate\Support\Facades\DB::transaction(function () use ($transaction) {
+            $wallet = $transaction->wallet;
+            if ($wallet) {
+                // Refund logic
+                if ($transaction->type === 'debit') {
+                    $wallet->increment('current_balance', $transaction->amount);
+                } elseif ($transaction->type === 'credit') {
+                    $wallet->decrement('current_balance', $transaction->amount);
+                }
+            }
+            $transaction->delete();
+        });
+
+        return back()->with('success', 'Transaction deleted and amount refunded successfully.');
+    }
 }
