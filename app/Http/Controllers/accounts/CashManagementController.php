@@ -16,7 +16,7 @@ class CashManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Transaction::with(['wallet.user', 'accountcode']);
+        $query = Transaction::with(['wallet.user', 'accountcode', 'site']);
 
         // Apply Filters
         if ($request->filled('from_date')) {

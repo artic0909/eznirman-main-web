@@ -88,7 +88,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([], ['current_balance' => 0]);
         
         $credits = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->where('type', 'credit')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -102,7 +102,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([], ['current_balance' => 0]);
         
         $debits = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->where('type', 'debit')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -116,7 +116,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([], ['current_balance' => 0]);
         
         $transactions = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->orderBy('id', 'desc')
             ->paginate(15);
 

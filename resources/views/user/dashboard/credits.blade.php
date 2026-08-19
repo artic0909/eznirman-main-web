@@ -33,6 +33,9 @@
               <div class="ledger-details">
                 <span class="ledger-desc">{{ $tx->note }}</span>
                 <span class="ledger-sub">
+                  @if($tx->site)
+                    {{ $tx->site->site_code }} - {{ $tx->site->site_name }} ·
+                  @endif
                   {{ $tx->accountcode ? $tx->accountcode->name : 'Allocation Release' }} · {{ $tx->created_at->format('d M Y') }} · {{ $tx->created_at->format('h:i:s A') }}
                 </span>
                 <span style="font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px;">

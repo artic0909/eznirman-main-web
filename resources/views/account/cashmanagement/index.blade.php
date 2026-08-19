@@ -111,6 +111,7 @@
                             <tr>
                                 <th>Date & Time</th>
                                 <th>User / Role</th>
+                                <th>Site</th>
                                 <th>Description</th>
                                 <th>Pay To</th>
                                 <th>Account Code</th>
@@ -129,6 +130,14 @@
                                 <td>
                                     <span class="fw-500 text-dark d-block">{{ $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A' }}</span>
                                     <span class="text-muted small">{{ $tx->wallet && $tx->wallet->user ? ucfirst($tx->wallet->user->role) : '' }}</span>
+                                </td>
+                                <td>
+                                    @if($tx->site)
+                                        <span class="d-block fw-500 text-dark">{{ $tx->site->site_code }}</span>
+                                        <span class="text-muted small">{{ $tx->site->site_name }}</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
                                 </td>
                                 <td>{{ $tx->note }}</td>
                                 <td>

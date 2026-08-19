@@ -38,7 +38,7 @@ class DashboardController extends Controller
 
         // 3. Retrieve recent transactions (Last 5)
         $recentTransactions = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->orderBy('id', 'desc')
             ->take(5)
             ->get();
@@ -140,7 +140,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([]);
         
         $credits = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->where('type', 'credit')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -157,7 +157,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([]);
         
         $debits = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->where('type', 'debit')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -174,7 +174,7 @@ class DashboardController extends Controller
         $wallet = $user->wallet()->firstOrCreate([]);
         
         $transactions = $wallet->transactions()
-            ->with('accountcode')
+            ->with(['accountcode', 'site'])
             ->orderBy('id', 'desc')
             ->paginate(15);
 
