@@ -84,7 +84,7 @@
               @endphp
               @foreach($assignedSites as $site)
                 <li class="pc-item {{ request()->is('coordinator/pettycash/site/'.$site->id) ? 'active' : '' }}">
-                  <a class="pc-link" href="{{ url('coordinator/pettycash/site/'.$site->id) }}">{{ $site->name }}</a>
+                  <a class="pc-link" href="{{ url('coordinator/pettycash/site/'.$site->id) }}">{{ $site->site_name }}</a>
                 </li>
               @endforeach
             </ul>
