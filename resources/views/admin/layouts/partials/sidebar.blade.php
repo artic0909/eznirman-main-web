@@ -63,19 +63,22 @@
 
 
           <!-- Petty Cash Management (Coordinator) -->
-          @if(getRoutePrefix() == 'coordinator.')
+          @if(request()->routeIs('coordinator.*'))
           <li class="pc-item pc-caption theme-pettycash">
             <label>Petty Cash Management</label>
             <i class="ti ti-cash"></i>
           </li>
-          <li class="pc-item pc-hasmenu theme-pettycash {{ Route::is('coordinator.accountcode.*') || Route::is('coordinator.pettycash.*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item theme-pettycash {{ Route::is('coordinator.accountcode.*') ? 'active' : '' }}">
+            <a href="{{ route('coordinator.accountcode.index') }}" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-barcode"></i></span>
+              <span class="pc-mtext">A/C Code</span>
+            </a>
+          </li>
+          <li class="pc-item pc-hasmenu theme-pettycash {{ Route::is('coordinator.pettycash.*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-currency-rupee"></i></span><span
                 class="pc-mtext">Petty Cash</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-              <li class="pc-item {{ Route::is('coordinator.accountcode.*') ? 'active' : '' }}">
-                <a class="pc-link" href="{{ route('coordinator.accountcode.index') }}">A/C Code</a>
-              </li>
               @php
                   $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
                   $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
