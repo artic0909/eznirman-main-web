@@ -35,7 +35,10 @@ class UnauthorizedPurchaseController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
-        $purchases = $query->latest()->paginate(10)->withQueryString();
+        // Only show approved unauthorized purchases
+        $query->where('approval', 1);
+
+        $purchases = $query->orderBy('updated_at', 'desc')->paginate(10)->withQueryString();
         
         $roles = \App\Models\User::select('role')->distinct()->whereNotNull('role')->pluck('role');
 

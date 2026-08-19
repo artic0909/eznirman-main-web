@@ -81,7 +81,8 @@
                                         </div>
                                     </th>
                                     <th>#</th>
-                                    <th>Date</th>
+                                    <th>Approved Date</th>
+                                    <th>Purchase Date</th>
                                     <th>Purchase ID</th>
                                     <th>Product Details</th>
                                     <th>Site</th>
@@ -103,7 +104,14 @@
                                         </div>
                                     </td>
                                     <td>{{ $startSl + $index }}</td>
-                                <td>{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') }}</td>
+                                <td>
+                                    <span class="d-block fw-bold">{{ $purchase->updated_at ? $purchase->updated_at->format('d M, Y') : '-' }}</span>
+                                    <span class="text-muted small">{{ $purchase->updated_at ? $purchase->updated_at->format('h:i A') : '' }}</span>
+                                </td>
+                                <td>
+                                    <span class="d-block fw-bold">{{ $purchase->purchase_date ? \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') : $purchase->created_at->format('d M, Y') }}</span>
+                                    <span class="text-muted small">{{ $purchase->created_at->format('h:i A') }}</span>
+                                </td>
                                 <td>
                                     <h6 class="mb-0">
                                         <span class="badge bg-light-danger text-danger" style="font-size: 0.7rem;">{{ $purchase->unauthorized_unique_id }}</span>

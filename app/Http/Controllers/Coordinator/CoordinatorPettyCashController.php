@@ -31,8 +31,11 @@ class CoordinatorPettyCashController extends Controller
         $siteUsersIds = User::where('working_site_id', $site_id)->pluck('id');
 
         // 3. Fetch transactions for this site strictly based on transaction's site_id
+        // Exclude unauthorized purchases since they have their own dedicated section
         $query = Transaction::with(['wallet.user', 'accountcode', 'site'])
-            ->where('site_id', $site_id);
+            ->where('site_id', $site_id)
+            ->where('note', 'not like', 'Unauthorized Purchase:%')
+            ->where('note', 'not like', 'Refund for deleted unauthorized purchase%');
 
         // Apply Filters
         if ($request->filled('from_date')) {
