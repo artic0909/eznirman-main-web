@@ -39,13 +39,21 @@ class CashManagementController extends Controller
             });
         }
 
+        // Only show credits or approved debits
+        $query->where(function ($q) {
+            $q->where('type', 'credit')
+              ->orWhere(function ($sub) {
+                  $sub->where('type', 'debit')->where('approval', 1);
+              });
+        });
+
         // Calculate KPA Totals based on current filters
         $totalCredits = (clone $query)->where('type', 'credit')->sum('amount');
         $totalDebits = (clone $query)->where('type', 'debit')->sum('amount');
 
         // Handle Export
         if ($request->has('export')) {
-            $exportData = $query->orderBy('created_at', 'desc')->get();
+            $exportData = $query->orderBy('updated_at', 'desc')->get();
             $filename = "cash_management_transactions_" . date('Y-m-d_H-i-s') . ".csv";
             
             $headers = [
@@ -90,7 +98,7 @@ class CashManagementController extends Controller
         }
 
         // Get paginated transactions
-        $transactions = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+        $transactions = $query->orderBy('updated_at', 'desc')->paginate(20)->withQueryString();
 
         // Get roles for dropdown
         $roles = User::select('role')->distinct()->whereNotNull('role')->pluck('role');

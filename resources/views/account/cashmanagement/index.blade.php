@@ -109,7 +109,8 @@
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>Date & Time</th>
+                                <th>Approved Date</th>
+                                <th>Transaction Date</th>
                                 <th>User / Role</th>
                                 <th>Site</th>
                                 <th>Description</th>
@@ -123,6 +124,10 @@
                         <tbody>
                             @forelse($transactions as $tx)
                             <tr>
+                                <td>
+                                    <span class="d-block fw-bold">{{ $tx->date ? $tx->date->format('d M Y') : $tx->updated_at->format('d M Y') }}</span>
+                                    <span class="text-muted small">{{ $tx->updated_at->format('h:i A') }}</span>
+                                </td>
                                 <td>
                                     <span class="d-block fw-bold">{{ $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y') }}</span>
                                     <span class="text-muted small">{{ $tx->created_at->format('h:i A') }}</span>
