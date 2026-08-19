@@ -92,6 +92,24 @@
               @endforeach
             </ul>
           </li>
+
+          <!-- Unauthorized Purchases (Coordinator) -->
+          <li class="pc-item pc-caption theme-purchase">
+            <label>Unauthorized Purchases</label>
+            <i class="ti ti-shopping-cart"></i>
+          </li>
+          <li class="pc-item pc-hasmenu theme-purchase {{ Route::is('coordinator.unauth_purchase.*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-receipt"></i></span><span
+                class="pc-mtext">Unauthorized</span><span class="pc-arrow"><i
+                  data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+              @foreach($assignedSites as $site)
+                <li class="pc-item {{ request()->is('coordinator/unauthorized-purchases/site/'.$site->id) ? 'active' : '' }}">
+                  <a class="pc-link" href="{{ url('coordinator/unauthorized-purchases/site/'.$site->id) }}">{{ $site->site_name }}</a>
+                </li>
+              @endforeach
+            </ul>
+          </li>
           @endif
 
           <!-- Asset Management -->

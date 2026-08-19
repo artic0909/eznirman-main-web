@@ -36,6 +36,11 @@ Route::middleware(['auth:web', IsCoordinator::class])->prefix('coordinator')->na
     Route::patch('/pettycash/transaction/{id}/approve', [\App\Http\Controllers\Coordinator\CoordinatorPettyCashController::class, 'approveTransaction'])->name('pettycash.transaction.approve');
     Route::delete('/pettycash/transaction/{id}', [\App\Http\Controllers\Coordinator\CoordinatorPettyCashController::class, 'deleteTransaction'])->name('pettycash.transaction.destroy');
 
+    // Unauthorized Purchases (Site-specific)
+    Route::get('/unauthorized-purchases/site/{id}', [\App\Http\Controllers\Coordinator\CoordinatorUnauthorizedPurchaseController::class, 'sitePurchases'])->name('unauth_purchase.site');
+    Route::patch('/unauthorized-purchases/{id}/approve', [\App\Http\Controllers\Coordinator\CoordinatorUnauthorizedPurchaseController::class, 'approvePurchase'])->name('unauth_purchase.approve');
+    Route::delete('/unauthorized-purchases/{id}/destroy', [\App\Http\Controllers\Coordinator\CoordinatorUnauthorizedPurchaseController::class, 'deletePurchase'])->name('unauth_purchase.destroy');
+
     // Machinery Management
     Route::prefix('machinery')->name('machinery.')->group(function () {
         // Categories
