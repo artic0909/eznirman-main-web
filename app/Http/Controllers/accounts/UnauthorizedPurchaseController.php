@@ -18,11 +18,11 @@ class UnauthorizedPurchaseController extends Controller
         $query = UnauthorizedPurchase::with(['site', 'user']);
 
         if ($request->filled('from_date')) {
-            $query->whereDate('purchase_date', '>=', $request->from_date);
+            $query->whereDate('updated_at', '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('purchase_date', '<=', $request->to_date);
+            $query->whereDate('updated_at', '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {

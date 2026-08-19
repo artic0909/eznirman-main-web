@@ -20,11 +20,11 @@ class CashManagementController extends Controller
 
         // Apply Filters
         if ($request->filled('from_date')) {
-            $query->whereDate('date', '>=', $request->from_date);
+            $query->whereDate('updated_at', '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('date', '<=', $request->to_date);
+            $query->whereDate('updated_at', '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {

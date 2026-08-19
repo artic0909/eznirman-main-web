@@ -39,11 +39,11 @@ class CoordinatorPettyCashController extends Controller
 
         // Apply Filters
         if ($request->filled('from_date')) {
-            $query->whereDate('date', '>=', $request->from_date);
+            $query->whereDate('updated_at', '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('date', '<=', $request->to_date);
+            $query->whereDate('updated_at', '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {
@@ -64,7 +64,7 @@ class CoordinatorPettyCashController extends Controller
 
         // Handle Export
         if ($request->has('export')) {
-            $exportData = $query->orderBy('created_at', 'desc')->get();
+            $exportData = $query->orderBy('updated_at', 'desc')->get();
             $filename = "petty_cash_".$site->site_name."_" . date('Y-m-d_H-i-s') . ".csv";
             
             $headers = [
@@ -109,7 +109,7 @@ class CoordinatorPettyCashController extends Controller
         }
 
         // Get paginated transactions
-        $transactions = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+        $transactions = $query->orderBy('updated_at', 'desc')->paginate(20)->withQueryString();
 
         // Get roles for dropdown (only from users assigned to this site)
         $roles = User::where('working_site_id', $site_id)->select('role')->distinct()->whereNotNull('role')->pluck('role');

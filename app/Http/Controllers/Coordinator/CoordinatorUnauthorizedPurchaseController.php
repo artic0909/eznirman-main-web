@@ -29,11 +29,11 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
         $query = UnauthorizedPurchase::with(['site', 'user'])->where('working_site_id', $site_id);
 
         if ($request->filled('from_date')) {
-            $query->whereDate('purchase_date', '>=', $request->from_date);
+            $query->whereDate('updated_at', '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('purchase_date', '<=', $request->to_date);
+            $query->whereDate('updated_at', '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {
@@ -51,22 +51,23 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
 
         if ($request->has('export') && $request->export === 'excel') {
             return \App\Services\ExportService::exportToExcel(
-                $query->latest(),
+                $query->orderBy('updated_at', 'desc'),
                 'unauthorized_purchases_'.$currentSite->site_name.'.xlsx',
                 function ($purchase) {
                     return [
-                        'Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
+                        'Approved Date' => $purchase->updated_at ? $purchase->updated_at->format('Y-m-d H:i') : '-',
+                        'Purchase Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
                         'Unique ID' => $purchase->unauthorized_unique_id,
                         'Product Name' => $purchase->product_name,
                         'Site' => $purchase->site->site_name ?? 'N/A',
                         'Purchased By' => $purchase->user->name ?? 'N/A',
-                        'Total Amount' => $purchase->total_amount,
+                        'Total Amount' => $purchase->amount,
                     ];
                 }
             );
         }
 
-        $purchases = $query->latest()->paginate(10)->withQueryString();
+        $purchases = $query->orderBy('updated_at', 'desc')->paginate(10)->withQueryString();
 
         return view('admin.purchase.site_unauthorized_purchase', compact('sites', 'purchases', 'roles', 'currentSite'));
     }
@@ -86,6 +87,26 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
 
         $purchase->approval = 1;
         $purchase->save();
+
+        // Find the corresponding transaction and approve it
+        if ($purchase->user_id) {
+            $wallet = \App\Models\Wallet::where('user_id', $purchase->user_id)->first();
+            if ($wallet) {
+                $transaction = \App\Models\Transaction::where('wallet_id', $wallet->id)
+                    ->where('type', 'debit')
+                    ->where('approval', 0)
+                    ->where('note', 'Unauthorized Purchase: ' . $purchase->product_name)
+                    ->where('amount', $purchase->amount)
+                    ->whereDate('date', $purchase->purchase_date)
+                    ->first();
+                
+                if ($transaction) {
+                    $transaction->approval = 1;
+                    $transaction->updated_at = now();
+                    $transaction->save();
+                }
+            }
+        }
 
         return back()->with('success', 'Unauthorized Purchase approved successfully.');
     }
