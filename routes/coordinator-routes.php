@@ -30,6 +30,10 @@ Route::middleware(['auth:web', IsCoordinator::class])->prefix('coordinator')->na
     Route::put('/accountcode/{id}', [AccountcodeController::class, 'update'])->name('accountcode.update');
     Route::delete('/accountcode/{id}', [AccountcodeController::class, 'destroy'])->name('accountcode.destroy');
 
+    // Petty Cash Management (Site Transactions)
+    Route::get('/pettycash/site/{id}', [\App\Http\Controllers\Coordinator\CoordinatorPettyCashController::class, 'siteTransactions'])->name('pettycash.site');
+    Route::get('/pettycash/site/{id}/users-by-role', [\App\Http\Controllers\Coordinator\CoordinatorPettyCashController::class, 'getUsersByRole'])->name('pettycash.site.users_by_role');
+
     // Machinery Management
     Route::prefix('machinery')->name('machinery.')->group(function () {
         // Categories
