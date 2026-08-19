@@ -30,11 +30,9 @@ class CoordinatorPettyCashController extends Controller
         // 2. Fetch users assigned to this site
         $siteUsersIds = User::where('working_site_id', $site_id)->pluck('id');
 
-        // 3. Fetch transactions for these users
-        $query = Transaction::with(['wallet.user', 'accountcode'])
-            ->whereHas('wallet', function($q) use ($siteUsersIds) {
-                $q->whereIn('user_id', $siteUsersIds);
-            });
+        // 3. Fetch transactions for this site strictly based on transaction's site_id
+        $query = Transaction::with(['wallet.user', 'accountcode', 'site'])
+            ->where('site_id', $site_id);
 
         // Apply Filters
         if ($request->filled('from_date')) {
