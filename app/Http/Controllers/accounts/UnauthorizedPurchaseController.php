@@ -35,8 +35,13 @@ class UnauthorizedPurchaseController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
-        // Only show approved unauthorized purchases
-        $query->where('approval', 1);
+        // Only show approved unauthorized purchases, or those from Head Office (HO1)
+        $query->where(function ($q) {
+            $q->where('approval', 1)
+              ->orWhereHas('site', function ($siteQuery) {
+                  $siteQuery->where('site_code', 'HO1');
+              });
+        });
 
         $purchases = $query->orderBy('updated_at', 'desc')->paginate(10)->withQueryString();
         

@@ -39,11 +39,17 @@ class CashManagementController extends Controller
             });
         }
 
-        // Only show credits or approved debits
+        // Only show credits, approved debits, or debits from Head Office (HO1)
         $query->where(function ($q) {
             $q->where('type', 'credit')
               ->orWhere(function ($sub) {
-                  $sub->where('type', 'debit')->where('approval', 1);
+                  $sub->where('type', 'debit')
+                      ->where(function ($debitQuery) {
+                          $debitQuery->where('approval', 1)
+                                     ->orWhereHas('site', function ($siteQuery) {
+                                         $siteQuery->where('site_code', 'HO1');
+                                     });
+                      });
               });
         });
 
