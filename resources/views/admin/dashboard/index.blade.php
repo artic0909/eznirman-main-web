@@ -44,9 +44,9 @@
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold">{{ $site->name ?? 'N/A' }}</h5>
+                                    <h5 class="card-title fw-bold">{{ $site->site_name ?? 'N/A' }}</h5>
                                     <p class="card-text text-muted mb-0"><strong>Code:</strong> {{ $site->site_code ?? 'N/A' }}</p>
-                                    <p class="card-text text-muted"><strong>Address:</strong> {{ $site->address ?? 'N/A' }}</p>
+                                    <p class="card-text text-muted"><strong>Address:</strong> {{ $site->location ?? 'N/A' }}</p>
                                 </div>
                             </div>
                         </div>
