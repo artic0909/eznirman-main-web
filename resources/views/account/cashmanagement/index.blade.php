@@ -125,12 +125,12 @@
                             @forelse($transactions as $tx)
                             <tr>
                                 <td>
-                                    <span class="d-block fw-bold">{{ $tx->date ? $tx->date->format('d M Y') : $tx->updated_at->format('d M Y') }}</span>
+                                    <span class="d-block fw-bold">{{ $tx->updated_at->format('d M Y') }}</span>
                                     <span class="text-muted small">{{ $tx->updated_at->format('h:i A') }}</span>
                                 </td>
                                 <td>
                                     <span class="d-block fw-bold">{{ $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y') }}</span>
-                                    <span class="text-muted small">{{ $tx->created_at->format('h:i A') }}</span>
+                                    <span class="text-muted small">{{ $tx->date ? $tx->date->format('h:i A') : $tx->created_at->format('h:i A') }}</span>
                                 </td>
                                 <td>
                                     <span class="fw-500 text-dark d-block">{{ $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A' }}</span>

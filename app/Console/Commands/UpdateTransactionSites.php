@@ -71,6 +71,12 @@ class UpdateTransactionSites extends Command
         })->update(['approval' => 1]);
         $this->info("Approved {$approvedPurchasesCount} unauthorized purchases.");
 
+        // Fix updated_at to match created_at
+        $this->info('Fixing updated_at to match created_at for all old records...');
+        \Illuminate\Support\Facades\DB::statement("UPDATE transactions SET updated_at = created_at");
+        \Illuminate\Support\Facades\DB::statement("UPDATE unauthorized_purchases SET updated_at = created_at");
+        $this->info('Timestamps fixed.');
+
         $this->info('Done.');
     }
 }
