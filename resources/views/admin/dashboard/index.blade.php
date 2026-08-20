@@ -257,7 +257,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-xl-4">
+        <div class="col-md-6 col-xl-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -273,7 +273,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-xl-4">
+        <div class="col-md-6 col-xl-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -289,7 +289,7 @@
             </div>
         </div>
 
-        <div class="col-md-12 col-xl-4">
+        <div class="col-md-6 col-xl-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -299,6 +299,22 @@
                         <div class="ms-4">
                             <h3 class="mb-0 fw-bold">{{ $materialCounts['consumes'] }}</h3>
                             <p class="text-muted mb-0">Stock Consumptions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avtar avtar-xl bg-light-danger text-danger rounded-circle">
+                            <i class="ti ti-trash f-30"></i>
+                        </div>
+                        <div class="ms-4">
+                            <h3 class="mb-0 fw-bold">{{ $materialCounts['wastage'] ?? 0 }}</h3>
+                            <p class="text-muted mb-0">Material Wastage</p>
                         </div>
                     </div>
                 </div>
@@ -318,7 +334,7 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th class="ps-4">Asset Info</th>
-                                    <th>To Site</th>
+                                    <th>Transfer Info</th>
                                     <th>Date</th>
                                     <th class="pe-4 text-center">Status</th>
                                 </tr>
@@ -338,8 +354,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="fw-bold text-dark">{{ $transfer->toSite->site_name }}</span>
-                                        <br><small class="text-muted">{{ $transfer->toSite->site_code }}</small>
+                                        <div class="small">
+                                            <span class="text-muted">From:</span> <span class="fw-bold text-dark">{{ $transfer->fromSite->site_name ?? 'N/A' }}</span>
+                                            <br>
+                                            <span class="text-muted">To:</span> <span class="fw-bold text-dark">{{ $transfer->toSite->site_name ?? 'N/A' }}</span>
+                                        </div>
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($transfer->transfer_date)->format('d M, Y') }}</td>
                                     <td class="pe-4 text-center">

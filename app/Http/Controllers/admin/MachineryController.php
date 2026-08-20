@@ -258,6 +258,20 @@ class MachineryController extends Controller
         $sites = WorkingSite::all();
         
         $query = Transfer::with(['machinery', 'fromSite', 'toSite']);
+        
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            if ($coordinator && $coordinator->assigned_sites_ids) {
+                $assignedSites = $coordinator->assigned_sites_ids;
+                $query->where(function($q) use ($assignedSites) {
+                    $q->whereIn('from_site_id', $assignedSites)
+                      ->orWhereIn('to_site_id', $assignedSites);
+                });
+            } else {
+                $query->where('id', 0);
+            }
+        }
 
         // Search Filter
         if ($request->search) {

@@ -69,6 +69,7 @@ class CoordinatorDashboardController extends Controller
             'consumes' => empty($assignedSitesIds) ? 0 : MaterialConsume::where(function($q) use ($assignedSitesIds) {
                 $q->whereIn('from_site_id', $assignedSitesIds)->orWhereIn('to_site_id', $assignedSitesIds);
             })->count(),
+            'wastage' => empty($assignedSitesIds) ? 0 : MaterialConsume::where('use_now', 2)->whereIn('from_site_id', $assignedSitesIds)->count(),
         ];
 
         // Recent Activities

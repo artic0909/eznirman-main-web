@@ -40,6 +40,7 @@ class DashboardController extends Controller
         $materialCounts = [
             'purchases' => MaterialPurchase::count(),
             'consumes' => MaterialConsume::count(),
+            'wastage' => MaterialConsume::where('use_now', 2)->count(),
         ];
 
         // Recent Activities
