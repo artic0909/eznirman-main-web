@@ -75,6 +75,11 @@ class UpdateTransactionSites extends Command
         $this->info('Fixing updated_at to match created_at for all old records...');
         \Illuminate\Support\Facades\DB::statement("UPDATE transactions SET updated_at = created_at");
         \Illuminate\Support\Facades\DB::statement("UPDATE unauthorized_purchases SET updated_at = created_at");
+        
+        // Fix date column where it might have been incorrectly set to today for old records
+        $this->info('Fixing transaction date to match created_at for older records...');
+        \Illuminate\Support\Facades\DB::statement("UPDATE transactions SET date = created_at WHERE DATE(created_at) < DATE(date)");
+        
         $this->info('Timestamps fixed.');
 
         $this->info('Done.');
