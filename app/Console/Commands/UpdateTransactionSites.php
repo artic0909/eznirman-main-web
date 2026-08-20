@@ -57,14 +57,18 @@ class UpdateTransactionSites extends Command
 
         $this->info("Updated {$purchasesCount} unauthorized purchases.");
 
-        // Approve all old pending transactions
+        // Approve all old pending transactions (handle both 0 and NULL)
         $this->info('Approving all old pending transactions...');
-        $approvedTxCount = Transaction::where('approval', 0)->update(['approval' => 1]);
+        $approvedTxCount = Transaction::where(function($query) {
+            $query->where('approval', 0)->orWhereNull('approval');
+        })->update(['approval' => 1]);
         $this->info("Approved {$approvedTxCount} transactions.");
 
-        // Approve all old pending unauthorized purchases
+        // Approve all old pending unauthorized purchases (handle both 0 and NULL)
         $this->info('Approving all old pending unauthorized purchases...');
-        $approvedPurchasesCount = UnauthorizedPurchase::where('approval', 0)->update(['approval' => 1]);
+        $approvedPurchasesCount = UnauthorizedPurchase::where(function($query) {
+            $query->where('approval', 0)->orWhereNull('approval');
+        })->update(['approval' => 1]);
         $this->info("Approved {$approvedPurchasesCount} unauthorized purchases.");
 
         $this->info('Done.');
