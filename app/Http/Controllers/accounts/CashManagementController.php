@@ -70,19 +70,20 @@ class CashManagementController extends Controller
                 "Expires"             => "0"
             ];
             
-            $columns = ['Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)', 'Balance After'];
+            $columns = ['Approved Date', 'Transaction Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)', 'Balance After'];
             
             $callback = function() use($exportData, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns);
                 
                 foreach ($exportData as $tx) {
+                    $approvedDate = $tx->updated_at->format('d M Y h:i A');
                     $date = $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y');
-                    $time = $tx->created_at->format('h:i A');
+                    $time = $tx->date ? $tx->date->format('h:i A') : $tx->created_at->format('h:i A');
                     $userName = $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A';
                     $userCode = $tx->wallet && $tx->wallet->user ? $tx->wallet->user->code : 'N/A';
                     $role = $tx->wallet && $tx->wallet->user ? ucfirst($tx->wallet->user->role) : 'N/A';
-                    $accountCode = $tx->accountcode ? $tx->accountcode->name . ' (' . $tx->accountcode->code . ')' : 'N/A';
+                    $accountCode = $tx->accountcode ? $tx->accountcode->name : 'N/A';
                     
                     $credit = $tx->type === 'credit' ? $tx->amount : 0;
                     $debit = $tx->type === 'debit' ? $tx->amount : 0;
@@ -94,7 +95,7 @@ class CashManagementController extends Controller
                         $note = trim($noteParts[1] ?? '');
                     }
                     
-                    fputcsv($file, [$date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit, $tx->balance_after]);
+                    fputcsv($file, [$approvedDate, $date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit, $tx->balance_after]);
                 }
                 
                 fclose($file);
