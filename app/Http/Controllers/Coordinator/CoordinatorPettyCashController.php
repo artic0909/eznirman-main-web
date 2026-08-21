@@ -190,9 +190,37 @@ class CoordinatorPettyCashController extends Controller
             if ($wallet) {
                 // Refund logic
                 if ($transaction->type === 'debit') {
-                    $wallet->increment('current_balance', $transaction->amount);
+                    $newBalance = $wallet->current_balance + $transaction->amount;
+                    $wallet->update(['current_balance' => $newBalance]);
+
+                    Transaction::create([
+                        'wallet_id' => $wallet->id,
+                        'date' => now(),
+                        'amount' => $transaction->amount,
+                        'note' => 'Refund for deleted transaction',
+                        'type' => 'credit',
+                        'pay_to' => $transaction->pay_to,
+                        'pay_to_code' => $transaction->pay_to_code,
+                        'balance_after' => $newBalance,
+                        'approval' => 1,
+                        'site_id' => $transaction->site_id,
+                    ]);
                 } elseif ($transaction->type === 'credit') {
-                    $wallet->decrement('current_balance', $transaction->amount);
+                    $newBalance = $wallet->current_balance - $transaction->amount;
+                    $wallet->update(['current_balance' => $newBalance]);
+
+                    Transaction::create([
+                        'wallet_id' => $wallet->id,
+                        'date' => now(),
+                        'amount' => $transaction->amount,
+                        'note' => 'Refund for deleted transaction',
+                        'type' => 'debit',
+                        'pay_to' => $transaction->pay_to,
+                        'pay_to_code' => $transaction->pay_to_code,
+                        'balance_after' => $newBalance,
+                        'approval' => 1,
+                        'site_id' => $transaction->site_id,
+                    ]);
                 }
             }
             $transaction->delete();

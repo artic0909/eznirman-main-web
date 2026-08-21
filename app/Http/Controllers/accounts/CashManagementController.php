@@ -213,13 +213,27 @@ class CashManagementController extends Controller
                     'pay_to' => $transaction->pay_to,
                     'pay_to_code' => $transaction->pay_to_code,
                     'balance_after' => $newBalance,
+                    'approval' => 1,
+                    'site_id' => $transaction->site_id,
                 ]);
             } elseif ($transaction->type === 'credit') {
                 $newBalance = $wallet->current_balance - $amount;
                 // Update wallet balance
                 $wallet->update(['current_balance' => $newBalance]);
                 
-                // No transaction record is auto-stored for deducted credits
+                // Create a refund transaction for deducted credits
+                Transaction::create([
+                    'wallet_id' => $wallet->id,
+                    'date' => now(),
+                    'amount' => $amount,
+                    'note' => 'Refund for deleted transaction',
+                    'type' => 'debit',
+                    'pay_to' => $transaction->pay_to,
+                    'pay_to_code' => $transaction->pay_to_code,
+                    'balance_after' => $newBalance,
+                    'approval' => 1,
+                    'site_id' => $transaction->site_id,
+                ]);
             } else {
                 return back()->with('error', 'Only debit and credit transactions can be deleted.');
             }
