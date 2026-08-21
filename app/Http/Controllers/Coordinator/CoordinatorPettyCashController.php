@@ -75,7 +75,7 @@ class CoordinatorPettyCashController extends Controller
                 "Expires"             => "0"
             ];
             
-            $columns = ['Approved Date', 'Transaction Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)', 'Balance After'];
+            $columns = ['Approved Date', 'Transaction Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)'];
             
             $callback = function() use($exportData, $columns) {
                 $file = fopen('php://output', 'w');
@@ -100,7 +100,7 @@ class CoordinatorPettyCashController extends Controller
                         $note = trim($noteParts[1] ?? '');
                     }
                     
-                    fputcsv($file, [$approvedDate, $date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit, $tx->balance_after]);
+                    fputcsv($file, [$approvedDate, $date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit]);
                 }
                 
                 fclose($file);
