@@ -118,7 +118,7 @@ class DashboardController extends Controller
         $transactions = $wallet->transactions()
             ->with(['accountcode', 'site'])
             ->orderBy('id', 'desc')
-            ->paginate(15);
+            ->paginate(200);
 
         return response()->json($transactions);
     }
