@@ -124,6 +124,8 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
             abort(403, 'Unauthorized access to this transaction.');
         }
 
+        $rejectionReason = $request->input('rejection_reason', 'No reason provided.');
+
         \Illuminate\Support\Facades\DB::transaction(function () use ($purchase) {
             if ($purchase->invoice_file) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($purchase->invoice_file);
@@ -156,6 +158,12 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
             $purchase->delete();
         });
 
-        return back()->with('success', 'Unauthorized Purchase deleted and amount refunded successfully.');
+        if ($purchase->user && $purchase->user->email) {
+            $user = $purchase->user;
+            $details = "Item: " . $purchase->item_name . " | Amount: ₹" . number_format($purchase->amount, 2) . " | Description: " . $purchase->description;
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\TransactionRejected($user->name, $details, $rejectionReason, 'Unauthorized Purchase'));
+        }
+
+        return back()->with('success', 'Unauthorized Purchase rejected, amount refunded, and user notified.');
     }
 }

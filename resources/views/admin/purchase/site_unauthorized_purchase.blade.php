@@ -199,15 +199,33 @@
             btn.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
                 Swal.fire({
-                    title: 'Delete & Refund?',
-                    text: "This will delete the unauthorized purchase and refund the amount to the user's wallet. This action cannot be undone!",
+                    title: 'Reject & Refund?',
+                    text: "This will reject the unauthorized purchase and refund the amount to the user's wallet. This action cannot be undone!",
                     icon: 'warning',
+                    input: 'textarea',
+                    inputLabel: 'Reason for rejection (Required)',
+                    inputPlaceholder: 'Please type the reason here...',
+                    inputAttributes: {
+                        'aria-label': 'Reason for rejection',
+                        'required': 'true'
+                    },
                     showCancelButton: true,
                     confirmButtonColor: '#dc3545',
                     cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, delete & refund!'
+                    confirmButtonText: 'Yes, reject & refund!',
+                    inputValidator: (value) => {
+                        if (!value || value.trim() === '') {
+                            return 'You need to provide a reason for rejection!'
+                        }
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'rejection_reason';
+                        input.value = result.value;
+                        actionForm.appendChild(input);
+                        
                         actionForm.action = url;
                         actionMethod.value = 'DELETE';
                         actionForm.submit();

@@ -185,6 +185,8 @@ class CoordinatorPettyCashController extends Controller
             abort(403, 'Unauthorized access to this transaction.');
         }
 
+        $rejectionReason = $request->input('rejection_reason', 'No reason provided.');
+
         \Illuminate\Support\Facades\DB::transaction(function () use ($transaction) {
             $wallet = $transaction->wallet;
             if ($wallet) {
@@ -226,6 +228,13 @@ class CoordinatorPettyCashController extends Controller
             $transaction->delete();
         });
 
-        return back()->with('success', 'Transaction deleted and amount refunded successfully.');
+        // Send Email
+        if ($transaction->wallet && $transaction->wallet->user && $transaction->wallet->user->email) {
+            $user = $transaction->wallet->user;
+            $details = "Type: " . ucfirst($transaction->type) . " | Amount: ₹" . number_format($transaction->amount, 2) . " | Description: " . $transaction->note;
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\TransactionRejected($user->name, $details, $rejectionReason, 'Petty Cash Transaction'));
+        }
+
+        return back()->with('success', 'Transaction rejected, amount refunded, and user notified.');
     }
 }

@@ -273,15 +273,32 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You want to delete this transaction? The wallet balance will be adjusted and refunded.",
+                    title: 'Reject & Refund Transaction?',
+                    text: "You are about to reject this transaction. The wallet balance will be adjusted and refunded.",
                     icon: 'warning',
+                    input: 'textarea',
+                    inputLabel: 'Reason for rejection (Required)',
+                    inputPlaceholder: 'Please type the reason here...',
+                    inputAttributes: {
+                        'aria-label': 'Reason for rejection',
+                        'required': 'true'
+                    },
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, reject it!',
+                    inputValidator: (value) => {
+                        if (!value || value.trim() === '') {
+                            return 'You need to provide a reason for rejection!'
+                        }
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'rejection_reason';
+                        input.value = result.value;
+                        form.appendChild(input);
                         form.submit();
                     }
                 });
