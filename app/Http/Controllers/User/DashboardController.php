@@ -28,7 +28,6 @@ class DashboardController extends Controller
 
         $transactionsThisMonth = $wallet->transactions()
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
-            ->where('note', 'not like', 'Refund%')
             ->get();
 
         $totalTransactionsCount = $transactionsThisMonth->count();

@@ -65,29 +65,12 @@ class AuthController extends Controller
             ->whereBetween('purchase_date', [$startOfMonth, $endOfMonth])
             ->count();
 
-        $totalCredits = 0;
-        $totalDebits = 0;
-        
-        if ($user->wallet) {
-            $totalCredits = clone $user->wallet->transactions()
-                ->where('type', 'credit')
-                ->where('note', 'not like', 'Refund%')
-                ->sum('amount');
-                
-            $totalDebits = clone $user->wallet->transactions()
-                ->where('type', 'debit')
-                ->where('note', 'not like', 'Refund%')
-                ->sum('amount');
-        }
-
         return response()->json([
             'user' => $user,
             'wallet' => $user->wallet,
             'site' => $user->site,
             'transactions' => $user->wallet ? $user->wallet->transactions : [],
             'current_month_purchase_count' => $authPurchases + $unauthPurchases,
-            'total_credits' => $totalCredits,
-            'total_debits' => $totalDebits,
         ]);
     }
 }
