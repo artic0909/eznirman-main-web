@@ -58,9 +58,9 @@ class CoordinatorPettyCashController extends Controller
             });
         }
 
-        // Calculate Totals based on current filters
-        $totalCredits = (clone $query)->where('type', 'credit')->sum('amount');
-        $totalDebits = (clone $query)->where('type', 'debit')->sum('amount');
+        // Calculate Totals based on current filters, excluding refunds
+        $totalCredits = (clone $query)->where('type', 'credit')->where('note', 'not like', 'Refund%')->sum('amount');
+        $totalDebits = (clone $query)->where('type', 'debit')->where('note', 'not like', 'Refund%')->sum('amount');
 
         // Handle Export
         if ($request->has('export')) {

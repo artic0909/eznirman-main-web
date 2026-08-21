@@ -53,9 +53,9 @@ class CashManagementController extends Controller
               });
         });
 
-        // Calculate KPA Totals based on current filters
-        $totalCredits = (clone $query)->where('type', 'credit')->sum('amount');
-        $totalDebits = (clone $query)->where('type', 'debit')->sum('amount');
+        // Calculate KPA Totals based on current filters, excluding refund entries
+        $totalCredits = (clone $query)->where('type', 'credit')->where('note', 'not like', 'Refund%')->sum('amount');
+        $totalDebits = (clone $query)->where('type', 'debit')->where('note', 'not like', 'Refund%')->sum('amount');
 
         // Handle Export
         if ($request->has('export')) {
