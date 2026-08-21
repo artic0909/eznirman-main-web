@@ -117,7 +117,7 @@
                                 <th>Pay To</th>
                                 <th>Account Code</th>
                                 <th>Credit/ Debit</th>
-                                <th>After Balance (₹)</th>
+                                <!-- <th>After Balance (₹)</th> -->
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -170,9 +170,9 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <span class="fw-500">₹{{ number_format($tx->balance_after, 2) }}</span>
-                                </td>
+                                </td> -->
                                 <td>
                                     
                                         <form action="{{ route('account.cashmanagement.refund', $tx->id) }}" method="POST" class="d-inline delete-form">
