@@ -191,12 +191,27 @@
             </ul>
           </li>
 
+          <!-- Petty Cash Management -->
+          @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+          <li class="pc-item pc-caption theme-pettycash">
+            <label>Petty Cash Management</label>
+            <i class="ti ti-cash"></i>
+          </li>
+          <li class="pc-item pc-hasmenu theme-pettycash {{ Route::is('admin.cashmanagement.*') ? 'active pc-trigger' : '' }}">
+            <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-currency-rupee"></i></span><span
+                class="pc-mtext">Petty Cash</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+            <ul class="pc-submenu">
+              <li class="pc-item {{ Route::is('admin.cashmanagement.index') ? 'active' : '' }}"><a class="pc-link" href="{{ route('admin.cashmanagement.index') }}">Cash Management</a></li>
+            </ul>
+          </li>
+          @endif
+
           <!-- Purchase Register -->
           <li class="pc-item pc-caption theme-purchase">
             <label>Purchase Register</label>
             <i class="ti ti-brand-chrome"></i>
           </li>
-          <li class="pc-item pc-hasmenu theme-purchase {{ Route::is(getRoutePrefix() . 'purchase.material-purchases.*') || Route::is(getRoutePrefix() . 'purchase.material-consumes.*') || Route::is(getRoutePrefix() . 'purchase.material-wastage') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-purchase {{ Route::is(getRoutePrefix() . 'purchase.material-purchases.*') || Route::is(getRoutePrefix() . 'purchase.material-consumes.*') || Route::is(getRoutePrefix() . 'purchase.material-wastage') || Route::is(getRoutePrefix() . 'purchase.unauthorized-purchases.*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-shopping-cart"></i></span><span
                 class="pc-mtext">Material Purchase</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -204,12 +219,16 @@
               <li class="pc-item {{ Route::is(getRoutePrefix() . 'purchase.material-purchases.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route(getRoutePrefix() . 'purchase.material-purchases.index') }}">Material Purchase</a>
               </li>
+              <li class="pc-item {{ Route::is(getRoutePrefix() . 'purchase.unauthorized-purchases.*') ? 'active' : '' }}">
+                <a class="pc-link" href="{{ route(getRoutePrefix() . 'purchase.unauthorized-purchases.index') }}">Unauthorized Purchase</a>
+              </li>
               <li class="pc-item {{ Route::is(getRoutePrefix() . 'purchase.material-consumes.*') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route(getRoutePrefix() . 'purchase.material-consumes.index') }}">Material Consume</a>
               </li>
               <li class="pc-item {{ Route::is(getRoutePrefix() . 'purchase.material-wastage') ? 'active' : '' }}">
                 <a class="pc-link" href="{{ route(getRoutePrefix() . 'purchase.material-wastage') }}">Material Wastage</a>
               </li>
+
             </ul>
           </li>
 

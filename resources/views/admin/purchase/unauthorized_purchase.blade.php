@@ -63,7 +63,6 @@
                                 <th>Created by</th>
                                 <th>Total Amount</th>
                                 <th>File</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,11 +102,6 @@
                                     @else
                                     <span class="text-muted">N/A</span>
                                     @endif
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route(getRoutePrefix() . 'purchase.unauthorized-purchases.destroy', $purchase->id) }}">
-                                        <i class="ti ti-trash"></i>
-                                    </button>
                                 </td>
                             </tr>
                             @empty
