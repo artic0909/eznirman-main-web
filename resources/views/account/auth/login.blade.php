@@ -67,7 +67,8 @@
     border-bottom: 1px solid rgba(46,184,154,0.1);
   }
 
-  .brand-logo { display: flex; align-items: baseline; gap: 2px; text-decoration: none; }
+  .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-text { display: flex; align-items: baseline; gap: 2px; }
   .logo-ez   { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--amber); letter-spacing: 2px; }
   .logo-nirman { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--white); letter-spacing: 2px; }
 
@@ -370,7 +371,10 @@
 <!-- TOP BAR -->
 <header class="topbar">
   <a href="{{ route('home') }}" class="brand-logo">
-    <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+    <img src="{{ asset('logo.png') }}" alt="EZNIRMAN Logo" style="height: 28px;">
+    <div class="logo-text">
+      <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+    </div>
   </a>
   <div class="topbar-role">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>

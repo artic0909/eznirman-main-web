@@ -89,6 +89,11 @@
 
   .logo {
     display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-text {
+    display: flex;
     align-items: baseline;
     gap: 2px;
   }
@@ -659,8 +664,8 @@
 
   .sidebar-logo {
     display: flex;
-    align-items: baseline;
-    gap: 2px;
+    align-items: center;
+    gap: 10px;
   }
 
   .sidebar-close {
@@ -828,7 +833,10 @@
 <aside class="sidebar" id="sidebar" aria-label="Navigation menu" aria-hidden="true">
   <div class="sidebar-header">
     <div class="sidebar-logo">
-      <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+      <img src="{{ asset('logo.png') }}" alt="EZNIRMAN Logo" style="height: 24px;">
+      <div class="logo-text">
+        <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+      </div>
     </div>
     <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -857,8 +865,11 @@
 <!-- NAV -->
 <nav>
   <div class="logo">
-    <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
-    <span class="logo-tag">Construction OS</span>
+    <img src="{{ asset('logo.png') }}" alt="EZNIRMAN Logo" style="height: 28px;">
+    <div class="logo-text">
+      <span class="logo-ez"> EZ</span><span class="logo-nirman">NIRMAN</span>
+      <span class="logo-tag">Construction OS</span>
+    </div>
   </div>
   <ul class="nav-links">
     <li><a href="{{route('admin.login')}}">Admin Access</a></li>

@@ -104,7 +104,8 @@
   }
 
   .brand { display: flex; flex-direction: column; gap: 8px; }
-  .brand-logo { display: flex; align-items: baseline; gap: 2px; }
+  .brand-logo { display: flex; align-items: center; gap: 10px; }
+  .logo-text { display: flex; align-items: baseline; gap: 2px; }
   .logo-ez {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 32px; color: var(--amber); letter-spacing: 2px;
@@ -426,7 +427,10 @@
   <div class="left-panel">
     <div class="brand">
       <div class="brand-logo">
-        <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+        <img src="{{ asset('logo.png') }}" alt="EZNIRMAN Logo" style="height: 32px;">
+        <div class="logo-text">
+          <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+        </div>
       </div>
       <div class="brand-sub">Construction Management System</div>
     </div>

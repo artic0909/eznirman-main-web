@@ -93,7 +93,8 @@
 
   .topbar-left { display: flex; align-items: center; gap: 32px; }
 
-  .brand-logo { display: flex; align-items: baseline; gap: 1px; text-decoration: none; flex-shrink: 0; }
+  .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+  .logo-text { display: flex; align-items: baseline; gap: 1px; }
   .logo-ez     { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--amber); letter-spacing: 2px; }
   .logo-nirman { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--white); letter-spacing: 2px; }
 
@@ -430,7 +431,10 @@
   <nav class="topbar">
     <div class="topbar-left">
       <a href="{{ route('home') }}" class="brand-logo">
-        <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+        <img src="{{ asset('logo.png') }}" alt="EZNIRMAN Logo" style="height: 24px;">
+        <div class="logo-text">
+          <span class="logo-ez">EZ</span><span class="logo-nirman">NIRMAN</span>
+        </div>
       </a>
 
       <div class="step-bar">
