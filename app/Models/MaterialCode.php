@@ -25,8 +25,32 @@ class MaterialCode extends Model
             $category = ProductCategory::find($materialCode->product_category_id);
             if ($category) {
                 $categoryName = \Illuminate\Support\Str::upper(\Illuminate\Support\Str::slug($category->name));
-                $count = MaterialCode::where('product_category_id', $materialCode->product_category_id)->count() + 1;
-                $materialCode->code = $categoryName . '-' . str_pad($count, 2, '0', STR_PAD_LEFT);
+                
+                // Fetch all existing codes matching the category slug or category ID
+                $existingCodes = MaterialCode::where('code', 'like', $categoryName . '-%')
+                    ->orWhere('product_category_id', $materialCode->product_category_id)
+                    ->pluck('code');
+
+                $maxNumber = 0;
+                foreach ($existingCodes as $code) {
+                    if (preg_match('/-(\d+)$/', $code, $matches)) {
+                        $num = (int)$matches[1];
+                        if ($num > $maxNumber) {
+                            $maxNumber = $num;
+                        }
+                    }
+                }
+
+                $nextNumber = $maxNumber + 1;
+                $generatedCode = $categoryName . '-' . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
+
+                // Ensure uniqueness even if non-standard codes exist
+                while (MaterialCode::where('code', $generatedCode)->exists()) {
+                    $nextNumber++;
+                    $generatedCode = $categoryName . '-' . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
+                }
+
+                $materialCode->code = $generatedCode;
             }
         });
     }

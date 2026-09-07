@@ -177,8 +177,8 @@
                                                         </div>
                                                         <div class="form-group mb-3">
                                                             <label class="form-label">Item Code</label>
-                                                            <input type="text" name="code" class="form-control bg-light text-uppercase" value="{{ $mCode->code }}" required>
-                                                            <small class="text-muted">Avoid changing the code unless absolutely necessary.</small>
+                                                            <input type="text" class="form-control bg-light text-uppercase fw-bold" value="{{ $mCode->code }}" disabled readonly>
+                                                            <small class="text-muted"><i class="ti ti-lock me-1"></i> Item Code is system-generated and non-editable.</small>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

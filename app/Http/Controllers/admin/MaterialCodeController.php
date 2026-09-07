@@ -78,11 +78,17 @@ class MaterialCodeController extends Controller
             'sub_category_two' => 'nullable|string|max:255',
             'brand' => 'required|string|max:255',
             'material_name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:material_codes,code,' . $id,
         ]);
 
         $materialCode = MaterialCode::findOrFail($id);
-        $data = $request->all();
+        $data = $request->only([
+            'product_category_id',
+            'sub_category',
+            'sub_category_two',
+            'brand',
+            'material_name',
+        ]);
+
         if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
             $data['updated_by'] = \Illuminate\Support\Facades\Auth::guard('web')->id();
             $data['updater_type'] = 'coordinator';
