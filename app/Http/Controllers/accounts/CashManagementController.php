@@ -39,20 +39,6 @@ class CashManagementController extends Controller
             });
         }
 
-        // Only show credits, approved debits, or debits from Head Office (HO1)
-        $query->where(function ($q) {
-            $q->where('type', 'credit')
-              ->orWhere(function ($sub) {
-                  $sub->where('type', 'debit')
-                      ->where(function ($debitQuery) {
-                          $debitQuery->where('approval', 1)
-                                     ->orWhereHas('site', function ($siteQuery) {
-                                         $siteQuery->where('site_code', 'HO1');
-                                     });
-                      });
-              });
-        });
-
         // Calculate KPA Totals based on current filters, excluding refund entries
         $totalCredits = (clone $query)->where('type', 'credit')->where('note', 'not like', 'Refund%')->sum('amount');
         $totalDebits = (clone $query)->where('type', 'debit')->where('note', 'not like', 'Refund%')->sum('amount');
@@ -70,14 +56,16 @@ class CashManagementController extends Controller
                 "Expires"             => "0"
             ];
             
-            $columns = ['Approved Date', 'Transaction Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)'];
+            $columns = ['Approval Status', 'Approved Date', 'Transaction Date', 'Time', 'User Name', 'User Code', 'Role', 'Account Code', 'Description', 'Pay To', 'Credit (In)', 'Debit (Out)'];
             
             $callback = function() use($exportData, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns);
                 
                 foreach ($exportData as $tx) {
-                    $approvedDate = $tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : ($tx->approval ? $tx->created_at->format('d M Y h:i A') : 'Pending');
+                    $isApproved = ($tx->approval == 1 || $tx->type === 'credit' || !empty($tx->approved_at));
+                    $status = $isApproved ? 'Approved' : 'Pending';
+                    $approvedDate = $isApproved ? ($tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : $tx->created_at->format('d M Y h:i A')) : '-';
                     $date = $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y');
                     $time = $tx->created_at->format('h:i A');
                     $userName = $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A';
@@ -95,7 +83,7 @@ class CashManagementController extends Controller
                         $note = trim($noteParts[1] ?? '');
                     }
                     
-                    fputcsv($file, [$approvedDate, $date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit]);
+                    fputcsv($file, [$status, $approvedDate, $date, $time, $userName, $userCode, $role, $accountCode, $note, $payTo, $credit, $debit]);
                 }
                 
                 fclose($file);

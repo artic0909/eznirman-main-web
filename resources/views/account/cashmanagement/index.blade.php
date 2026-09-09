@@ -109,6 +109,7 @@
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
+                                <th>Status</th>
                                 <th>Approved Date</th>
                                 <th>Transaction Date</th>
                                 <th>User / Role</th>
@@ -125,14 +126,26 @@
                             @forelse($transactions as $tx)
                             <tr>
                                 <td>
-                                    @if($tx->approved_at)
-                                        <span class="d-block fw-bold">{{ $tx->approved_at->format('d M Y') }}</span>
-                                        <span class="text-muted small">{{ $tx->approved_at->format('h:i A') }}</span>
-                                    @elseif($tx->approval)
-                                        <span class="d-block fw-bold">{{ $tx->created_at->format('d M Y') }}</span>
-                                        <span class="text-muted small">{{ $tx->created_at->format('h:i A') }}</span>
+                                    @php
+                                        $isApproved = ($tx->approval == 1 || $tx->type === 'credit' || !empty($tx->approved_at));
+                                    @endphp
+                                    @if($isApproved)
+                                        <span class="badge bg-light-success text-success">Approved</span>
                                     @else
                                         <span class="badge bg-light-warning text-warning">Pending</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($isApproved)
+                                        @if($tx->approved_at)
+                                            <span class="d-block fw-bold">{{ $tx->approved_at->format('d M Y') }}</span>
+                                            <span class="text-muted small">{{ $tx->approved_at->format('h:i A') }}</span>
+                                        @else
+                                            <span class="d-block fw-bold">{{ $tx->created_at->format('d M Y') }}</span>
+                                            <span class="text-muted small">{{ $tx->created_at->format('h:i A') }}</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
@@ -194,7 +207,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-5">No transactions found.</td>
+                                <td colspan="10" class="text-center text-muted py-5">No transactions found.</td>
                             </tr>
                             @endforelse
                         </tbody>
