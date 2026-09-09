@@ -7,6 +7,7 @@ use App\Models\UnauthorizedPurchase;
 use App\Models\WorkingSite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CoordinatorUnauthorizedPurchaseController extends Controller
 {
