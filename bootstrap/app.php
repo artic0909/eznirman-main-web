@@ -9,6 +9,9 @@ use Illuminate\Foundation\Configuration\Middleware;
 if (!function_exists('getRoutePrefix')) {
     function getRoutePrefix()
     {
+        if (request()->is('account*') || \Illuminate\Support\Facades\Auth::guard('account')->check()) {
+            return 'account.';
+        }
         return \Illuminate\Support\Facades\Auth::guard('admin')->check() ? 'admin.' : 'coordinator.';
     }
 }
@@ -16,6 +19,9 @@ if (!function_exists('getRoutePrefix')) {
 if (!function_exists('getRouteUrlPrefix')) {
     function getRouteUrlPrefix()
     {
+        if (request()->is('account*') || \Illuminate\Support\Facades\Auth::guard('account')->check()) {
+            return 'account/';
+        }
         return \Illuminate\Support\Facades\Auth::guard('admin')->check() ? 'admin/' : 'coordinator/';
     }
 }

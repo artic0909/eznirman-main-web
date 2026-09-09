@@ -1,4 +1,4 @@
-@extends(getRoutePrefix() == 'coordinator.' ? 'admin.layouts.app' : 'account.layouts.app')
+@extends(getRoutePrefix() == 'account.' ? 'account.layouts.app' : 'admin.layouts.app')
 
 @section('title', 'Account Codes')
 
