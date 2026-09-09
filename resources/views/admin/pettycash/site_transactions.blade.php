@@ -108,7 +108,7 @@
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>Date & Time</th>
+                                <th>Transaction Date</th>
                                 <th>User / Role</th>
                                 <th>Description</th>
                                 <th>Pay To</th>
