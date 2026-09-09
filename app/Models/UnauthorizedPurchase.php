@@ -13,8 +13,16 @@ class UnauthorizedPurchase extends Model
         'purchase_date',
         'product_name',
         'amount',
+        'approval',
+        'approved_at',
         'invoice_file',
         'note',
+    ];
+
+    protected $casts = [
+        'approval' => 'boolean',
+        'approved_at' => 'datetime',
+        'purchase_date' => 'date',
     ];
 
     protected static function booted()

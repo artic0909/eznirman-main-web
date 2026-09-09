@@ -24,12 +24,17 @@
     <!-- Purchases List -->
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header border-bottom">
+            <div class="card-header d-flex align-items-center justify-content-between border-bottom">
                 <h5>Unauthorized Purchase Registry</h5>
+                <div>
+                    <button type="submit" name="export" value="excel" form="filterForm" class="btn btn-success btn-sm">
+                        <i class="ti ti-file-spreadsheet me-1"></i> Export Excel
+                    </button>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Filters -->
-                <form action="{{ route('account.purchase.unauthorized-purchases.index') }}" method="GET" class="row mb-4">
+                <form action="{{ route('account.purchase.unauthorized-purchases.index') }}" method="GET" id="filterForm" class="row mb-4">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-2">
                             <label class="form-label">From Date</label>
@@ -105,8 +110,15 @@
                                     </td>
                                     <td>{{ $startSl + $index }}</td>
                                 <td>
-                                    <span class="d-block fw-bold">{{ $purchase->updated_at ? $purchase->updated_at->format('d M, Y') : '-' }}</span>
-                                    <span class="text-muted small">{{ $purchase->updated_at ? $purchase->updated_at->format('h:i A') : '' }}</span>
+                                    @if($purchase->approved_at)
+                                        <span class="d-block fw-bold">{{ $purchase->approved_at->format('d M, Y') }}</span>
+                                        <span class="text-muted small">{{ $purchase->approved_at->format('h:i A') }}</span>
+                                    @elseif($purchase->approval)
+                                        <span class="d-block fw-bold">{{ $purchase->created_at->format('d M, Y') }}</span>
+                                        <span class="text-muted small">{{ $purchase->created_at->format('h:i A') }}</span>
+                                    @else
+                                        <span class="badge bg-light-warning text-warning">Pending</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="d-block fw-bold">{{ $purchase->purchase_date ? \Carbon\Carbon::parse($purchase->purchase_date)->format('d M, Y') : $purchase->created_at->format('d M, Y') }}</span>

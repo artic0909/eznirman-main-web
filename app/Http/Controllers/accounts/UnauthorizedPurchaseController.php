@@ -18,11 +18,11 @@ class UnauthorizedPurchaseController extends Controller
         $query = UnauthorizedPurchase::with(['site', 'user']);
 
         if ($request->filled('from_date')) {
-            $query->whereDate('updated_at', '>=', $request->from_date);
+            $query->whereDate(DB::raw('COALESCE(approved_at, created_at)'), '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('updated_at', '<=', $request->to_date);
+            $query->whereDate(DB::raw('COALESCE(approved_at, created_at)'), '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {
@@ -43,7 +43,25 @@ class UnauthorizedPurchaseController extends Controller
               });
         });
 
-        $purchases = $query->orderBy('updated_at', 'desc')->paginate(10)->withQueryString();
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->orderByRaw('COALESCE(approved_at, created_at) desc'),
+                'unauthorized_purchases_export_' . date('Y-m-d_H-i-s') . '.xlsx',
+                function ($purchase) {
+                    return [
+                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($purchase->approval ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
+                        'Purchase Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
+                        'Unique ID' => $purchase->unauthorized_unique_id,
+                        'Product Name' => $purchase->product_name,
+                        'Site' => $purchase->site ? $purchase->site->site_code . ' - ' . $purchase->site->site_name : 'N/A',
+                        'Purchased By' => $purchase->user ? $purchase->user->name . ' (' . $purchase->user->code . ')' : 'N/A',
+                        'Total Amount' => $purchase->amount,
+                    ];
+                }
+            );
+        }
+
+        $purchases = $query->orderByRaw('COALESCE(approved_at, created_at) desc')->paginate(10)->withQueryString();
         
         $roles = \App\Models\User::select('role')->distinct()->whereNotNull('role')->pluck('role');
 

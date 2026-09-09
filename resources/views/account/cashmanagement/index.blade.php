@@ -125,8 +125,15 @@
                             @forelse($transactions as $tx)
                             <tr>
                                 <td>
-                                    <span class="d-block fw-bold">{{ $tx->updated_at->format('d M Y') }}</span>
-                                    <span class="text-muted small">{{ $tx->updated_at->format('h:i A') }}</span>
+                                    @if($tx->approved_at)
+                                        <span class="d-block fw-bold">{{ $tx->approved_at->format('d M Y') }}</span>
+                                        <span class="text-muted small">{{ $tx->approved_at->format('h:i A') }}</span>
+                                    @elseif($tx->approval)
+                                        <span class="d-block fw-bold">{{ $tx->created_at->format('d M Y') }}</span>
+                                        <span class="text-muted small">{{ $tx->created_at->format('h:i A') }}</span>
+                                    @else
+                                        <span class="badge bg-light-warning text-warning">Pending</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="d-block fw-bold">{{ $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y') }}</span>

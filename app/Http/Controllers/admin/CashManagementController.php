@@ -18,11 +18,11 @@ class CashManagementController extends Controller
 
         // Apply Filters
         if ($request->filled('from_date')) {
-            $query->whereDate('updated_at', '>=', $request->from_date);
+            $query->whereDate(\Illuminate\Support\Facades\DB::raw('COALESCE(approved_at, created_at)'), '>=', $request->from_date);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('updated_at', '<=', $request->to_date);
+            $query->whereDate(\Illuminate\Support\Facades\DB::raw('COALESCE(approved_at, created_at)'), '<=', $request->to_date);
         }
 
         if ($request->filled('role')) {
@@ -57,7 +57,7 @@ class CashManagementController extends Controller
 
         // Handle Export
         if ($request->has('export')) {
-            $exportData = $query->orderBy('updated_at', 'desc')->get();
+            $exportData = $query->orderByRaw('COALESCE(approved_at, created_at) desc')->get();
             $filename = "cash_management_transactions_" . date('Y-m-d_H-i-s') . ".csv";
             
             $headers = [
@@ -75,7 +75,7 @@ class CashManagementController extends Controller
                 fputcsv($file, $columns);
                 
                 foreach ($exportData as $tx) {
-                    $approvedDate = $tx->updated_at->format('d M Y h:i A');
+                    $approvedDate = $tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : ($tx->approval ? $tx->created_at->format('d M Y h:i A') : 'Pending');
                     $date = $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y');
                     $time = $tx->date ? $tx->date->format('h:i A') : $tx->created_at->format('h:i A');
                     $userName = $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A';
@@ -103,7 +103,7 @@ class CashManagementController extends Controller
         }
 
         // Get paginated transactions
-        $transactions = $query->orderBy('updated_at', 'desc')->paginate(20)->withQueryString();
+        $transactions = $query->orderByRaw('COALESCE(approved_at, created_at) desc')->paginate(20)->withQueryString();
 
         // Get roles for dropdown
         $roles = User::select('role')->distinct()->whereNotNull('role')->pluck('role');

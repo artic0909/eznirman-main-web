@@ -21,11 +21,13 @@ class Transaction extends Model
         'pay_to_code',
         'site_id',
         'approval',
+        'approved_at',
     ];
 
     protected $casts = [
         'date' => 'datetime',
         'approval' => 'boolean',
+        'approved_at' => 'datetime',
     ];
 
     public function wallet()

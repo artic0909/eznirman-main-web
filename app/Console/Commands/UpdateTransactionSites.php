@@ -61,20 +61,20 @@ class UpdateTransactionSites extends Command
         $this->info('Approving all old pending transactions...');
         $approvedTxCount = Transaction::where(function($query) {
             $query->where('approval', 0)->orWhereNull('approval');
-        })->update(['approval' => 1]);
+        })->update(['approval' => 1, 'approved_at' => now()]);
         $this->info("Approved {$approvedTxCount} transactions.");
 
         // Approve all old pending unauthorized purchases (handle both 0 and NULL)
         $this->info('Approving all old pending unauthorized purchases...');
         $approvedPurchasesCount = UnauthorizedPurchase::where(function($query) {
             $query->where('approval', 0)->orWhereNull('approval');
-        })->update(['approval' => 1]);
+        })->update(['approval' => 1, 'approved_at' => now()]);
         $this->info("Approved {$approvedPurchasesCount} unauthorized purchases.");
 
-        // Fix updated_at to match created_at
-        $this->info('Fixing updated_at to match created_at for all old records...');
-        \Illuminate\Support\Facades\DB::statement("UPDATE transactions SET updated_at = created_at");
-        \Illuminate\Support\Facades\DB::statement("UPDATE unauthorized_purchases SET updated_at = created_at");
+        // Fix approved_at for older records where approved_at is null
+        $this->info('Ensuring approved_at is populated for all approved records...');
+        \Illuminate\Support\Facades\DB::statement("UPDATE transactions SET approved_at = COALESCE(updated_at, created_at) WHERE (approval = 1 OR type = 'credit') AND approved_at IS NULL");
+        \Illuminate\Support\Facades\DB::statement("UPDATE unauthorized_purchases SET approved_at = COALESCE(updated_at, created_at) WHERE approval = 1 AND approved_at IS NULL");
         
         // Fix date column where it might have been incorrectly set to today for old records
         $this->info('Fixing transaction date to match created_at for older records...');

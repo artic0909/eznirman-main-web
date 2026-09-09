@@ -37,12 +37,13 @@ class UnauthorizedPurchaseController extends Controller
                 'unauthorized_purchases_export.xlsx',
                 function ($purchase) {
                     return [
+                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($purchase->approval ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
                         'Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
                         'Unique ID' => $purchase->unauthorized_unique_id,
                         'Product Name' => $purchase->product_name,
                         'Site' => $purchase->site->site_name ?? 'N/A',
                         'Purchased By' => $purchase->user->name ?? 'N/A',
-                        'Total Amount' => $purchase->total_amount,
+                        'Total Amount' => $purchase->amount ?? $purchase->total_amount,
                     ];
                 }
             );
