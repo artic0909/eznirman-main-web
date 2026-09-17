@@ -44,4 +44,32 @@ class Transaction extends Model
     {
         return $this->belongsTo(WorkingSite::class, 'site_id');
     }
+
+    public function isHeadOffice(): bool
+    {
+        if ($this->relationLoaded('site') && $this->site) {
+            return $this->site->isHeadOffice();
+        }
+        if ($this->site_id) {
+            $site = $this->site ?? WorkingSite::find($this->site_id);
+            if ($site && $site->isHeadOffice()) {
+                return true;
+            }
+        }
+        if ($this->relationLoaded('wallet') && $this->wallet && $this->wallet->relationLoaded('user') && $this->wallet->user) {
+            return $this->wallet->user->isHeadOfficeAssigned();
+        }
+        if ($this->wallet && $this->wallet->user) {
+            return $this->wallet->user->isHeadOfficeAssigned();
+        }
+        return false;
+    }
+
+    public function getIsApprovedAttribute(): bool
+    {
+        if ($this->approval == 1 || $this->type === 'credit' || !empty($this->approved_at)) {
+            return true;
+        }
+        return $this->isHeadOffice();
+    }
 }

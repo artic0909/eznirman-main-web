@@ -36,8 +36,9 @@ class UnauthorizedPurchaseController extends Controller
                 $query->latest(),
                 'unauthorized_purchases_export.xlsx',
                 function ($purchase) {
+                    $isApproved = $purchase->is_approved;
                     return [
-                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($purchase->approval ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
+                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($isApproved ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
                         'Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
                         'Unique ID' => $purchase->unauthorized_unique_id,
                         'Product Name' => $purchase->product_name,

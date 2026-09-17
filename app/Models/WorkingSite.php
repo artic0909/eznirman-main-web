@@ -20,4 +20,11 @@ class WorkingSite extends Model
     {
         return $this->hasMany(Transfer::class, 'from_site_id');
     }
+
+    public function isHeadOffice(): bool
+    {
+        $code = strtoupper(trim($this->site_code ?? ''));
+        $name = strtoupper(trim($this->site_name ?? ''));
+        return str_starts_with($code, 'HO') || str_contains($name, 'HEAD OFFICE');
+    }
 }

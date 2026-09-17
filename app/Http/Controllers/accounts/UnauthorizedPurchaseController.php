@@ -35,11 +35,16 @@ class UnauthorizedPurchaseController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
-        // Only show approved unauthorized purchases, or those from Head Office (HO1)
+        // Only show approved unauthorized purchases, or those from Head Office
         $query->where(function ($q) {
             $q->where('approval', 1)
               ->orWhereHas('site', function ($siteQuery) {
-                  $siteQuery->where('site_code', 'HO1');
+                  $siteQuery->where('site_code', 'LIKE', 'HO%')
+                            ->orWhere('site_name', 'LIKE', '%HEAD OFFICE%');
+              })
+              ->orWhereHas('user.site', function ($siteQuery) {
+                  $siteQuery->where('site_code', 'LIKE', 'HO%')
+                            ->orWhere('site_name', 'LIKE', '%HEAD OFFICE%');
               });
         });
 
@@ -48,8 +53,9 @@ class UnauthorizedPurchaseController extends Controller
                 $query->orderByRaw('COALESCE(approved_at, created_at) desc'),
                 'unauthorized_purchases_export_' . date('Y-m-d_H-i-s') . '.xlsx',
                 function ($purchase) {
+                    $isApproved = $purchase->is_approved;
                     return [
-                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($purchase->approval ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
+                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($isApproved ? $purchase->created_at->format('Y-m-d H:i') : 'Pending'),
                         'Purchase Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
                         'Unique ID' => $purchase->unauthorized_unique_id,
                         'Product Name' => $purchase->product_name,

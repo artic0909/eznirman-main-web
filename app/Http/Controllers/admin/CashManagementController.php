@@ -62,7 +62,7 @@ class CashManagementController extends Controller
                 fputcsv($file, $columns);
                 
                 foreach ($exportData as $tx) {
-                    $isApproved = ($tx->approval == 1 || $tx->type === 'credit' || !empty($tx->approved_at));
+                    $isApproved = $tx->is_approved;
                     $status = $isApproved ? 'Approved' : 'Pending';
                     $approvedDate = $isApproved ? ($tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : $tx->created_at->format('d M Y h:i A')) : '-';
                     $date = $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y');

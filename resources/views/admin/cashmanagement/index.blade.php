@@ -125,7 +125,7 @@
                             <tr>
                                 <td>
                                     @php
-                                        $isApproved = ($tx->approval == 1 || $tx->type === 'credit' || !empty($tx->approved_at));
+                                        $isApproved = $tx->is_approved;
                                     @endphp
                                     @if($isApproved)
                                         <span class="badge bg-light-success text-success">Approved</span>

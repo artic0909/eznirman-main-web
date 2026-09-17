@@ -159,7 +159,7 @@
                                 </td> -->
                                 <td>
                                     @if($tx->type === 'debit')
-                                        @if($tx->approval)
+                                        @if($tx->is_approved)
                                             <span class="badge bg-light-success text-success"><i class="ti ti-check me-1"></i>Approved</span>
                                         @else
                                             <div class="d-flex gap-1">

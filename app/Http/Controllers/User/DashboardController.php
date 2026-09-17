@@ -108,6 +108,15 @@ class DashboardController extends Controller
 
             $balanceAfter = $wallet->fresh()->current_balance;
 
+            $isHeadOffice = $user->isHeadOfficeAssigned();
+            $approval = null;
+            $approvedAt = null;
+
+            if ($request->type === 'debit') {
+                $approval = $isHeadOffice ? 1 : 0;
+                $approvedAt = $isHeadOffice ? now() : null;
+            }
+
             // Create transaction with saved running balance_after
             return $wallet->transactions()->create([
                 'date' => $request->date ? \Carbon\Carbon::parse($request->date) : now(),
@@ -119,7 +128,8 @@ class DashboardController extends Controller
                 'pay_to' => $request->pay_to,
                 'pay_to_code' => $request->pay_to_code,
                 'site_id' => $user->working_site_id,
-                'approval' => $request->type === 'debit' ? 0 : null,
+                'approval' => $approval,
+                'approved_at' => $approvedAt,
             ]);
         });
 

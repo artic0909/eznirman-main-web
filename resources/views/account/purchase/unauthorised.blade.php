@@ -113,7 +113,7 @@
                                     @if($purchase->approved_at)
                                         <span class="d-block fw-bold">{{ $purchase->approved_at->format('d M, Y') }}</span>
                                         <span class="text-muted small">{{ $purchase->approved_at->format('h:i A') }}</span>
-                                    @elseif($purchase->approval)
+                                    @elseif($purchase->is_approved)
                                         <span class="d-block fw-bold">{{ $purchase->created_at->format('d M, Y') }}</span>
                                         <span class="text-muted small">{{ $purchase->created_at->format('h:i A') }}</span>
                                     @else

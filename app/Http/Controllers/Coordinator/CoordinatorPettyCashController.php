@@ -83,7 +83,7 @@ class CoordinatorPettyCashController extends Controller
                 fputcsv($file, $columns);
                 
                 foreach ($exportData as $tx) {
-                    $approvedDate = $tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : ($tx->approval ? $tx->created_at->format('d M Y h:i A') : 'Pending');
+                    $approvedDate = $tx->approved_at ? $tx->approved_at->format('d M Y h:i A') : ($tx->is_approved ? $tx->created_at->format('d M Y h:i A') : 'Pending');
                     $date = $tx->date ? $tx->date->format('d M Y') : $tx->created_at->format('d M Y');
                     $time = $tx->created_at->format('h:i A');
                     $userName = $tx->wallet && $tx->wallet->user ? $tx->wallet->user->name : 'N/A';

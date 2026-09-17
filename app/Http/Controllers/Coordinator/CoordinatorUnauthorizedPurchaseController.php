@@ -55,8 +55,9 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
                 $query->orderByRaw('COALESCE(approved_at, created_at) desc'),
                 'unauthorized_purchases_'.$currentSite->site_name.'.xlsx',
                 function ($purchase) {
+                    $isApproved = $purchase->is_approved;
                     return [
-                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($purchase->approval ? $purchase->created_at->format('Y-m-d H:i') : '-'),
+                        'Approved Date' => $purchase->approved_at ? $purchase->approved_at->format('Y-m-d H:i') : ($isApproved ? $purchase->created_at->format('Y-m-d H:i') : '-'),
                         'Purchase Date' => \Carbon\Carbon::parse($purchase->purchase_date)->format('Y-m-d'),
                         'Unique ID' => $purchase->unauthorized_unique_id,
                         'Product Name' => $purchase->product_name,

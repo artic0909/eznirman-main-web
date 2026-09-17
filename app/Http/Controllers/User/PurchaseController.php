@@ -147,11 +147,18 @@ class PurchaseController extends Controller
             $data['type'] = 'user';
             MaterialPurchase::create($data);
         } else {
-            $data['user_id'] = Auth::id();
+            $user = Auth::user();
+            $isHeadOffice = $user->isHeadOfficeAssigned();
+
+            $data['user_id'] = $user->id;
+            if ($isHeadOffice) {
+                $data['approval'] = 1;
+                $data['approved_at'] = now();
+            }
             UnauthorizedPurchase::create($data);
 
             $wallet = \App\Models\Wallet::firstOrCreate(
-                ['user_id' => Auth::id()],
+                ['user_id' => $user->id],
                 ['current_balance' => 0]
             );
 
@@ -165,8 +172,9 @@ class PurchaseController extends Controller
                 'note' => 'Unauthorized Purchase: ' . $data['product_name'],
                 'type' => 'debit',
                 'balance_after' => $newBalance,
-                'site_id' => Auth::user()->working_site_id,
-                'approval' => 0,
+                'site_id' => $user->working_site_id,
+                'approval' => $isHeadOffice ? 1 : 0,
+                'approved_at' => $isHeadOffice ? now() : null,
             ]);
         }
 

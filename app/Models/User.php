@@ -100,4 +100,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class);
     }
+
+    public function isHeadOfficeAssigned(): bool
+    {
+        if ($this->relationLoaded('site') && $this->site) {
+            return $this->site->isHeadOffice();
+        }
+        if ($this->working_site_id) {
+            $site = $this->site ?? WorkingSite::find($this->working_site_id);
+            return $site ? $site->isHeadOffice() : false;
+        }
+        return false;
+    }
 }
