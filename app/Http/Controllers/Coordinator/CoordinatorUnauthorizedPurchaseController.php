@@ -111,6 +111,11 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
             }
         }
 
+        $queryParams = $request->query();
+        if (!empty($queryParams)) {
+            return redirect()->route('coordinator.unauth_purchase.site', array_merge(['id' => $purchase->working_site_id], $queryParams))->with('success', 'Unauthorized Purchase approved successfully.');
+        }
+
         return back()->with('success', 'Unauthorized Purchase approved successfully.');
     }
 
@@ -165,6 +170,11 @@ class CoordinatorUnauthorizedPurchaseController extends Controller
             $user = $purchase->user;
             $details = "Item: " . $purchase->item_name . " | Amount: ₹" . number_format($purchase->amount, 2) . " | Description: " . $purchase->description;
             \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\TransactionRejected($user->name, $details, $rejectionReason, 'Unauthorized Purchase'));
+        }
+
+        $queryParams = $request->query();
+        if (!empty($queryParams)) {
+            return redirect()->route('coordinator.unauth_purchase.site', array_merge(['id' => $purchase->working_site_id], $queryParams))->with('success', 'Unauthorized Purchase rejected, amount refunded, and user notified.');
         }
 
         return back()->with('success', 'Unauthorized Purchase rejected, amount refunded, and user notified.');

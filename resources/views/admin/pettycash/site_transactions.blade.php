@@ -163,14 +163,14 @@
                                             <span class="badge bg-light-success text-success"><i class="ti ti-check me-1"></i>Approved</span>
                                         @else
                                             <div class="d-flex gap-1">
-                                                <form action="{{ route('coordinator.pettycash.transaction.approve', $tx->id) }}" method="POST" class="d-inline approve-form">
+                                                <form action="{{ route('coordinator.pettycash.transaction.approve', array_merge(['id' => $tx->id], request()->query())) }}" method="POST" class="d-inline approve-form">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn btn-sm btn-success px-2 py-1" title="Approve">
                                                         <i class="ti ti-check"></i>
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('coordinator.pettycash.transaction.destroy', $tx->id) }}" method="POST" class="d-inline delete-form">
+                                                <form action="{{ route('coordinator.pettycash.transaction.destroy', array_merge(['id' => $tx->id], request()->query())) }}" method="POST" class="d-inline delete-form">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger px-2 py-1" title="Delete & Refund">

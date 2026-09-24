@@ -121,10 +121,10 @@
                                         <span class="badge bg-light-success text-success"><i class="ti ti-check"></i> Approved</span>
                                     @else
                                         <div class="d-flex gap-1">
-                                            <button type="button" class="btn btn-sm btn-icon btn-light-success btn-approve" data-url="{{ route('coordinator.unauth_purchase.approve', $purchase->id) }}" title="Approve">
+                                            <button type="button" class="btn btn-sm btn-icon btn-light-success btn-approve" data-url="{{ route('coordinator.unauth_purchase.approve', array_merge(['id' => $purchase->id], request()->query())) }}" title="Approve">
                                                 <i class="ti ti-check"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('coordinator.unauth_purchase.destroy', $purchase->id) }}" title="Delete & Refund">
+                                            <button type="button" class="btn btn-sm btn-icon btn-light-danger btn-delete" data-url="{{ route('coordinator.unauth_purchase.destroy', array_merge(['id' => $purchase->id], request()->query())) }}" title="Delete & Refund">
                                                 <i class="ti ti-x"></i>
                                             </button>
                                         </div>

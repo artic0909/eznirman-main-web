@@ -168,6 +168,11 @@ class CoordinatorPettyCashController extends Controller
         $transaction->save();
 
         // Also flash success message to session for sweetalert or standard alert
+        $queryParams = $request->query();
+        if (!empty($queryParams)) {
+            return redirect()->route('coordinator.pettycash.site', array_merge(['id' => $transaction->site_id], $queryParams))->with('success', 'Transaction approved successfully.');
+        }
+
         return back()->with('success', 'Transaction approved successfully.');
     }
 
@@ -237,6 +242,11 @@ class CoordinatorPettyCashController extends Controller
             $user = $transaction->wallet->user;
             $details = "Type: " . ucfirst($transaction->type) . " | Amount: ₹" . number_format($transaction->amount, 2) . " | Description: " . $transaction->note;
             \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\TransactionRejected($user->name, $details, $rejectionReason, 'Petty Cash Transaction'));
+        }
+
+        $queryParams = $request->query();
+        if (!empty($queryParams)) {
+            return redirect()->route('coordinator.pettycash.site', array_merge(['id' => $transaction->site_id], $queryParams))->with('success', 'Transaction rejected, amount refunded, and user notified.');
         }
 
         return back()->with('success', 'Transaction rejected, amount refunded, and user notified.');
