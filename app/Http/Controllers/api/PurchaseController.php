@@ -66,10 +66,10 @@ class PurchaseController extends Controller
 
         $rules = [
             'working_site_id' => 'required|exists:working_sites,id',
-            'purchase_date' => $isAuthorized ? 'required|date' : 'required|date|after_or_equal:today',
+            'purchase_date' => 'required|date',
             'product_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:30720',
             'note' => 'nullable|string'
         ];
 
@@ -85,9 +85,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        $validator = Validator::make($request->all(), $rules, [
-            'purchase_date.after_or_equal' => 'you cant choose past date',
-        ]);
+        $validator = Validator::make($request->all(), $rules);
         
         if ($validator->fails()) {
             return response()->json([
@@ -102,16 +100,24 @@ class PurchaseController extends Controller
         if ($request->hasFile('invoice_file')) {
             $file = $request->file('invoice_file');
             $extension = strtolower($file->getClientOriginalExtension());
+            $mime = strtolower($file->getMimeType() ?? '');
             
-            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'webp']) || str_starts_with($mime, 'image/');
+            
+            if ($isImage) {
                 try {
                     $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
                     $image = $manager->decode($file->getRealPath());
                     
+                    if (method_exists($image, 'orient')) {
+                        $image->orient();
+                    }
+                    $image->scaleDown(1600, 1600);
+                    
                     // Compress and encode as JPEG with 75% quality
                     $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(75));
                     
-                    $filename = uniqid() . '_' . time() . '.jpg';
+                    $filename = uniqid('inv_', true) . '.jpg';
                     $path = 'invoices/' . $filename;
                     
                     \Illuminate\Support\Facades\Storage::disk('public')->put($path, (string) $encoded);

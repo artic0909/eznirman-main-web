@@ -212,7 +212,7 @@ class DashboardController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'mobile' => 'nullable|string|max:20',
             'current_address' => 'nullable|string|max:500',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'profile_image' => 'nullable|file|mimes:jpeg,png,jpg,webp|max:30720',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
@@ -222,12 +222,41 @@ class DashboardController extends Controller
         $user->current_address = $request->current_address;
 
         if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $extension = strtolower($file->getClientOriginalExtension());
+            $mime = strtolower($file->getMimeType() ?? '');
+            
+            $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'webp']) || str_starts_with($mime, 'image/');
+
             // Delete old profile image if exists
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
             }
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $path;
+
+            if ($isImage) {
+                try {
+                    $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+                    $image = $manager->decode($file->getRealPath());
+
+                    if (method_exists($image, 'orient')) {
+                        $image->orient();
+                    }
+                    $image->scaleDown(800, 800);
+
+                    // Compress to JPEG with 80% quality
+                    $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(80));
+
+                    $filename = uniqid('profile_', true) . '.jpg';
+                    $path = 'profiles/' . $filename;
+
+                    Storage::disk('public')->put($path, (string) $encoded);
+                    $user->profile_image = $path;
+                } catch (\Exception $e) {
+                    $user->profile_image = $file->store('profiles', 'public');
+                }
+            } else {
+                $user->profile_image = $file->store('profiles', 'public');
+            }
         }
 
         if ($request->filled('password')) {

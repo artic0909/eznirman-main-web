@@ -109,7 +109,7 @@ class PurchaseController extends Controller
             'purchase_date' => $isAuthorized ? 'required|date' : 'required|date|after_or_equal:today',
             'product_name' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'invoice_file' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:30720',
             'note' => 'nullable|string'
         ];
 
@@ -138,7 +138,36 @@ class PurchaseController extends Controller
         $data = $request->except(['purchase_type']);
 
         if ($request->hasFile('invoice_file')) {
-            $data['invoice_file'] = $request->file('invoice_file')->store('invoices', 'public');
+            $file = $request->file('invoice_file');
+            $extension = strtolower($file->getClientOriginalExtension());
+            $mime = strtolower($file->getMimeType() ?? '');
+            
+            $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'webp']) || str_starts_with($mime, 'image/');
+
+            if ($isImage) {
+                try {
+                    $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+                    $image = $manager->decode($file->getRealPath());
+
+                    if (method_exists($image, 'orient')) {
+                        $image->orient();
+                    }
+                    $image->scaleDown(1600, 1600);
+
+                    // Compress to JPEG with 75% quality
+                    $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(75));
+
+                    $filename = uniqid('inv_', true) . '.jpg';
+                    $path = 'invoices/' . $filename;
+
+                    Storage::disk('public')->put($path, (string) $encoded);
+                    $data['invoice_file'] = $path;
+                } catch (\Exception $e) {
+                    $data['invoice_file'] = $file->store('invoices', 'public');
+                }
+            } else {
+                $data['invoice_file'] = $file->store('invoices', 'public');
+            }
         }
 
         if ($isAuthorized) {
