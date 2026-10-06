@@ -117,7 +117,7 @@
             <label>Asset Management</label>
             <i class="ti ti-dashboard"></i>
           </li>
-          <li class="pc-item pc-hasmenu theme-asset {{ Route::is(getRoutePrefix() . 'machinery.machine-category') || Route::is(getRoutePrefix() . 'machinery.add-machinery') || Route::is(getRoutePrefix() . 'machinery.transfer-machinery') || Request::is(getRouteUrlPrefix() . 'machinery/running*') || Request::is(getRouteUrlPrefix() . 'machinery/repair*') || Request::is(getRouteUrlPrefix() . 'machinery/damaged*') || Request::is(getRouteUrlPrefix() . 'machinery/missing*') ? 'active pc-trigger' : '' }}">
+          <li class="pc-item pc-hasmenu theme-asset {{ Route::is(getRoutePrefix() . 'machinery.machine-category') || Route::is(getRoutePrefix() . 'machinery.add-machinery') || Route::is(getRoutePrefix() . 'machinery.transfer-machinery') || Route::is(getRoutePrefix() . 'machinery.machine-list*') || Request::is(getRouteUrlPrefix() . 'machinery/running*') || Request::is(getRouteUrlPrefix() . 'machinery/repair*') || Request::is(getRouteUrlPrefix() . 'machinery/damaged*') || Request::is(getRouteUrlPrefix() . 'machinery/missing*') ? 'active pc-trigger' : '' }}">
             <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-tools"></i></span><span
                 class="pc-mtext">Machinery & Tools</span><span class="pc-arrow"><i
                   data-feather="chevron-right"></i></span></a>
@@ -130,6 +130,9 @@
               </li>
               <li class="pc-item {{ Route::is(getRoutePrefix() . 'machinery.transfer-machinery') ? 'active' : '' }}">
                 <a href="{{ route(getRoutePrefix() . 'machinery.transfer-machinery') }}" class="pc-link">Transferred Machinery</a>
+              </li>
+              <li class="pc-item {{ Route::is(getRoutePrefix() . 'machinery.machine-list*') ? 'active' : '' }}">
+                <a href="{{ route(getRoutePrefix() . 'machinery.machine-list') }}" class="pc-link">Machine List</a>
               </li>
               <li class="pc-item pc-hasmenu {{ Request::is(getRouteUrlPrefix() . 'machinery/running*') || Request::is(getRouteUrlPrefix() . 'machinery/repair*') || Request::is(getRouteUrlPrefix() . 'machinery/damaged*') || Request::is(getRouteUrlPrefix() . 'machinery/missing*') ? 'active pc-trigger' : '' }}">
                 <a href="#!" class="pc-link">Machine Condition<span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>

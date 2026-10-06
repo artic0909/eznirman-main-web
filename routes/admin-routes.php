@@ -51,6 +51,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/transfer-machinery', [MachineryController::class, 'transferMachineryView'])->name('transfer-machinery');
         Route::post('/transfer-machinery', [MachineryController::class, 'transferStore'])->name('transfer.store');
 
+        // Machine List (Site-wise)
+        Route::get('/machine-list', [MachineryController::class, 'machineListView'])->name('machine-list');
+        Route::get('/machine-list/{id}', [MachineryController::class, 'machineListShow'])->name('machine-list.show');
+
         // Working Sites
         Route::get('/working-sites', [MachineryController::class, 'workingSitesView'])->name('working-sites');
         Route::post('/working-sites', [MachineryController::class, 'workingSiteStore'])->name('working-sites.store');

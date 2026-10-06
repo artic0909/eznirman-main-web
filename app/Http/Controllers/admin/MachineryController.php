@@ -611,4 +611,167 @@ class MachineryController extends Controller
         $machinery = Machinary::with(['category', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
         return view('admin.machinery.missing.show', compact('machinery'));
     }
+
+    // --- Machine List (Site-wise) ---
+    public function machineListView(Request $request)
+    {
+        $categories = MachineCategory::where('status', true)->get();
+
+        // Sites list for dropdown filter (considering coordinator assigned sites)
+        if (\Illuminate\Support\Facades\Auth::guard('web')->check()) {
+            $user = \Illuminate\Support\Facades\Auth::guard('web')->user();
+            $coordinator = \App\Models\Coordinator::where('user_id', $user->id)->first();
+            $assignedSites = $coordinator ? ($coordinator->assigned_sites_ids ?? []) : [];
+            $sites = WorkingSite::whereIn('id', $assignedSites)->get();
+        } else {
+            $sites = WorkingSite::all();
+        }
+
+        // Calculate latest machine count per site
+        $latestTransferIds = Transfer::selectRaw('MAX(id) as id')
+            ->groupBy('machinery_id')
+            ->pluck('id');
+
+        $siteCounts = Transfer::whereIn('id', $latestTransferIds)
+            ->selectRaw('to_site_id, COUNT(*) as count')
+            ->groupBy('to_site_id')
+            ->pluck('count', 'to_site_id')
+            ->toArray();
+
+        foreach ($sites as $site) {
+            $site->machines_count = $siteCounts[$site->id] ?? 0;
+        }
+
+        $unassignedCount = Machinary::whereDoesntHave('transfers')->count();
+
+        // Main Query
+        $query = Machinary::with(['category', 'latestTransfer.toSite', 'latestTransfer.fromSite', 'transfers.fromSite', 'transfers.toSite']);
+        $query = $this->applyCoordinatorFilter($query);
+
+        // Filter: Site Code/ID
+        if ($request->filled('site_id')) {
+            if ($request->site_id === 'unassigned') {
+                $query->whereDoesntHave('transfers');
+            } else {
+                $siteId = $request->site_id;
+                $query->whereHas('transfers', function($q) use ($siteId) {
+                    $q->where('to_site_id', $siteId)
+                      ->where('id', function($subQuery) {
+                          $subQuery->select('id')
+                                   ->from('transfers')
+                                   ->whereColumn('machinery_id', 'machinaries.id')
+                                   ->orderByDesc('id')
+                                   ->limit(1);
+                      });
+                });
+            }
+        }
+
+        // Filter: Search (Machine Name, Machine Code, or Site Name/Code/Location)
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('machine_code', 'like', '%' . $searchTerm . '%')
+                  ->orWhereHas('latestTransfer.toSite', function($sq) use ($searchTerm) {
+                      $sq->where('site_name', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('site_code', 'like', '%' . $searchTerm . '%')
+                         ->orWhere('location', 'like', '%' . $searchTerm . '%');
+                  });
+            });
+        }
+
+        // Filter: Category
+        if ($request->filled('category_id')) {
+            $query->where('machine_category_id', $request->category_id);
+        }
+
+        // Filter: Condition
+        if ($request->filled('condition')) {
+            $query->where('condition', $request->condition);
+        }
+
+        // Filter: Date
+        if ($request->filled('date')) {
+            $date = $request->date;
+            $query->where(function($q) use ($date) {
+                $q->whereHas('latestTransfer', function($tq) use ($date) {
+                    $tq->whereDate('transfer_date', $date);
+                })->orWhere(function($oq) use ($date) {
+                    $oq->whereDoesntHave('transfers')
+                       ->whereDate('entry_date', $date);
+                });
+            });
+        }
+
+        // Excel Export
+        if ($request->has('export') && $request->export === 'excel') {
+            return \App\Services\ExportService::exportToExcel(
+                $query->latest(),
+                'site_wise_machineries_export.xlsx',
+                function ($machinery) {
+                    $latestTransfer = $machinery->latestTransfer;
+                    $siteName = $latestTransfer && $latestTransfer->toSite ? $latestTransfer->toSite->site_name : 'Initial / Unassigned';
+                    $siteCode = $latestTransfer && $latestTransfer->toSite ? $latestTransfer->toSite->site_code : 'N/A';
+                    $siteLocation = $latestTransfer && $latestTransfer->toSite ? $latestTransfer->toSite->location : 'N/A';
+                    $movementDate = $latestTransfer ? \Carbon\Carbon::parse($latestTransfer->transfer_date)->format('M d, Y') : \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y');
+                    $fromSiteName = $latestTransfer && $latestTransfer->fromSite ? $latestTransfer->fromSite->site_name : ($latestTransfer ? 'Central Depot' : 'Initial Entry');
+
+                    return [
+                        'Machine Code' => $machinery->machine_code,
+                        'Machine Name' => $machinery->name,
+                        'Category' => $machinery->category->name ?? 'N/A',
+                        'Condition' => ucfirst($machinery->condition),
+                        'Current Site Code' => $siteCode,
+                        'Current Site Name' => $siteName,
+                        'Site Location' => $siteLocation,
+                        'Transfer / Movement Date' => $movementDate,
+                        'Transferred From' => $fromSiteName,
+                        'Initial Entry Date' => \Carbon\Carbon::parse($machinery->entry_date)->format('M d, Y'),
+                    ];
+                }
+            );
+        }
+
+        // Selected Site Information for UI Banner/Summary
+        $selectedSite = null;
+        $selectedSiteMachineCount = 0;
+        if ($request->filled('site_id')) {
+            if ($request->site_id === 'unassigned') {
+                $selectedSite = (object)[
+                    'id' => 'unassigned',
+                    'site_code' => 'UNASSIGNED',
+                    'site_name' => 'Initial / Not Assigned to Site',
+                    'location' => 'Main Inventory Depot',
+                    'machines_count' => $unassignedCount,
+                ];
+                $selectedSiteMachineCount = $unassignedCount;
+            } else {
+                $selectedSite = $sites->firstWhere('id', $request->site_id);
+                $selectedSiteMachineCount = $selectedSite ? ($selectedSite->machines_count ?? 0) : 0;
+            }
+        }
+
+        $totalMachinesCount = Machinary::count();
+        $totalTransferredCount = array_sum($siteCounts);
+
+        $machineries = $query->latest()->paginate(15)->withQueryString();
+
+        return view('admin.machinery.machine-list', compact(
+            'categories',
+            'sites',
+            'machineries',
+            'selectedSite',
+            'selectedSiteMachineCount',
+            'totalMachinesCount',
+            'totalTransferredCount',
+            'unassignedCount'
+        ));
+    }
+
+    public function machineListShow($id)
+    {
+        $machinery = Machinary::with(['category', 'latestTransfer.toSite', 'latestTransfer.fromSite', 'transfers.fromSite', 'transfers.toSite'])->findOrFail($id);
+        return view('admin.machinery.machine-list-show', compact('machinery'));
+    }
 }

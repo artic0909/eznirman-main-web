@@ -34,4 +34,9 @@ class Machinary extends Model
     {
         return $this->hasMany(Transfer::class, 'machinery_id');
     }
+
+    public function latestTransfer()
+    {
+        return $this->hasOne(Transfer::class, 'machinery_id')->latestOfMany();
+    }
 }
